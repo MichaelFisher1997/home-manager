@@ -1,76 +1,116 @@
 { config, pkgs, ... }:
 
 {
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
   home.username = "micqdf";
   home.homeDirectory = "/home/micqdf";
 
-  # This value determines the Home Manager release that your configuration is
-  # compatible with. This helps avoid breakage when a new Home Manager release
-  # introduces backwards incompatible changes.
-  #
-  # You should not change this value, even if you update Home Manager. If you do
-  # want to update the value, then make sure to first check the Home Manager
-  # release notes.
+  # targets.genericLinux.enable = true;
+
   home.stateVersion = "24.05"; # Please read the comment before changing.
 
-  # The home.packages option allows you to install Nix packages into your
-  # environment.
-  home.packages = [
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
-    # pkgs.hello
-
-    # # It is sometimes useful to fine-tune packages, for example, by applying
-    # # overrides. You can do that directly here, just don't forget the
-    # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
-    # # fonts?
-    # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
+  home.packages = with pkgs; [
+    neovide
+    zathura
   ];
 
-  # Home Manager is pretty good at managing dotfiles. The primary way to manage
-  # plain files is through 'home.file'.
-  home.file = {
-    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
-
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
-  };
-
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. These will be explicitly sourced when using a
-  # shell provided by Home Manager. If you don't want to manage your shell
-  # through Home Manager then you have to manually source 'hm-session-vars.sh'
-  # located at either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/micqdf/etc/profile.d/hm-session-vars.sh
-  #
   home.sessionVariables = {
-    # EDITOR = "emacs";
+    EDITOR = "nvim";
+    BUN_INSTALL = "$HOME/.bun";
   };
+
+  home.file = {
+    ".config/fish/completions" = {
+      source = ./fish/completions;
+      recursive = true;
+    };
+    ".config/fish/functions" = {
+      source = ./fish/functions;
+      recursive = true;
+    };
+    ".config/fish/themes" = {
+      source = ./fish/themes;
+      recursive = true;
+    };
+    ".config/fish/conf.d" = {
+      source = ./fish/conf.d;
+      recursive = true;
+    };
+  };
+
+  programs.git = {
+    enable = true;
+    userName = "MichaelFisher1997";
+    userEmail = "contact@michaelfisher.tech";
+    aliases = {
+      pu = "push";
+      co = "checkout";
+      cm = "commit";
+    };
+  };
+
+  xdg.mimeApps.defaultApplications = {
+    "text/plain" = [ "neovide.desktop" ];
+    "application/pds" = [ "zathura.desktop" ];
+  };
+
+  programs.fish = {
+    enable = true;
+    plugins = [
+    {
+      name = "fisher";
+      src = pkgs.fetchFromGitHub {
+        owner = "jorgebucaran";
+        repo = "fisher";
+        rev = "4.4.4";
+        sha256 = "sha256-..."; # replace with actual hash
+      };
+    }
+    {
+      name = "fzf.fish";
+      src = pkgs.fetchFromGitHub {
+        owner = "patrickf1";
+        repo = "fzf.fish";
+        rev = "some-tag-or-commit";
+        sha256 = "sha256-...";
+      };
+    }
+    {
+      name = "catppuccin";
+      src = pkgs.fetchFromGitHub {
+        owner = "catppuccin";
+        repo = "fish";
+        rev = "main";
+        sha256 = "sha256-...";
+      };
+    }
+    ];
+    shellAliases = {
+      appLaunch = "/home/micqdf/.config/rofi/launchers/type-1/launcher.sh";
+      hyperLoad = "$HOME/.local/share/hyprload/hyprload.sh";
+      home = "cd $HOME";
+      vfish = "nvim $HOME/.config/fish/config.fish";
+      cdfish = "cd $HOME/.config/fish/";
+      cl = "clear";
+      kssh = "kitten ssh";
+      golangci-lint = "/home/micqdf/go/bin/golangci-lint";
+      hcat = "highlight";
+      ls = "lsd -l";
+      ddevpull = "~/.tools/ddevpull";
+      behat = "set -l CURRENT_DIR (pwd); docker run --rm -v $CURRENT_DIR:/src docksal/behat --colors (string join ' ' \$argv)";
+      upgrade = "cd ~/.nix-config; nix flake update; sudo nixos-rebuild switch --flake .#hypr-nix";
+      home-upgrade = "home-manager switch --flake ~/.config/home-manager/#micqdf";
+    };
+    interactiveShellInit = ''
+      set fish_greeting ""
+    '';
+  };
+
+  home.sessionPath = [
+    "$BUN_INSTALL/bin"
+    "$HOME/go/bin"
+  ];
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-}
+}  
+
