@@ -2,21 +2,32 @@
   programs.nixvim = {
     enable = true;
     defaultEditor = true;
-    colorscheme = "catppuccin-mocha";
     globals.mapleader = " ";
 
+    colorschemes = {
+      catppuccin = {
+        enable = false;
+        settings = {
+        flavour = "mocha";
+        integrations = {
+          cmp = true;
+          gitsigns = true;
+          nvimtree = true;
+          treesitter = true;
+          notify = false;
+          };
+        };
+      };
+    };
+    
     plugins = {
       telescope.enable = true;
       treesitter.enable = true;
       lualine.enable = true;
       web-devicons.enable = true; 
     };
-    plugins.catppuccin = {
-  	  enable = true;
-  	  flavour = "mocha";
-  	};
 
-
+    transparent.enable = true;
     nixpkgs.useGlobalPackages = true;
     vimAlias = true;
     luaLoader.enable = true;
