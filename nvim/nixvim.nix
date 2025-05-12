@@ -12,6 +12,7 @@
         enable = false;
         settings = {
         flavour = "mocha";
+	transparent = true;
         integrations = {
           cmp = true;
           gitsigns = true;
