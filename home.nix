@@ -8,7 +8,7 @@
   home.stateVersion = "24.05"; # Please read the comment before changing.
   imports = [
     ./fish/fish.nix
-    #inputs.nixvim.homeManagerModules.nixvim
+    nixvim.homeManagerModules.nixvim
     ./nvim/nixvim.nix
   ];
 
