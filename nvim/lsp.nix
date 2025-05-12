@@ -2,11 +2,12 @@
 
 {
   programs.nixvim = {
+    opts.completeopt = [ "menu" "menuone" "noselect" ];
+
     plugins = {
-      # LSP core support
+      # Core LSP
       lsp = {
         enable = true;
-
         keymaps = {
           silent = true;
           diagnostic = {
@@ -22,14 +23,12 @@
             "<F2>" = "rename";
           };
         };
-
         servers = {
           gopls.enable = true;
           golangci_lint_ls.enable = true;
           lua_ls.enable = true;
           nil_ls.enable = true;
           pyright.enable = true;
-          pylsp.enable = false; # disable one if both pyright/pylsp conflict
           tflint.enable = true;
           templ.enable = true;
           html.enable = true;
@@ -39,28 +38,51 @@
         };
       };
 
-      # Autocompletion
-      cmp = {
-        enable = true;
-        autoEnableSources = true;
-        sources = [
-          "nvim_lsp"
-          "path"
-          "buffer"
-          "luasnip"
-        ];
-      };
+      # Snippets
+      luasnip.enable = true;
 
-      # Completion sources
+      # Completion plugins
+      cmp.enable = true;
       cmp-nvim-lsp.enable = true;
       cmp-path.enable = true;
       cmp-buffer.enable = true;
 
-      # Snippets
-      luasnip.enable = true;
+      # Completion UI (with icons)
+      lspkind = {
+        enable = true;
+        cmp = {
+          enable = true;
+          menu = {
+            nvim_lsp = "[LSP]";
+            path = "[path]";
+            buffer = "[buf]";
+            luasnip = "[snip]";
+          };
+        };
+      };
 
-      # Icons in completion menu
-      lspkind.enable = true;
+      # CMP configuration
+      cmp.settings = {
+        snippet.expand = "function(args) require('luasnip').lsp_expand(args.body) end";
+        mapping = {
+          "<C-d>" = "cmp.mapping.scroll_docs(-4)";
+          "<C-f>" = "cmp.mapping.scroll_docs(4)";
+          "<C-Space>" = "cmp.mapping.complete()";
+          "<C-e>" = "cmp.mapping.close()";
+          "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), {'i', 's'})";
+          "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'})";
+          "<CR>" = "cmp.mapping.confirm({ select = true })";
+        };
+        sources = [
+          { name = "nvim_lsp"; }
+          { name = "path"; }
+          { name = "luasnip"; }
+          {
+            name = "buffer";
+            option.get_bufnrs.__raw = "vim.api.nvim_list_bufs";
+          }
+        ];
+      };
     };
   };
 }
