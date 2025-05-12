@@ -37,6 +37,15 @@
           protols.enable = true;
         };
       };
+      lsp.onAttach = ''
+	  vim.api.nvim_create_autocmd("CursorHold", {
+	    buffer = 0,
+	    callback = function()
+	      vim.diagnostic.open_float(nil, { focusable = false })
+	    end,
+	  })
+	'';
+
 
       # Snippets
       luasnip.enable = true;
