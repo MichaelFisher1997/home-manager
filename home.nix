@@ -10,7 +10,6 @@
     ./fish/fish.nix
     nixvim.homeManagerModules.nixvim
     ./nvim/nixvim.nix
-    ./nvim/lsp.nix
   ];
 
 
