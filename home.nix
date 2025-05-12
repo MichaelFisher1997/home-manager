@@ -20,6 +20,11 @@
     zathura
     grc
     highlight
+    # Nix curl
+    nurl
+    # Nix formatting
+    nixpkgs-fmt
+    nixpkgs-review
   ];
 
   home.sessionVariables = {
