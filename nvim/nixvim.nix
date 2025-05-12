@@ -27,7 +27,6 @@
       web-devicons.enable = true; 
     };
 
-    transparent.enable = true;
     nixpkgs.useGlobalPackages = true;
     vimAlias = true;
     luaLoader.enable = true;
