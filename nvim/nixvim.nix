@@ -29,6 +29,7 @@
       treesitter.enable = true;
       lualine.enable = true;
       web-devicons.enable = true; 
+      transparent.enable = true;
     };
 
     nixpkgs.useGlobalPackages = true;
