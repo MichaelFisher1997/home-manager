@@ -2,6 +2,7 @@
 {
   home.username = "micqdf";
   home.homeDirectory = "/home/micqdf";
+  nixpkgs.config.allowUnfree = true;
 
   # targets.genericLinux.enable = true;
 
