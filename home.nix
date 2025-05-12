@@ -14,10 +14,10 @@
 
 
   home.packages = with pkgs; [
-    (catppuccin-kvantum.override {
-      accent = "blue";
-      variant = "mocha";
-    })
+#    (catppuccin-kvantum.override {
+#      accent = "blue";
+#      variant = "mocha";
+#    })
     neovide
     zathura
     grc
