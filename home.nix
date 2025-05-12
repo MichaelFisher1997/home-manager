@@ -15,10 +15,6 @@
 
 
   home.packages = with pkgs; [
-#    (catppuccin-kvantum.override {
-#      accent = "blue";
-#      variant = "mocha";
-#    })
     hello
     neovide
     zathura
