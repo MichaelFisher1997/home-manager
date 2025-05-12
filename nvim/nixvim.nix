@@ -11,6 +11,11 @@
       lualine.enable = true;
       web-devicons.enable = true; 
     };
+    plugins.catppuccin = {
+  	  enable = true;
+  	  flavour = "mocha";
+  	};
+
 
     nixpkgs.useGlobalPackages = true;
     vimAlias = true;
