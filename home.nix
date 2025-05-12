@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, nixvim, ... }:
 {
   home.username = "micqdf";
   home.homeDirectory = "/home/micqdf";
@@ -9,7 +9,7 @@
   imports = [
     ./fish/fish.nix
     #inputs.nixvim.homeManagerModules.nixvim
-    ./nvim/nvim.nix
+    ./nvim/nixvim.nix
   ];
 
 
