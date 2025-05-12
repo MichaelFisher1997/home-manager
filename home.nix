@@ -27,6 +27,17 @@
     # Nix formatting
     nixpkgs-fmt
     nixpkgs-review
+    #for work
+    go
+    gh
+    terraform
+    tldr
+    zellij
+    sqlite
+    minikube
+    kubectl
+    helm
+    fastfetch
   ];
 
   home.sessionVariables = {
