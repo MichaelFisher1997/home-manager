@@ -19,6 +19,7 @@
 #      accent = "blue";
 #      variant = "mocha";
 #    })
+    hello
     neovide
     zathura
     grc
