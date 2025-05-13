@@ -39,6 +39,8 @@
     kubectl
     helm
     fastfetch
+    cargo
+    lua
   ];
 
   home.sessionVariables = {
