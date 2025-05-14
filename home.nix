@@ -15,7 +15,6 @@
 
 
   home.packages = with pkgs; [
-    hello
     neovide
     zathura
     grc
@@ -36,6 +35,8 @@
     kubectl
     helm
     fastfetch
+    cargo
+    lua
   ];
 
   home.sessionVariables = {
