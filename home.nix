@@ -1,4 +1,16 @@
-{ config, pkgs, nixvim, ... }:
+{ config, pkgs, nixvim, ... } @ args:
+let
+  system = args.system or "x86_64-linux"; # fallback for non-flake
+  unstable = import
+    (builtins.fetchTarball {
+      url = "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
+      sha256 = "1i3sj7bapriaanmnlrr6p3khr20j1k59il12fkww78ik2xa81vyx";
+    })
+    {
+      config.allowUnfree = true;
+      system = system;
+    };
+in
 {
   home.username = "micqdf";
   home.homeDirectory = "/home/micqdf";
@@ -25,19 +37,50 @@
     nixpkgs-fmt
     nixpkgs-review
     #for work
-    go
-    gh
-    terraform
-    tldr
-    zellij
+    unstable.zellij
     sqlite
     minikube
     kubectl
     helm
     fastfetch
-    cargo
+    # Version Control
+    gh
+    git
+    git-lfs
+    nix-prefetch-git
+
+    # Shell Utilities
+    curl
+    wget
+    tree
+    fd
+    fzf
+    bat
+    thefuck
+    lolcat
+    lsd
+    tldr
+    # programming languages
+    unstable.go
+    unstable.golangci-lint
+    unstable.golangci-lint-langserver
+    terraform
     lua
+    cargo
+    unstable.bun
+    unstable.air
+    tailwindcss
+    openjdk
+    php
+    python3
+    zig
+
+    # Fonts
+    noto-fonts-color-emoji
+    twemoji-color-font
+
   ];
+
 
   home.sessionVariables = {
     EDITOR = "nvim";
