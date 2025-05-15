@@ -18,7 +18,7 @@ in
 
   # targets.genericLinux.enable = true;
 
-  home.stateVersion = "24.05"; # Please read the comment before changing.
+  home.stateVersion = "24.11"; # Please read the comment before changing.
   imports = [
     ./fish/fish.nix
     nixvim.homeManagerModules.nixvim
@@ -27,8 +27,6 @@ in
 
 
   home.packages = with pkgs; [
-    neovide
-    zathura
     grc
     highlight
     # Nix curl
@@ -66,6 +64,7 @@ in
     unstable.golangci-lint-langserver
     terraform
     lua
+		love
     cargo
     unstable.bun
     unstable.air
@@ -98,10 +97,10 @@ in
     };
   };
 
-  xdg.mimeApps.defaultApplications = {
-    "text/plain" = [ "neovide.desktop" ];
-    "application/pds" = [ "zathura.desktop" ];
-  };
+#  xdg.mimeApps.defaultApplications = {
+#    "text/plain" = [ "neovide.desktop" ];
+#    "application/pds" = [ "zathura.desktop" ];
+#  };
 
 
   home.sessionPath = [
