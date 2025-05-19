@@ -23,6 +23,7 @@ in
     ./fish/fish.nix
     nixvim.homeManagerModules.nixvim
     ./nvim/nixvim.nix
+		./modules/portal-config.nix
   ];
 
 
@@ -64,7 +65,7 @@ in
     unstable.golangci-lint-langserver
     terraform
     lua
-		love
+    love
     cargo
     unstable.bun
     unstable.air
@@ -72,6 +73,7 @@ in
     openjdk
     php
     python3
+    poetry
     zig
 
     # Fonts
@@ -97,10 +99,10 @@ in
     };
   };
 
-#  xdg.mimeApps.defaultApplications = {
-#    "text/plain" = [ "neovide.desktop" ];
-#    "application/pds" = [ "zathura.desktop" ];
-#  };
+  #  xdg.mimeApps.defaultApplications = {
+  #    "text/plain" = [ "neovide.desktop" ];
+  #    "application/pds" = [ "zathura.desktop" ];
+  #  };
 
 
   home.sessionPath = [
