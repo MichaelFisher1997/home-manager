@@ -1,13 +1,19 @@
-{ config, lib, ... }:
+{ config, pkgs, ... }:
 
 let
-  hostname = builtins.getEnv "HOSTNAME";
+  hostname = let h = builtins.getEnv "HOSTNAME"; in if h == null then "" else h;
 in {
   xdg.portal = {
     enable = true;
-    extraPortals = if hostname == "hypr-nix" then [ "xdg-desktop-portal-hyprland" ]
-                   else if hostname == "mike" then [ "xdg-desktop-portal-kde" ]
-                   else [ "xdg-desktop-portal-gtk" ];
+
+    extraPortals =
+      if hostname == "hypr-nix" then [ pkgs.xdg-desktop-portal-hyprland ]
+      else if hostname == "mike" then [ pkgs.xdg-desktop-portal-kde ]
+      else [ pkgs.xdg-desktop-portal-gtk ];
+
+    config = {
+      common.default = "*";  # fallback to default like old versions
+    };
   };
 }
 
