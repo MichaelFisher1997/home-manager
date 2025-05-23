@@ -24,6 +24,7 @@ in
     nixvim.homeManagerModules.nixvim
     ./nvim/nixvim.nix
 		./modules/portal-config.nix
+		./zsh/zsh.nix
   ];
 
 
@@ -63,6 +64,7 @@ in
     unstable.go
     unstable.golangci-lint
     unstable.golangci-lint-langserver
+		unstable.hugo
     terraform
     lua
     love
