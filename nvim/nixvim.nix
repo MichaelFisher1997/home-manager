@@ -1,8 +1,4 @@
-{
-  imports = [
-    ./lsp.nix
-  ];
-
+{ config, pkgs, ... }: {
   programs.nixvim = {
     enable = true;
     defaultEditor = true;
@@ -13,14 +9,14 @@
       tokyonight = {
         enable = true;
         settings = {
-          style = "night"; # Other options: "storm", "day", "moon"
-          transparent = true; # Optional: respects your `transparent_background`
-          terminalColors = true; # Match terminal colors if you use a terminal emulator
+          style = "night";
+          transparent = true;
+          terminalColors = true;
           styles = {
             comments = { italic = true; };
             keywords = { italic = true; };
             functions = { bold = true; };
-            variables = { }; # default
+            variables = { };
           };
         };
       };
@@ -34,7 +30,7 @@
       transparent.enable = true;
       indent-blankline.enable = true;
 
-      # Updated completion plugins for emoji support
+      # Emoji completion support
       cmp = {
         enable = true;
         settings.sources = [
@@ -49,11 +45,9 @@
 
     clipboard = {
       providers = {
-        wl-copy.enable = true; # For Wayland
-        xsel.enable = true; # For X11
+        wl-copy.enable = true;
+        xsel.enable = true;
       };
-
-      # Sync clipboard between OS and Neovim
       register = "unnamedplus";
     };
 
@@ -76,4 +70,3 @@
     luaLoader.enable = true;
   };
 }
-

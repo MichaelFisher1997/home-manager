@@ -25,6 +25,7 @@ in
     ./nvim/nixvim.nix
     ./modules/portal-config.nix
     ./zsh/zsh.nix
+		./alacritty/alacritty.nix
   ];
 
 
@@ -82,8 +83,7 @@ in
     noto-fonts-color-emoji
     twemoji-color-font
     noto-fonts-emoji
-    (nerdfonts.override { fonts = [ "FiraCode" ]; }) # or whatever Nerd Font you use
-
+    nerd-fonts.fira-code
   ];
 
 
