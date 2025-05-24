@@ -2,6 +2,7 @@
   imports = [
     ./lsp.nix
   ];
+
   programs.nixvim = {
     enable = true;
     defaultEditor = true;
@@ -31,10 +32,21 @@
       lualine.enable = true;
       web-devicons.enable = true;
       transparent.enable = true;
-      indent-blankline = {
+      indent-blankline.enable = true;
+
+      # Updated completion plugins for emoji support
+      cmp = {
         enable = true;
+        settings.sources = [
+          { name = "nvim_lsp"; }
+          { name = "buffer"; }
+          { name = "path"; }
+          { name = "emoji"; }
+        ];
       };
+      cmp-emoji.enable = true;
     };
+
     clipboard = {
       providers = {
         wl-copy.enable = true; # For Wayland
@@ -42,9 +54,9 @@
       };
 
       # Sync clipboard between OS and Neovim
-      #  Remove this option if you want your OS clipboard to remain independent.
       register = "unnamedplus";
     };
+
     opts = {
       mouse = "a";
       number = true;
@@ -64,3 +76,4 @@
     luaLoader.enable = true;
   };
 }
+

@@ -23,8 +23,8 @@ in
     ./fish/fish.nix
     nixvim.homeManagerModules.nixvim
     ./nvim/nixvim.nix
-		./modules/portal-config.nix
-		./zsh/zsh.nix
+    ./modules/portal-config.nix
+    ./zsh/zsh.nix
   ];
 
 
@@ -64,7 +64,7 @@ in
     unstable.go
     unstable.golangci-lint
     unstable.golangci-lint-langserver
-		unstable.hugo
+    unstable.hugo
     terraform
     lua
     love
@@ -81,6 +81,8 @@ in
     # Fonts
     noto-fonts-color-emoji
     twemoji-color-font
+    noto-fonts-emoji
+    (nerdfonts.override { fonts = [ "FiraCode" ]; }) # or whatever Nerd Font you use
 
   ];
 
