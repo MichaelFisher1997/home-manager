@@ -27,14 +27,10 @@
 
       font = {
         size = 10.0;
-        normal = { family = "FiraCode Nerd Font"; style = "Regular"; };
-        bold = { family = "FiraCode Nerd Font"; style = "Bold"; };
-        italic = { family = "FiraCode Nerd Font"; style = "Italic"; };
-        bold_italic = { family = "FiraCode Nerd Font"; style = "Bold Italic"; };
-        fallback = [
-          "Noto Color Emoji"
-          "Symbols Nerd Font Mono"
-        ];
+        normal = { family = "monospace"; style = "Regular"; };
+        bold = { family = "monospace"; style = "Bold"; };
+        italic = { family = "monospace"; style = "Italic"; };
+        bold_italic = { family = "monospace"; style = "Bold Italic"; };
       };
 
       general = {

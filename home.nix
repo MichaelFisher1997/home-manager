@@ -26,6 +26,7 @@ in
     ./modules/portal-config.nix
     ./zsh/zsh.nix
 		./alacritty/alacritty.nix
+		./obs/obs.nix
   ];
 
 
