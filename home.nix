@@ -25,8 +25,8 @@ in
     ./nvim/nixvim.nix
     ./modules/portal-config.nix
     ./zsh/zsh.nix
-		./alacritty/alacritty.nix
-		./obs/obs.nix
+    ./alacritty/alacritty.nix
+    ./obs/obs.nix
   ];
 
 
