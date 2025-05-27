@@ -16,17 +16,17 @@ in
   home.homeDirectory = "/home/micqdf";
   nixpkgs.config.allowUnfree = true;
 
-  # targets.genericLinux.enable = true;
+  targets.genericLinux.enable = true;
 
   home.stateVersion = "24.11"; # Please read the comment before changing.
   imports = [
     ./fish/fish.nix
     nixvim.homeManagerModules.nixvim
     ./nvim/nixvim.nix
-    ./modules/portal-config.nix
+    #./modules/portal-config.nix
     ./zsh/zsh.nix
     ./alacritty/alacritty.nix
-    ./obs/obs.nix
+    #./obs/obs.nix
   ];
 
 
