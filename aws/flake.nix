@@ -1,34 +1,39 @@
 {
-  description = "Flake with AWS CLI v2 and AWS EB CLI (plus dependencies)";
+  description = "AWS tools devshell (with fixed awsebcli overlay)";
 
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-  outputs = { nixpkgs, ... }:
+  outputs = { self, nixpkgs, ... }:
     let
+      # Overlay to fix awsebcli by adding packaging to its Python env
+      awsebcliOverlay = final: prev: {
+        awsebcli = prev.python312.withPackages (ps: [
+          ps.awsebcli
+          ps.packaging
+        ]);
+      };
+
       forAllSystems = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" "x86_64-darwin" ];
-    in
-    {
-      # devShell with both tools installed
+    in {
+      # <------ THIS IS WHAT HOME-MANAGER EXPECTS ------
+      overlays = {
+        default = awsebcliOverlay;
+      };
+
+      # Optional: expose as devShell
       devShells = forAllSystems (system:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-        in
-        {
+        let pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ awsebcliOverlay ];
+        }; in {
           default = pkgs.mkShell {
             buildInputs = [
               pkgs.awscli2
               pkgs.awsebcli
-              pkgs.python312Packages.packaging # fixes awsebcli runtime error
             ];
           };
         }
       );
-
-      # Also export as a package set (optional)
-      packages = forAllSystems (system: {
-        awscli2 = nixpkgs.legacyPackages.${system}.awscli2;
-        awsebcli = nixpkgs.legacyPackages.${system}.awsebcli;
-      });
     };
 }
 
