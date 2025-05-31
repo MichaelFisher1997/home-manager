@@ -19,7 +19,10 @@
   outputs = { nixpkgs, home-manager, nixvim, aws-tools, ... }:
     let
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [ aws-tools.overlays.default ];
+      };
     in
     {
       homeConfigurations."micqdf" = home-manager.lib.homeManagerConfiguration {

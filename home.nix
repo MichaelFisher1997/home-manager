@@ -1,4 +1,4 @@
-{ config, pkgs, nixvim, ... } @ args:
+{ config, pkgs, nixvim, aws-tools, ... } @ args:
 let
   system = args.system or "x86_64-linux"; # fallback for non-flake
   unstable = import
@@ -31,6 +31,9 @@ in
 
 
   home.packages = with pkgs; [
+    # flake inputs
+		awscli2
+    awsebcli
     grc
     highlight
     # Nix curl
