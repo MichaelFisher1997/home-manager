@@ -32,8 +32,8 @@ in
 
   home.packages = with pkgs; [
     # flake inputs
-		awscli2
-    awsebcli
+    aws-tools.packages.${pkgs.system}.awscli2
+    aws-tools.packages.${pkgs.system}.awsebcli
     grc
     highlight
     # Nix curl
@@ -42,7 +42,7 @@ in
     nixpkgs-fmt
     nixpkgs-review
     #for work
-		ddev
+    ddev
     unstable.zellij
     sqlite
     minikube
@@ -80,7 +80,6 @@ in
     tailwindcss
     openjdk
     php
-    python3
     poetry
     zig
 
@@ -89,8 +88,8 @@ in
     twemoji-color-font
     noto-fonts-emoji
     nerd-fonts.fira-code
-		# apps
-		obsidian
+    # apps
+    obsidian
   ];
 
 
