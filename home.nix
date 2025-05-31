@@ -31,9 +31,6 @@ in
 
 
   home.packages = with pkgs; [
-    awsebcli
-		python3Packages.packaging #needed for aws eb cli
-		awscli2
     grc
     highlight
     # Nix curl
