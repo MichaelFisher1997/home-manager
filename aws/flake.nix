@@ -7,17 +7,21 @@
     let
       awsebcliOverlay = final: prev: {
         awsebcli = prev.python312.withPackages (ps: [
-          ps.awsebcli
           ps.packaging
-        ]);
+          ps.setuptools  # sometimes needed by awsebcli
+        ]) // {
+          # Override the bin directory so it uses pip's awsebcli
+          # pip install awsebcli in a shellHook
+          shellHook = ''
+            pip install --no-cache-dir awsebcli
+          '';
+        };
       };
       forAllSystems = nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" "x86_64-darwin" ];
     in {
-      # THIS IS THE CRUCIAL BIT
       overlays = {
         default = awsebcliOverlay;
       };
-
       packages = forAllSystems (system:
         let
           pkgs = import nixpkgs {
@@ -29,7 +33,6 @@
           awsebcli = pkgs.awsebcli;
         }
       );
-
       devShells = forAllSystems (system:
         let pkgs = import nixpkgs {
           inherit system;
@@ -38,8 +41,11 @@
           default = pkgs.mkShell {
             buildInputs = [
               pkgs.awscli2
-              pkgs.awsebcli
+              pkgs.python312
             ];
+            shellHook = ''
+              pip install --no-cache-dir awsebcli
+            '';
           };
         }
       );

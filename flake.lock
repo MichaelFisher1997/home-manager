@@ -6,7 +6,7 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-Phb00xZjzV9m9a3gGUNEnckGDqJGkW9QCuIwtDXGsIo=",
+        "narHash": "sha256-qUxn2ELUosJ8K4Zi94KAnGjo91ErZd5NlDEQIA8sgzU=",
         "path": "./aws",
         "type": "path"
       },
