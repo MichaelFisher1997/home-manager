@@ -9,17 +9,19 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim = {
-        url = "github:nix-community/nixvim";
-        # If using a stable channel you can use `url = "github:nix-community/nixvim/nixos-<version>"`
-        inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/nixvim";
+      # If using a stable channel you can use `url = "github:nix-community/nixvim/nixos-<version>"`
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+    aws-tools.url = "path:./aws";
   };
 
-  outputs = { nixpkgs, home-manager, nixvim, ... }:
+  outputs = { nixpkgs, home-manager, nixvim, aws-tools, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
-    in {
+    in
+    {
       homeConfigurations."micqdf" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
 
@@ -30,6 +32,7 @@
         # to pass through arguments to home.nix
         extraSpecialArgs = {
           nixvim = nixvim;
+          aws-tools = aws-tools;
         };
 
       };
