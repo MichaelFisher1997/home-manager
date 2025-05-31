@@ -18,7 +18,7 @@ in
 
   # targets.genericLinux.enable = true;
 
-  home.stateVersion = "24.11"; # Please read the comment before changing.
+  home.stateVersion = "25.05"; # Please read the comment before changing.
   imports = [
     ./fish/fish.nix
     nixvim.homeManagerModules.nixvim
@@ -31,6 +31,9 @@ in
 
 
   home.packages = with pkgs; [
+    awsebcli
+		python3Packages.packaging #needed for aws eb cli
+		awscli2
     grc
     highlight
     # Nix curl
@@ -39,6 +42,7 @@ in
     nixpkgs-fmt
     nixpkgs-review
     #for work
+		ddev
     unstable.zellij
     sqlite
     minikube
@@ -85,6 +89,8 @@ in
     twemoji-color-font
     noto-fonts-emoji
     nerd-fonts.fira-code
+		# apps
+		obsidian
   ];
 
 
