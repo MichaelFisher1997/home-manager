@@ -42,7 +42,7 @@ in
     ddev
     unstable.zellij
     sqlite
-		postgresql
+    postgresql
     minikube
     kubectl
     helm
@@ -88,8 +88,9 @@ in
     nerd-fonts.fira-code
     # apps
     obsidian
-		#ai 
-		windsurf
+    #ai 
+    windsurf
+
   ];
 
 
