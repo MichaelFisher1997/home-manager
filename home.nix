@@ -4,7 +4,7 @@ let
   unstable = import
     (builtins.fetchTarball {
       url = "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
-      sha256 = "1i3sj7bapriaanmnlrr6p3khr20j1k59il12fkww78ik2xa81vyx";
+      sha256 = "11qdsgrzaqmmwmll706q005dbfsfb0h1nhswc4pkldm0hxrlvcal";
     })
     {
       config.allowUnfree = true;
@@ -20,9 +20,10 @@ in
 
   home.stateVersion = "25.05"; # Please read the comment before changing.
   imports = [
-    ./fish/fish.nix
     nixvim.homeManagerModules.nixvim
     ./nvim/nixvim.nix
+    ./fish/fish.nix
+    # ./modules/gaming-config.nix
     ./modules/portal-config.nix
     ./zsh/zsh.nix
     ./alacritty/alacritty.nix
@@ -31,65 +32,189 @@ in
 
 
   home.packages = with pkgs; [
-    grc
-    highlight
-    # Nix curl
-    nurl
-    # Nix formatting
-    nixpkgs-fmt
-    nixpkgs-review
-    #for work
-    ddev
-    unstable.zellij
-    sqlite
-    postgresql
-    minikube
-    kubectl
-    helm
-    fastfetch
-    # Version Control
-    gh
-    git
-    git-lfs
-    nix-prefetch-git
+    # Editors & IDEs
+    sublime
+    vscode
+    kdePackages.kate
 
-    # Shell Utilities
-    curl
-    wget
-    tree
-    fd
-    fzf
-    bat
-    thefuck
-    lolcat
-    lsd
-    tldr
-    # programming languages
+    # Dev Tools & Languages
+    clang-tools
+    gcc
+    cmake
+    glew
+    glfw
+    libGL
+    sdl3
+    vulkan-loader
+    vulkan-tools
+    vulkan-headers
+    wayland-protocols
+    python3
+    php
+    php83Packages.composer
+    exercism
+    bun
+    air
+    tailwindcss
+    hashcat
     unstable.go
     unstable.golangci-lint
     unstable.golangci-lint-langserver
     unstable.hugo
-    terraform
+    unstable.templ
+    cargo
+    zig
     lua
     love
-    cargo
-    unstable.bun
-    unstable.air
-    tailwindcss
-    openjdk
-    php
     poetry
-    zig
-
-    # Fonts
-    noto-fonts-color-emoji
-    twemoji-color-font
-    noto-fonts-emoji
-    nerd-fonts.fira-code
-    # apps
     obsidian
-    #ai 
-    windsurf
+    nodejs_20
+    yarn
+    nodePackages.tailwindcss
+    nodePackages.postcss
+    nodePackages.autoprefixer
+
+    # Version Control
+    git
+    git-lfs
+    nix-prefetch-git
+    gh
+
+    # Shell & Terminal
+    kitty
+    alacritty
+    ghostty
+    home-manager
+    tmux
+    zellij
+    unstable.zellij
+    thefuck
+    lolcat
+    lsd
+    tldr
+    grc
+    highlight
+    nurl
+    nixpkgs-fmt
+    nixpkgs-review
+    pay-respects
+    jq
+    fd
+    fzf
+    bat
+
+    # File Management
+    ranger
+    _7zz
+    unrar
+    zip
+    unzip
+    gzip
+    tree
+    lsd
+    fd
+    bat
+
+    # System Monitors & Utilities (userland)
+    htop
+    btop
+    fastfetch
+    calc
+    maim
+    xclip
+    xdotool
+    pywal
+    networkmanager_dmenu
+    pika-backup
+
+    # Window Management & Theming
+    i3
+    eww
+    vesktop
+    hyprsunset
+    arandr
+    nitrogen
+    polybarFull
+    picom
+    catppuccin-kvantum
+    themechanger
+
+    # Browsers & GUI apps
+    brave
+    google-chrome
+    firefox
+    tor-browser
+    kdePackages.falkon
+    discord
+    webcord
+    slack
+    vlc
+    simplescreenrecorder
+    audacity
+    haruna
+    davinci-resolve-studio
+    obsidian
+
+    # Games & Game tools
+    mangohud
+    protonup
+    protontricks
+    lutris
+    bottles
+    wine
+    wine64
+    flightgear
+    openttd
+    endless-sky
+    cataclysm-dda
+    xonotic
+    superTux
+    superTuxKart
+    airshipper
+    mindustry-wayland
+    speed_dreams
+    simutrans_binaries
+    minecraft
+    nsnake
+
+    # Fonts & Theme stuff
+    noto-fonts
+    noto-fonts-color-emoji
+    noto-fonts-emoji
+    twemoji-color-font
+    nerd-fonts.fira-code
+    catppuccin-kvantum
+    themechanger
+
+    # Backup, Notes, Personal
+    pika-backup
+    megasync
+    obsidian
+    betterdiscord-installer
+    guacamole-client
+
+    # Networking (userland)
+    remmina
+    ngrok
+    tailscale
+    rpi-imager
+
+    # Misc & Personal
+    betterdiscord-installer
+    ghostty
+    guacamole-client
+    sunshine
+
+    # AI
+    unstable.windsurf
+
+    # Node/JS
+    nodejs_20
+    yarn
+    nodePackages.tailwindcss
+    nodePackages.postcss
+    nodePackages.autoprefixer
+
 
   ];
 
@@ -123,5 +248,4 @@ in
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-}  
-
+}
