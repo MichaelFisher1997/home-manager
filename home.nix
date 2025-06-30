@@ -84,13 +84,11 @@ in
     kitty
     alacritty
     ghostty
-    home-manager
     tmux
     zellij
     unstable.zellij
-    thefuck
-    lolcat
     lsd
+    lolcat
     tldr
     grc
     highlight
@@ -162,7 +160,6 @@ in
     lutris
     bottles
     wine
-    wine64
     flightgear
     openttd
     endless-sky
@@ -174,7 +171,6 @@ in
     mindustry-wayland
     speed_dreams
     simutrans_binaries
-    minecraft
     nsnake
 
     # Fonts & Theme stuff
