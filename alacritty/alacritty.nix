@@ -7,9 +7,11 @@
         TERM = "xterm-256color";
       };
 
-      shell = {
-        program = "fish";
-        args = ["-c" "zellij"];
+      terminal = {
+        shell = {
+          program = "fish";
+          args = ["-c" "zellij"];
+        };
       };
 
       window = {

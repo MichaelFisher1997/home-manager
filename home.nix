@@ -218,6 +218,7 @@ in
   home.sessionVariables = {
     EDITOR = "nvim";
     BUN_INSTALL = "$HOME/.bun";
+    SHELL = "${pkgs.fish}/bin/fish";
   };
 
   programs.git = {
