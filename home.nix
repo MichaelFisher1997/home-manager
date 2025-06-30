@@ -15,7 +15,6 @@ in
   home.username = "micqdf";
   home.homeDirectory = "/home/micqdf";
   nixpkgs.config.allowUnfree = true;
-  home.shell = pkgs.fish;
 
   # targets.genericLinux.enable = true;
 
