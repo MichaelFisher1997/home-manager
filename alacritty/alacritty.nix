@@ -7,10 +7,8 @@
         TERM = "xterm-256color";
       };
 
-      terminal = {
-        shell = {
-          program = "zellij";
-        };
+      shell = {
+        program = "fish";
       };
 
       window = {
@@ -40,4 +38,3 @@
     };
   };
 }
-
