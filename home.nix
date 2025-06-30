@@ -32,12 +32,15 @@ in
 
 
   home.packages = with pkgs; [
+    teams-for-linux
     # Editors & IDEs
     sublime
     vscode
     kdePackages.kate
+		playwright
 
     # Dev Tools & Languages
+		nixpacks
     clang-tools
     gcc
     cmake
@@ -68,15 +71,10 @@ in
     love
     poetry
     obsidian
-    nodejs_20
-    yarn
-    nodePackages.tailwindcss
-    nodePackages.postcss
-    nodePackages.autoprefixer
-
     # Version Control
     git
     git-lfs
+		act
     nix-prefetch-git
     gh
 
@@ -209,7 +207,7 @@ in
     yarn
     nodePackages.tailwindcss
     nodePackages.postcss
-    nodePackages.autoprefixer
+    #nodePackages.autoprefixer
 
 
   ];
