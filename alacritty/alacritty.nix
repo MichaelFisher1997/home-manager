@@ -9,6 +9,7 @@
 
       shell = {
         program = "fish";
+        args = ["-c" "zellij"];
       };
 
       window = {
