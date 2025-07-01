@@ -10,7 +10,7 @@
       terminal = {
         shell = {
           program = "fish";
-          args = ["-c" "zellij"];
+          args = [ "-c" "zellij" ];
         };
       };
 

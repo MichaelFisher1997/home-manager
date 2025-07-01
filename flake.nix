@@ -13,7 +13,7 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, nixvim,  ... }:
+  outputs = { nixpkgs, home-manager, nixvim, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};

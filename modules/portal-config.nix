@@ -7,6 +7,6 @@
     extraPortals = with pkgs; [
       xdg-desktop-portal-hyprland
     ];
-    config.common.default = ["hyprland"];
+    config.common.default = [ "hyprland" ];
   };
 }

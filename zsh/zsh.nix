@@ -17,8 +17,8 @@ in
 
     shellAliases = {
       ll = "lsd -l";
-			hcat = "highlight";
-			upgrade = "cd ~/.nix-config; nix flake update; sudo nixos-rebuild switch --flake .#hypr-nix";
+      hcat = "highlight";
+      upgrade = "cd ~/.nix-config; nix flake update; sudo nixos-rebuild switch --flake .#hypr-nix";
       home-upgrade = "home-manager switch --flake ~/.config/home-manager/#micqdf";
     };
 

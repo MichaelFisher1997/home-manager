@@ -37,10 +37,10 @@ in
     sublime
     vscode
     kdePackages.kate
-		playwright
+    playwright
 
     # Dev Tools & Languages
-		nixpacks
+    nixpacks
     clang-tools
     gcc
     cmake
@@ -74,7 +74,7 @@ in
     # Version Control
     git
     git-lfs
-		act
+    act
     nix-prefetch-git
     gh
 
@@ -200,7 +200,7 @@ in
     sunshine
 
     # AI
-    unstable.windsurf
+    windsurf
 
     # Node/JS
     nodejs_20

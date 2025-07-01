@@ -4,27 +4,27 @@
   programs.fish = {
     enable = true;
     plugins = [
-    { name = "grc"; src = pkgs.fishPlugins.grc.src; }
-    { name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src; }
-    {
-      name = "fisher";
-      src = pkgs.fetchFromGitHub {
-        owner = "jorgebucaran";
-        repo = "fisher";
-        rev = "main";
-        sha256 = "sha256-pR5RKU+zIb7CS0Y6vjx2QIZ8Iu/3ojRfAcAdjCOxl1U=";
-      };
-    }
-    {
-      name = "catppuccin";
-      src = pkgs.fetchFromGitHub {
-        owner = "catppuccin";
-        repo = "fish";
-        rev = "main";
-        sha256 = "sha256-Oc0emnIUI4LV7QJLs4B2/FQtCFewRFVp7EDv8GawFsA=";
+      { name = "grc"; src = pkgs.fishPlugins.grc.src; }
+      { name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src; }
+      {
+        name = "fisher";
+        src = pkgs.fetchFromGitHub {
+          owner = "jorgebucaran";
+          repo = "fisher";
+          rev = "main";
+          sha256 = "sha256-pR5RKU+zIb7CS0Y6vjx2QIZ8Iu/3ojRfAcAdjCOxl1U=";
+        };
+      }
+      {
+        name = "catppuccin";
+        src = pkgs.fetchFromGitHub {
+          owner = "catppuccin";
+          repo = "fish";
+          rev = "main";
+          sha256 = "sha256-Oc0emnIUI4LV7QJLs4B2/FQtCFewRFVp7EDv8GawFsA=";
 
-      };
-    }
+        };
+      }
     ];
     shellAliases = {
       appLaunch = "/home/micqdf/.config/rofi/launchers/type-1/launcher.sh";
