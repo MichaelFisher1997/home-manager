@@ -130,7 +130,7 @@
     simplescreenrecorder
     audacity
     haruna
-    davinci-resolve-studio
+    # davinci-resolve-studio # Disabled due to hash mismatch
 
     #--------------- Gaming ---------------#
     # Game Launchers & Tools
@@ -155,7 +155,7 @@
     wayland-protocols
 
     # Games
-    flightgear
+    # flightgear
     openttd
     endless-sky
     cataclysm-dda
@@ -177,7 +177,7 @@
 
     #--------------- Personal & Notes ---------------#
     obsidian
-    megasync
+    # megasync
     betterdiscord-installer
   ];
 }

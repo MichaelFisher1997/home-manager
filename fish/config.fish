@@ -18,7 +18,7 @@ alias hcat="highlight"
 alias ls="lsd -l"
 alias ddevpull="~/.tools/ddevpull"
 alias behat="set -l CURRENT_DIR (pwd); docker run --rm -v $CURRENT_DIR:/src docksal/behat --colors (string join ' ' $argv)"
-alias upgrade 'cd ~/.nix-config; nix flake update; sudo nixos-rebuild switch --flake .#hypr-nix'
+alias upgrade 'cd /home/micqdf/nixos/nix-config; nix flake update; sudo nixos-rebuild switch --flake .#hypr-nix'
 
 # bun
 set --export BUN_INSTALL "$HOME/.bun"

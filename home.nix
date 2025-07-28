@@ -32,6 +32,7 @@ in
     ./obs/obs.nix
     ./modules/ide/windsurf.nix
     ./programs/programs.nix
+    ./hyprland/hyprland.nix
   ];
 
 

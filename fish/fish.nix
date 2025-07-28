@@ -33,7 +33,7 @@
       kssh = "kitten ssh";
       hcat = "highlight";
       ls = "lsd -l";
-      upgrade = "cd ~/.nix-config; nix flake update; sudo nixos-rebuild switch --flake .#hypr-nix";
+      upgrade = "cd /home/micqdf/nixos/nix-config; nix flake update; sudo nixos-rebuild switch --flake .#hypr-nix";
       home-upgrade = "home-manager switch --flake ~/.config/home-manager/#micqdf";
     };
     interactiveShellInit = ''

@@ -18,7 +18,7 @@ in
     shellAliases = {
       ll = "lsd -l";
       hcat = "highlight";
-      upgrade = "cd ~/.nix-config; nix flake update; sudo nixos-rebuild switch --flake .#hypr-nix";
+      upgrade = "cd /home/micqdf/nixos/nix-config; nix flake update; sudo nixos-rebuild switch --flake .#hypr-nix";
       home-upgrade = "home-manager switch --flake ~/.config/home-manager/#micqdf";
     };
 
@@ -35,7 +35,7 @@ in
       ];
     };
 
-    initExtra = ''
+    initContent = ''
       # Enable autosuggestions and syntax highlighting
       source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
       source ${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
