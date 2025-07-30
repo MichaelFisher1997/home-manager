@@ -32,7 +32,7 @@ in
     ./obs/obs.nix
     ./modules/ide/windsurf.nix
     ./programs/programs.nix
-    ./hyprland/hyprland.nix
+    # ./hyprland/hyprland.nix  # Moved back to NixOS config
   ];
 
 
@@ -63,10 +63,13 @@ in
     };
   };
 
-  #  xdg.mimeApps.defaultApplications = {
-  #    "text/plain" = [ "neovide.desktop" ];
-  #    "application/pds" = [ "zathura.desktop" ];
-  #  };
+  xdg.mimeApps.defaultApplications = {
+    "text/html" = [ "zen-twilight.desktop" ];
+    "x-scheme-handler/http" = [ "zen-twilight.desktop" ];
+    "x-scheme-handler/https" = [ "zen-twilight.desktop" ];
+    "x-scheme-handler/about" = [ "zen-twilight.desktop" ];
+    "x-scheme-handler/unknown" = [ "zen-twilight.desktop" ];
+  };
 
 
   home.sessionPath = [

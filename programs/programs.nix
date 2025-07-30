@@ -71,8 +71,7 @@
     alacritty
     ghostty
     tmux
-    zellij
-    unstable.zellij
+    unstable.zellij  # Use only unstable version to avoid collision
     lsd
     lolcat
     tldr
@@ -128,7 +127,7 @@
     #--------------- Multimedia ---------------#
     vlc
     simplescreenrecorder
-    audacity
+    # audacity # Temporarily disabled due to build failure
     haruna
     # davinci-resolve-studio # Disabled due to hash mismatch
 
@@ -144,6 +143,9 @@
     wine
     gamemode
     airshipper # Veloren launcher
+
+    #--------------- Gaming - Dev ---------------#
+		tiled
 
     # 32-bit libraries for Steam/Wine
     pkgs_32.vulkan-loader
@@ -163,7 +165,7 @@
     superTux
     superTuxKart
     mindustry-wayland
-    speed_dreams
+    # speed_dreams # Temporarily disabled due to build failure
     simutrans_binaries
     nsnake
 
@@ -179,5 +181,7 @@
     obsidian
     # megasync
     betterdiscord-installer
+    #--------------- AI - CLI - MCP    ---------------#
+		unstable.claude-code
   ];
 }

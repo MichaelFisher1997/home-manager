@@ -1,14 +1,17 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, hyprland, ... }:
 
 {
   wayland.windowManager.hyprland = {
     enable = true;
+    package = hyprland.packages.${pkgs.system}.hyprland;
     xwayland.enable = true;
-    systemd.enable = true;
+    systemd.enable = false;  # Disable to avoid config conflicts
+    
+    # Use extraConfig to include existing config without managing the file
+    extraConfig = ''
+      # Config is managed externally in ~/.config/hypr/hyprland.conf
+    '';
   };
-
-  # Use existing config files from ~/.config instead of managing them through home-manager
-  home.file.".config/hypr".source = config.lib.file.mkOutOfStoreSymlink "/home/micqdf/.config/hypr";
 
   # Install Hyprland-related packages
   home.packages = with pkgs; [
@@ -17,7 +20,6 @@
     blueman
     rofi-wayland
     waybar
-    polybar
     wttrbar
     hackgen-nf-font
     playerctl
@@ -42,22 +44,9 @@
     catppuccin-kvantum
     nwg-drawer
     hyprpaper
+    wlsunset  # For gamma/color temperature control
   ];
-
-  # Link other related config directories to use existing configs
-  home.file.".config/waybar".source = config.lib.file.mkOutOfStoreSymlink "/home/micqdf/.config/waybar";
-  home.file.".config/rofi".source = config.lib.file.mkOutOfStoreSymlink "/home/micqdf/.config/rofi";
 
   # Enable services that work well with Hyprland
   services.dunst.enable = true;
-  
-  # XDG portal configuration for Hyprland
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-hyprland
-      xdg-desktop-portal-gtk
-    ];
-    config.common.default = "*";
-  };
 }
