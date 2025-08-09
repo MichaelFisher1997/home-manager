@@ -1,16 +1,4 @@
-{ config, pkgs, pkgs_32, nixvim, lib, ... } @ args:
-let
-  system = args.system or "x86_64-linux"; # fallback for non-flake
-  unstable = import
-    (builtins.fetchTarball {
-      url = "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
-      sha256 = "11qdsgrzaqmmwmll706q005dbfsfb0h1nhswc4pkldm0hxrlvcal";
-    })
-    {
-      config.allowUnfree = true;
-      system = system;
-    };
-in
+{ config, pkgs, pkgs_32, nixvim, lib, unstable, ... }:
 {
   home.username = "micqdf";
   home.homeDirectory = "/home/micqdf";

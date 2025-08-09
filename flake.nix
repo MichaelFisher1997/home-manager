@@ -26,6 +26,10 @@
         extraSpecialArgs = {
           nixvim = nixvim;
           pkgs_32 = pkgs_32;
+          unstable = import nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
         };
       };
     };

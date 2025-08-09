@@ -22,6 +22,7 @@
     sublime
     vscode
     kdePackages.kate
+		flatpak-builder
 
     # Dev Tools & Languages
     nixpacks
@@ -51,6 +52,10 @@
     lua
     love # LÖVE Potion - 2D game framework for Lua
     poetry
+		unstable.supabase-cli
+		ffmpeg
+		libavif 
+		imagemagick
 
     # Version Control
     git
@@ -183,5 +188,7 @@
     betterdiscord-installer
     #--------------- AI - CLI - MCP    ---------------#
 		unstable.claude-code
+		unstable.opencode
+
   ];
 }
