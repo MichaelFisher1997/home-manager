@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs_32, nixvim, lib, unstable, ... }:
+{ config, pkgs, pkgs_32, nixvim, lib, unstable, cursor-flake, windsurf-flake, ... }:
 {
   home.username = "micqdf";
   home.homeDirectory = "/home/micqdf";
@@ -11,14 +11,14 @@
 
   home.stateVersion = "25.05"; # Please read the comment before changing.
   imports = [
-    nixvim.homeManagerModules.nixvim
+    nixvim.homeModules.nixvim
     ./nvim/nixvim.nix
     ./fish/fish.nix
     ./modules/portal-config.nix
     ./zsh/zsh.nix
     ./alacritty/alacritty.nix
     ./obs/obs.nix
-    ./modules/ide/windsurf.nix
+    # ./modules/ide/windsurf.nix
     ./programs/programs.nix
     # ./hyprland/hyprland.nix  # Moved back to NixOS config
   ];

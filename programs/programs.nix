@@ -1,7 +1,12 @@
-{ pkgs, pkgs_32, unstable, ... }:
+{ pkgs, pkgs_32, unstable, cursor-flake, windsurf-flake, ... }:
 
 {
   home.packages = with pkgs; [
+
+    #--------------- Crypto ---------------#
+		solana-cli
+		anchor
+		foundry
 
     #--------------- Communication ---------------#
     teams-for-linux
@@ -23,6 +28,7 @@
     vscode
     kdePackages.kate
 		flatpak-builder
+		gnumake
 
     # Dev Tools & Languages
     nixpacks
@@ -148,6 +154,7 @@
     wine
     gamemode
     airshipper # Veloren launcher
+		unstable.pcsx2
 
     #--------------- Gaming - Dev ---------------#
 		tiled
@@ -189,6 +196,8 @@
     #--------------- AI - CLI - MCP    ---------------#
 		unstable.claude-code
 		unstable.opencode
+		cursor-flake.packages.x86_64-linux.default
+		windsurf-flake.packages.x86_64-linux.default
 
   ];
 }
