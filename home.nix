@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs_32, nixvim, lib, unstable, cursor-flake, windsurf-flake, ... }:
+{ config, pkgs, pkgs_32, nixvim, lib, unstable, cursor-flake, windsurf-flake, zed-flake, ... }:
 {
   home.username = "micqdf";
   home.homeDirectory = "/home/micqdf";

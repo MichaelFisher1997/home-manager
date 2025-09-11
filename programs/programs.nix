@@ -4,7 +4,6 @@
   home.packages = with pkgs; [
 
     #--------------- Crypto ---------------#
-		solana-cli
 		anchor
 		foundry
 
@@ -29,6 +28,10 @@
     kdePackages.kate
 		flatpak-builder
 		gnumake
+		unstable.stripe-cli
+		unstable.doppler
+		unstable.backblaze-b2
+		uv
 
     # Dev Tools & Languages
     nixpacks
@@ -62,6 +65,7 @@
 		ffmpeg
 		libavif 
 		imagemagick
+		whois
 
     # Version Control
     git
@@ -158,6 +162,7 @@
     jstest-gtk # Joystick testing tool
 		unstable.pcsx2
 		unstable.xenia-canary
+		shadps4
 
     #--------------- Gaming - Dev ---------------#
 		tiled
@@ -183,6 +188,7 @@
     # speed_dreams # Temporarily disabled due to build failure
     simutrans_binaries
     nsnake
+    ryubing
 
     #--------------- Fonts ---------------#
     noto-fonts
@@ -200,6 +206,7 @@
 		unstable.claude-code
 		cursor-flake.packages.x86_64-linux.default
 		windsurf-flake.packages.x86_64-linux.default
+		zed-flake.packages.x86_64-linux.default
 
   ];
 }
