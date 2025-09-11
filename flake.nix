@@ -13,9 +13,10 @@
     };
     cursor-flake.url = "github:MichaelFisher1997/cursor-cli-flake";
     windsurf-flake.url = "github:MichaelFisher1997/windsurf-flake";
+    opencode-flake.url = "github:aodhanhayter/opencode-flake";
   };
 
-  outputs = { nixpkgs, home-manager, nixvim, cursor-flake, windsurf-flake, ... }:
+  outputs = { nixpkgs, home-manager, nixvim, cursor-flake, windsurf-flake, opencode-flake, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -30,6 +31,7 @@
           pkgs_32 = pkgs_32;
           cursor-flake = cursor-flake;
           windsurf-flake = windsurf-flake;
+          opencode-flake = opencode-flake;
           unstable = import nixpkgs {
             inherit system;
             config.allowUnfree = true;

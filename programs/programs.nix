@@ -154,7 +154,10 @@
     wine
     gamemode
     airshipper # Veloren launcher
+    antimicrox # Gamepad to keyboard mapping
+    jstest-gtk # Joystick testing tool
 		unstable.pcsx2
+		unstable.xenia-canary
 
     #--------------- Gaming - Dev ---------------#
 		tiled
@@ -195,7 +198,6 @@
     betterdiscord-installer
     #--------------- AI - CLI - MCP    ---------------#
 		unstable.claude-code
-		unstable.opencode
 		cursor-flake.packages.x86_64-linux.default
 		windsurf-flake.packages.x86_64-linux.default
 
