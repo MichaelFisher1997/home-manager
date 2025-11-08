@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs_32, nixvim, lib, unstable, cursor-flake, windsurf-flake, zed-flake, ... }:
+{ config, pkgs, pkgs_32, nixvim, lib, unstable, cursor-flake, windsurf-flake, ... }:
 {
   home.username = "micqdf";
   home.homeDirectory = "/home/micqdf";
@@ -29,7 +29,12 @@
   # Activation script for Playwright
   home.activation.playwright-install = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     echo "Installing Playwright browsers..."
-    PATH=${pkgs.lib.makeBinPath [ pkgs.nodejs_20 ]}:$PATH ${pkgs.nodejs_20}/bin/npm exec playwright install
+    PATH=${pkgs.lib.makeBinPath [ pkgs.nodejs_24 ]}:$PATH ${pkgs.nodejs_24}/bin/npm exec playwright install
+  '';
+
+  home.activation.opencode-install = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    echo "Installing opencode through npm..."
+    PATH=${pkgs.lib.makeBinPath [ pkgs.nodejs_24 ]}:$PATH ${pkgs.nodejs_24}/bin/npm install -g opencode-ai
   '';
 
 
@@ -38,16 +43,21 @@
     EDITOR = "nvim";
     BUN_INSTALL = "$HOME/.bun";
     SHELL = "${pkgs.fish}/bin/fish";
+    NPM_CONFIG_PREFIX = "$HOME/.npm-global";
   };
 
   programs.git = {
     enable = true;
-    userName = "MichaelFisher1997";
-    userEmail = "contact@michaelfisher.tech";
-    aliases = {
-      pu = "push";
-      co = "checkout";
-      cm = "commit";
+    settings = {
+      user = {
+        name = "MichaelFisher1997";
+        email = "contact@michaelfisher.tech";
+      };
+      alias = {
+        pu = "push";
+        co = "checkout";
+        cm = "commit";
+      };
     };
   };
 
@@ -61,6 +71,7 @@
 
 
   home.sessionPath = [
+    "$HOME/.npm-global/bin"
     "$BUN_INSTALL/bin"
     "$HOME/go/bin"
   ];

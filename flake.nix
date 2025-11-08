@@ -13,10 +13,9 @@
     };
     cursor-flake.url = "github:MichaelFisher1997/cursor-cli-flake";
     windsurf-flake.url = "github:MichaelFisher1997/windsurf-flake";
-    zed-flake.url = "github:MichaelFisher1997/zed-flake";
   };
 
-  outputs = { nixpkgs, home-manager, nixvim, cursor-flake, windsurf-flake, zed-flake, ... }:
+    outputs = { nixpkgs, home-manager, nixvim, cursor-flake, windsurf-flake, ... }:
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -31,7 +30,6 @@
           pkgs_32 = pkgs_32;
           cursor-flake = cursor-flake;
           windsurf-flake = windsurf-flake;
-          zed-flake = zed-flake;
           unstable = import nixpkgs {
             inherit system;
             config.allowUnfree = true;

@@ -25,3 +25,7 @@ set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
 set -gx PATH $PATH $HOME/go/bin
 
+# npm global packages
+set --export NPM_CONFIG_PREFIX "$HOME/.npm-global"
+set -gx PATH $PATH $HOME/.npm-global/bin
+
