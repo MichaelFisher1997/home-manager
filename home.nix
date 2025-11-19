@@ -3,6 +3,9 @@
   home.username = "micqdf";
   home.homeDirectory = "/home/micqdf";
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-36.9.5"
+  ];
 
   # Pass unstable packages to modules
   _module.args.unstable = unstable;

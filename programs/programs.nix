@@ -158,8 +158,8 @@
     # davinci-resolve-studio # Disabled due to hash mismatch
 
     #--------------- Gaming ---------------#
-    # Game Launchers & Tools
-     steam-tui
+     # Game Launchers & Tools
+     # steam-tui # Temporarily disabled due to hanging on download
      steamcmd
      protonup-ng
     protontricks
@@ -171,7 +171,7 @@
     antimicrox # Gamepad to keyboard mapping
     # jstest-gtk # Joystick testing tool - disabled due to CMake version issue
 		unstable.pcsx2
-		unstable.rpcs3
+		# unstable.rpcs3 # Disabled due to build failure
 		unstable.xenia-canary
 		# shadps4 # Disabled due to shiboken2 CMake version issue
 
