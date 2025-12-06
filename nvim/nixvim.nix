@@ -25,7 +25,7 @@
     plugins = {
       telescope.enable = true;
       treesitter.enable = true;
-      lualine.enable = true;
+      lualine.enable = false;
       web-devicons.enable = true;
       transparent.enable = true;
       indent-blankline.enable = true;

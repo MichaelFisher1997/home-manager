@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs_32, nixvim, lib, unstable, cursor-flake, windsurf-flake, ... }:
+{ config, pkgs, pkgs_32, nixvim, lib, unstable, cursor-flake, windsurf-flake, terminus-flake, ... }:
 {
   home.username = "micqdf";
   home.homeDirectory = "/home/micqdf";
@@ -15,7 +15,7 @@
   home.stateVersion = "25.05"; # Please read the comment before changing.
   imports = [
     nixvim.homeModules.nixvim
-    ./nvim/nixvim.nix
+    # ./nvim/nixvim.nix  # Temporarily disabled due to tclint issue
     ./fish/fish.nix
     ./modules/portal-config.nix
     ./zsh/zsh.nix

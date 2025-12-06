@@ -1,4 +1,4 @@
-{ pkgs, pkgs_32, unstable, cursor-flake, windsurf-flake, ... }:
+{ pkgs, pkgs_32, unstable, cursor-flake, windsurf-flake, droid-flake, ... }:
 
 {
   home.packages = with pkgs; [
@@ -40,7 +40,9 @@
 		unstable.goose-cli
 		git-credential-manager
 		wrangler
+		unstable.railway
 		# unstable.opencode
+		codex
 
     # Dev Tools & Languages
     nixpacks
@@ -216,6 +218,7 @@
 		unstable.claude-code
 		cursor-flake.packages.x86_64-linux.default
 		windsurf-flake.packages.x86_64-linux.default
+		droid-flake.packages.x86_64-linux.default
 		unstable.zed-editor
 
 

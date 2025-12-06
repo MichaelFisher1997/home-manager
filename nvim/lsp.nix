@@ -26,11 +26,10 @@
         };
         servers = {
           gopls.enable = true;
-          golangci_lint_ls.enable = true;
           lua_ls.enable = true;
           nil_ls.enable = true;
           pyright.enable = true;
-          tflint.enable = true;
+          # tflint.enable = true;  # Disabled due to nixvim module bug
           templ.enable = true;
           html.enable = true;
           htmx.enable = true;
@@ -123,4 +122,3 @@
     };
   };
 }
-
