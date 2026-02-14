@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs_32, nixvim, lib, unstable, cursor-flake, windsurf-flake, terminus-flake, ... }:
+{ config, pkgs, pkgs_32, nixvim, lib, unstable, cursor-flake, windsurf-flake, terminus-flake, opencode-desktop-flake, ... }:
 {
   home.username = "micqdf";
   home.homeDirectory = "/home/micqdf";
@@ -15,7 +15,7 @@
   home.stateVersion = "25.05"; # Please read the comment before changing.
   imports = [
     nixvim.homeModules.nixvim
-    # ./nvim/nixvim.nix  # Temporarily disabled due to tclint issue
+    ./nvim/nixvim.nix
     ./fish/fish.nix
     ./modules/portal-config.nix
     ./zsh/zsh.nix
@@ -23,7 +23,7 @@
     ./obs/obs.nix
     # ./modules/ide/windsurf.nix
     ./programs/programs.nix
-    # ./hyprland/hyprland.nix  # Moved back to NixOS config
+    ./hyprland/hyprland.nix
   ];
 
 
@@ -33,11 +33,6 @@
   home.activation.playwright-install = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     echo "Installing Playwright browsers..."
     PATH=${pkgs.lib.makeBinPath [ pkgs.nodejs_24 ]}:$PATH ${pkgs.nodejs_24}/bin/npm exec playwright install
-  '';
-
-  home.activation.opencode-install = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    echo "Installing opencode through npm..."
-    PATH=${pkgs.lib.makeBinPath [ pkgs.nodejs_24 ]}:$PATH ${pkgs.nodejs_24}/bin/npm install -g opencode-ai
   '';
 
 

@@ -15,17 +15,22 @@
     windsurf-flake.url = "github:MichaelFisher1997/windsurf-flake";
     droid-flake.url = "github:MichaelFisher1997/droid-flake";
     terminus-flake.url = "github:MichaelFisher1997/terminus-flake";
+    opencode-desktop-flake.url = "github:OpenStaticFish/opencode-desktop-flake";
   };
 
-    outputs = { nixpkgs, home-manager, nixvim, cursor-flake, windsurf-flake, droid-flake, terminus-flake, ... }:
+    outputs = { nixpkgs, home-manager, nixvim, cursor-flake, windsurf-flake, droid-flake, terminus-flake, opencode-desktop-flake, ... }:
     let
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
       pkgs_32 = nixpkgs.legacyPackages.i686-linux;
     in
     {
       homeConfigurations."micqdf" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
+        pkgs = pkgs;
         modules = [ ./home.nix ];
         extraSpecialArgs = {
           nixvim = nixvim;
@@ -34,10 +39,8 @@
           windsurf-flake = windsurf-flake;
           droid-flake = droid-flake;
           terminus-flake = terminus-flake;
-          unstable = import nixpkgs {
-            inherit system;
-            config.allowUnfree = true;
-          };
+          opencode-desktop-flake = opencode-desktop-flake;
+          unstable = pkgs;
         };
       };
     };

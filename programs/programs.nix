@@ -1,4 +1,4 @@
-{ pkgs, pkgs_32, unstable, cursor-flake, windsurf-flake, droid-flake, ... }:
+{ pkgs, pkgs_32, unstable, cursor-flake, windsurf-flake, droid-flake, opencode-desktop-flake, ... }:
 
 {
   home.packages = with pkgs; [
@@ -41,6 +41,7 @@
 		git-credential-manager
 		wrangler
 		unstable.railway
+		imagemagick
 		# unstable.opencode
 		codex
 
@@ -90,6 +91,7 @@
     # Node/JS
     nodejs_24
     yarn
+    pnpm
     nodePackages.tailwindcss
     nodePackages.postcss
     playwright
@@ -164,17 +166,19 @@
      # steam-tui # Temporarily disabled due to hanging on download
      steamcmd
      protonup-ng
+    unstable.godot
     protontricks
     lutris
     bottles
+		unstable.luanti
     wine
     gamemode
-    airshipper # Veloren launcher
+    #airshipper # Veloren launcher
     antimicrox # Gamepad to keyboard mapping
     # jstest-gtk # Joystick testing tool - disabled due to CMake version issue
 		unstable.pcsx2
 		# unstable.rpcs3 # Disabled due to build failure
-		unstable.xenia-canary
+		#unstable.xenia-canary
 		# shadps4 # Disabled due to shiboken2 CMake version issue
 
     #--------------- Gaming - Dev ---------------#
@@ -183,9 +187,9 @@
     # 32-bit libraries for Steam/Wine
     pkgs_32.vulkan-loader
     pkgs_32.libGL
-    pkgs_32.xorg.libX11
-    pkgs_32.xorg.libXext
-    pkgs_32.xorg.libXfixes
+    pkgs_32.libx11
+    pkgs_32.libxext
+    pkgs_32.libxfixes
     pkgs_32.mesa
     wayland-protocols
 
@@ -219,7 +223,9 @@
 		cursor-flake.packages.x86_64-linux.default
 		windsurf-flake.packages.x86_64-linux.default
 		droid-flake.packages.x86_64-linux.default
+		opencode-desktop-flake.packages.x86_64-linux.default
 		unstable.zed-editor
+		unstable.antigravity
 
 
   ];

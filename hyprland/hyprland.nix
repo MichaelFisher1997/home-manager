@@ -1,24 +1,15 @@
-{ config, pkgs, lib, hyprland, ... }:
+{ config, pkgs, lib, ... }:
 
 {
-  wayland.windowManager.hyprland = {
-    enable = true;
-    package = hyprland.packages.${pkgs.system}.hyprland;
-    xwayland.enable = true;
-    systemd.enable = false;  # Disable to avoid config conflicts
-    
-    # Use extraConfig to include existing config without managing the file
-    extraConfig = ''
-      # Config is managed externally in ~/.config/hypr/hyprland.conf
-    '';
-  };
+  # Hyprland config is managed externally in ~/.config/hypr/hyprland.conf
+  # This module only sets up related packages and services
 
   # Install Hyprland-related packages
   home.packages = with pkgs; [
     waypaper
     wl-clipboard
     blueman
-    rofi-wayland
+    rofi
     waybar
     wttrbar
     hackgen-nf-font
@@ -45,8 +36,29 @@
     nwg-drawer
     hyprpaper
     wlsunset  # For gamma/color temperature control
+    kdePackages.breeze
+    kdePackages.breeze-gtk
+    kdePackages.breeze-icons
   ];
 
   # Enable services that work well with Hyprland
   services.dunst.enable = true;
+
+  # Start waybar via systemd for reliability
+  systemd.user.services.waybar = {
+    Unit = {
+      Description = "Wayland bar for Hyprland";
+      Documentation = "https://github.com/Alexays/Waybar/wiki";
+      After = [ "graphical-session.target" ];
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.waybar}/bin/waybar";
+      Restart = "on-failure";
+      RestartSec = 3;
+    };
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
+  };
 }
