@@ -199,22 +199,6 @@
     },
     "nixpkgs_5": {
       "locked": {
-        "lastModified": 1763966396,
-        "narHash": "sha256-6eeL1YPcY1MV3DDStIDIdy/zZCDKgHdkCmsrLJFiZf0=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "5ae3b07d8d6527c42f17c876e404993199144b6a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_6": {
-      "locked": {
         "lastModified": 1757068644,
         "narHash": "sha256-NOrUtIhTkIIumj1E/Rsv1J37Yi3xGStISEo8tZm3KW4=",
         "owner": "NixOS",
@@ -277,7 +261,6 @@
         "nixpkgs": "nixpkgs_3",
         "nixvim": "nixvim",
         "opencode-desktop-flake": "opencode-desktop-flake",
-        "terminus-flake": "terminus-flake",
         "windsurf-flake": "windsurf-flake"
       }
     },
@@ -341,28 +324,10 @@
         "type": "github"
       }
     },
-    "terminus-flake": {
-      "inputs": {
-        "nixpkgs": "nixpkgs_5"
-      },
-      "locked": {
-        "lastModified": 1764099769,
-        "narHash": "sha256-//0+EQfRfkjgLzeLL4CAL3d8IR0LIP1JFphke3zdub4=",
-        "owner": "MichaelFisher1997",
-        "repo": "terminus-flake",
-        "rev": "fcd589ac6ba1c95c8c89ded7832f6e9cae4607ea",
-        "type": "github"
-      },
-      "original": {
-        "owner": "MichaelFisher1997",
-        "repo": "terminus-flake",
-        "type": "github"
-      }
-    },
     "windsurf-flake": {
       "inputs": {
         "flake-utils": "flake-utils_3",
-        "nixpkgs": "nixpkgs_6"
+        "nixpkgs": "nixpkgs_5"
       },
       "locked": {
         "lastModified": 1771005571,

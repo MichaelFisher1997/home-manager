@@ -19,7 +19,7 @@ in
       ll = "lsd -l";
       hcat = "highlight";
       upgrade = "cd /home/micqdf/nixos/nix-config; nix flake update; sudo nixos-rebuild switch --flake .#hypr-nix";
-      home-upgrade = "home-manager switch --flake ~/.config/home-manager/#micqdf";
+      home-upgrade = "home-manager switch --flake ~/nixos/home-manager/#micqdf";
     };
 
     oh-my-zsh = {

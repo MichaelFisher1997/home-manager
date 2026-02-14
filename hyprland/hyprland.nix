@@ -22,9 +22,9 @@
     hyprshot
     hyprland-protocols
     xfce.thunar-volman
-    xfce.thunar-dropbox-plugin
-    xfce.thunar-archive-plugin
-    xfce.tumbler
+    thunar-dropbox-plugin
+    thunar-archive-plugin
+    tumbler
     pavucontrol
     wlr-randr
     libcanberra-gtk3

@@ -14,11 +14,10 @@
     cursor-flake.url = "github:MichaelFisher1997/cursor-cli-flake";
     windsurf-flake.url = "github:MichaelFisher1997/windsurf-flake";
     droid-flake.url = "github:MichaelFisher1997/droid-flake";
-    terminus-flake.url = "github:MichaelFisher1997/terminus-flake";
     opencode-desktop-flake.url = "github:OpenStaticFish/opencode-desktop-flake";
   };
 
-    outputs = { nixpkgs, home-manager, nixvim, cursor-flake, windsurf-flake, droid-flake, terminus-flake, opencode-desktop-flake, ... }:
+  outputs = { nixpkgs, home-manager, nixvim, cursor-flake, windsurf-flake, droid-flake, opencode-desktop-flake, ... }:
     let
       system = "x86_64-linux";
       
@@ -38,7 +37,6 @@
           cursor-flake = cursor-flake;
           windsurf-flake = windsurf-flake;
           droid-flake = droid-flake;
-          terminus-flake = terminus-flake;
           opencode-desktop-flake = opencode-desktop-flake;
           unstable = pkgs;
         };
