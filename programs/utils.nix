@@ -2,8 +2,6 @@
 
 {
   home.packages = with pkgs; [
-    htop
-    btop
     fastfetch
     calc
     maim

@@ -18,6 +18,7 @@
     ./alacritty/alacritty.nix
     ./obs/obs.nix
     ./modules/portal-config.nix
+    ./modules/gtk.nix
     ./modules/git.nix
     ./modules/session.nix
     ./modules/activation.nix

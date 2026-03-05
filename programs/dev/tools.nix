@@ -19,7 +19,6 @@
     ffmpeg
     libavif
     whois
-    git
     git-lfs
     act
     nix-prefetch-git
