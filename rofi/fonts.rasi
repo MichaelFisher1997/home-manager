@@ -1,0 +1,7 @@
+/**
+ * Waybar-matched fonts for rofi launcher
+ **/
+
+* {
+    font: "HackGen Console NF 11";
+}

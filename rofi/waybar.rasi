@@ -1,0 +1,13 @@
+/**
+ * Waybar-matched color scheme for rofi
+ * Palette derived from waybar/style.css
+ **/
+
+* {
+    background:     #282828FF;
+    background-alt: #323232FF;
+    foreground:     #f4d9e1FF;
+    selected:       #e5809eFF;
+    active:         #9ece6aFF;
+    urgent:         #db4b4bFF;
+}
