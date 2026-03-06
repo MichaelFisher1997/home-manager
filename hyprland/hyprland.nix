@@ -43,6 +43,11 @@
 
   # Enable services that work well with Hyprland
   services.dunst.enable = true;
+  services.dunst.settings = {
+    global = {
+      font = "Noto Sans 10";
+    };
+  };
 
   # Start waybar via systemd for reliability
   systemd.user.services.waybar = {
