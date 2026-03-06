@@ -1,23 +1,24 @@
 * {
-  bg:             #1f2329;
-  bg-alt:         #2b3038;
-  bg-soft:        #353b45;
-  border:         #4c566a;
-  fg:             #eceff4;
-  fg-muted:       #a7b1c2;
-  accent:         #88c0d0;
-  urgent:         #bf616a;
-  ok:             #a3be8c;
-  radius:         14px;
-  font:           "JetBrainsMono Nerd Font 11";
+  bg:             #1a1a1a;
+  bg-alt:         #282828;
+  bg-soft:        #323232;
+  border:         rgba(40, 40, 40, 0.75);
+  fg:             #f4d9e1;
+  fg-muted:       #928374;
+  accent:         #e5809e;
+  accent-soft:    #e6b9c6;
+  urgent:         #db4b4b;
+  ok:             #9ece6a;
+  radius:         16px;
+  font:           "Hack Nerd Font 11";
 }
 
 window {
   location:          center;
   anchor:            center;
   width:             46%;
-  border:            2px;
-  border-color:      @border;
+  border:            1px;
+  border-color:      rgba(40, 40, 40, 0.75);
   border-radius:     @radius;
   background-color:  @bg;
   padding:           18px;
@@ -41,7 +42,7 @@ inputbar {
 prompt {
   background-color:  transparent;
   text-color:        @accent;
-  font:              "JetBrainsMono Nerd Font Bold 11";
+  font:              "Hack Nerd Font Bold 11";
 }
 
 entry {
@@ -56,14 +57,14 @@ message { enabled: false; }
 listview {
   lines:             10;
   columns:           1;
-  spacing:           8px;
+  spacing:           6px;
   scrollbar:         true;
   background-color:  transparent;
 }
 
 scrollbar {
-  width:             6px;
-  handle-width:      6px;
+  width:             4px;
+  handle-width:      4px;
   border:            0;
   handle-color:      @bg-soft;
 }
@@ -72,48 +73,48 @@ element {
   orientation:       horizontal;
   border:            1px;
   border-color:      transparent;
-  border-radius:     12px;
+  border-radius:     16px;
   background-color:  transparent;
-  padding:           12px 14px;
+  padding:           10px 14px;
   spacing:           12px;
 }
 
 element-icon {
-  size:              24px;
+  size:              22px;
   background-color:  transparent;
 }
 
 element-text {
   background-color:  transparent;
   text-color:        @fg;
-  font:              "JetBrainsMono Nerd Font Medium 11";
+  font:              "Hack Nerd Font 11";
 }
 
 element normal.normal {
   background-color:  transparent;
-  text-color:        @fg;
+  text-color:        @fg-muted;
 }
 
 element alternate.normal {
-  background-color:  #2b303899;
+  background-color:  transparent;
   text-color:        @fg-muted;
 }
 
 element selected.normal {
-  background-color:  @bg-soft;
+  background-color:  @bg-alt;
   border-color:      @accent;
   text-color:        @fg;
 }
 
 element normal.urgent,
 element selected.urgent {
-  background-color:  #bf616a33;
+  background-color:  #db4b4b22;
   border-color:      @urgent;
 }
 
 element normal.active,
 element selected.active {
-  background-color:  #a3be8c2b;
+  background-color:  #9ece6a22;
   border-color:      @ok;
 }
 

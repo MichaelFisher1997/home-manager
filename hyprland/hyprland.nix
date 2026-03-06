@@ -45,37 +45,39 @@
   services.dunst.enable = true;
   services.dunst.settings = {
     global = {
-      font = "Noto Sans 10";
-      frame_color = "#4c566a";
-      separator_color = "#3b4252";
-      corner_radius = 10;
+      font = "Hack 10";
+      frame_color = "#e5809e";
+      separator_color = "#323232";
+      corner_radius = 16;
       gap_size = 8;
       padding = 12;
-      horizontal_padding = 12;
-      background = "#1f2329";
-      foreground = "#eceff4";
-      highlight = "#88c0d0";
+      horizontal_padding = 14;
+      background = "#282828";
+      foreground = "#f4d9e1";
+      highlight = "#e6b9c6";
       timeout = 8;
+      width = "(200, 400)";
+      offset = "10x10";
     };
 
     urgency_low = {
-      background = "#1f2329";
-      foreground = "#d8dee9";
-      frame_color = "#4c566a";
+      background = "#282828";
+      foreground = "#928374";
+      frame_color = "#323232";
       timeout = 4;
     };
 
     urgency_normal = {
-      background = "#1f2329";
-      foreground = "#eceff4";
-      frame_color = "#88c0d0";
+      background = "#282828";
+      foreground = "#f4d9e1";
+      frame_color = "#e5809e";
       timeout = 8;
     };
 
     urgency_critical = {
-      background = "#2b1f23";
-      foreground = "#eceff4";
-      frame_color = "#bf616a";
+      background = "#2a1a1a";
+      foreground = "#f4d9e1";
+      frame_color = "#db4b4b";
       timeout = 0;
     };
   };
