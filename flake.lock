@@ -120,11 +120,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1770995331,
-        "narHash": "sha256-MZOF7PVKDOMAOp6bJpzuKOb1DVcyUT84568r8y3iVGg=",
+        "lastModified": 1772633327,
+        "narHash": "sha256-jl+DJB2DUx7EbWLRng+6HNWW/1/VQOnf0NsQB4PlA7I=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "5e90b62996d56da9acb21e502c078e7c4e6ab40f",
+        "rev": "5a75730e6f21ee624cbf86f4915c6e7489c74acc",
         "type": "github"
       },
       "original": {
@@ -188,11 +188,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1770841267,
-        "narHash": "sha256-9xejG0KoqsoKEGp2kVbXRlEYtFFcDTHjidiuX8hGO44=",
+        "lastModified": 1772624091,
+        "narHash": "sha256-QKyJ0QGWBn6r0invrMAK8dmJoBYWoOWy7lN+UHzW1jc=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "ec7c70d12ce2fc37cb92aff673dcdca89d187bae",
+        "rev": "80bdc1e5ce51f56b19791b52b2901187931f5353",
         "type": "github"
       },
       "original": {
@@ -243,11 +243,11 @@
         "systems": "systems_3"
       },
       "locked": {
-        "lastModified": 1770954048,
-        "narHash": "sha256-TEXS8Z7K+GsOOtL0QD1hrMxL0lVJjKDl3qZq/mJHu2k=",
+        "lastModified": 1772402258,
+        "narHash": "sha256-3DmCFOdmbkFML1/G9gj8Wb+rCCZFPOQtNoMCpqOF8SA=",
         "owner": "nix-community",
         "repo": "nixvim",
-        "rev": "e49b8deda7b1732f5a2ea2a90446e45adb2a121d",
+        "rev": "21ae25e13b01d3b4cdc750b5f9e7bad68b150c10",
         "type": "github"
       },
       "original": {
@@ -261,11 +261,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1771005962,
-        "narHash": "sha256-ieMY591HyOniL5Quu+tIH08AlJdFlgcL7m07Zd27h3Q=",
+        "lastModified": 1772764054,
+        "narHash": "sha256-iVk6V8SRGzO8r6EpHLKMRpsixA2If1EXUtiPhz2sXqw=",
         "owner": "OpenStaticFish",
         "repo": "opencode-desktop-flake",
-        "rev": "8c5b0b8a62265aaf113964a872d9bf430c8bc0d3",
+        "rev": "da20360236e2d57ce5635fef76358bd65cf14bc2",
         "type": "github"
       },
       "original": {
@@ -352,11 +352,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1771005571,
-        "narHash": "sha256-xTqDV29d6ws69KDhVb3gUf/8n8Gbp2RzDYdeytN+Pog=",
+        "lastModified": 1771468604,
+        "narHash": "sha256-E7dythkFql4eEvwqlRoiUcn0NlWDcmdCB+Ib0IjyARw=",
         "owner": "MichaelFisher1997",
         "repo": "windsurf-flake",
-        "rev": "73b5e250056c311e7ce5a8a81ae18a74e85b7b42",
+        "rev": "f53e78db81409bd2b86e995692b9e56a5250a12f",
         "type": "github"
       },
       "original": {
