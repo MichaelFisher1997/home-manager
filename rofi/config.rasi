@@ -1,0 +1,123 @@
+* {
+  bg:             #1f2329;
+  bg-alt:         #2b3038;
+  bg-soft:        #353b45;
+  border:         #4c566a;
+  fg:             #eceff4;
+  fg-muted:       #a7b1c2;
+  accent:         #88c0d0;
+  urgent:         #bf616a;
+  ok:             #a3be8c;
+  radius:         14px;
+  font:           "JetBrainsMono Nerd Font 11";
+}
+
+window {
+  location:          center;
+  anchor:            center;
+  width:             46%;
+  border:            2px;
+  border-color:      @border;
+  border-radius:     @radius;
+  background-color:  @bg;
+  padding:           18px;
+}
+
+mainbox {
+  spacing: 12px;
+  children: [ inputbar, listview ];
+}
+
+inputbar {
+  children:          [ prompt, entry ];
+  spacing:           10px;
+  padding:           12px 14px;
+  border:            1px;
+  border-color:      @border;
+  border-radius:     @radius;
+  background-color:  @bg-alt;
+}
+
+prompt {
+  background-color:  transparent;
+  text-color:        @accent;
+  font:              "JetBrainsMono Nerd Font Bold 11";
+}
+
+entry {
+  background-color:  transparent;
+  text-color:        @fg;
+  placeholder:       "Search apps, files, commands";
+  placeholder-color: @fg-muted;
+}
+
+message { enabled: false; }
+
+listview {
+  lines:             10;
+  columns:           1;
+  spacing:           8px;
+  scrollbar:         true;
+  background-color:  transparent;
+}
+
+scrollbar {
+  width:             6px;
+  handle-width:      6px;
+  border:            0;
+  handle-color:      @bg-soft;
+}
+
+element {
+  orientation:       horizontal;
+  border:            1px;
+  border-color:      transparent;
+  border-radius:     12px;
+  background-color:  transparent;
+  padding:           12px 14px;
+  spacing:           12px;
+}
+
+element-icon {
+  size:              24px;
+  background-color:  transparent;
+}
+
+element-text {
+  background-color:  transparent;
+  text-color:        @fg;
+  font:              "JetBrainsMono Nerd Font Medium 11";
+}
+
+element normal.normal {
+  background-color:  transparent;
+  text-color:        @fg;
+}
+
+element alternate.normal {
+  background-color:  #2b303899;
+  text-color:        @fg-muted;
+}
+
+element selected.normal {
+  background-color:  @bg-soft;
+  border-color:      @accent;
+  text-color:        @fg;
+}
+
+element normal.urgent,
+element selected.urgent {
+  background-color:  #bf616a33;
+  border-color:      @urgent;
+}
+
+element normal.active,
+element selected.active {
+  background-color:  #a3be8c2b;
+  border-color:      @ok;
+}
+
+mode-switcher,
+button {
+  enabled: false;
+}
