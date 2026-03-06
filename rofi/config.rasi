@@ -10,7 +10,7 @@
   urgent:         #db4b4b;
   ok:             #9ece6a;
   radius:         16px;
-  font:           "Hack Nerd Font 11";
+  font:           "HackGen Console NF 11";
 }
 
 window {
@@ -42,7 +42,7 @@ inputbar {
 prompt {
   background-color:  transparent;
   text-color:        @accent;
-  font:              "Hack Nerd Font Bold 11";
+  font:              "HackGen Console NF 11";
 }
 
 entry {
@@ -87,7 +87,7 @@ element-icon {
 element-text {
   background-color:  transparent;
   text-color:        @fg;
-  font:              "Hack Nerd Font 11";
+  font:              "HackGen Console NF 11";
 }
 
 element normal.normal {

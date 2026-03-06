@@ -45,7 +45,7 @@
   services.dunst.enable = true;
   services.dunst.settings = {
     global = {
-      font = "Hack 10";
+      font = "HackGen Console NF 10";
       frame_color = "#e5809e";
       separator_color = "#323232";
       corner_radius = 16;
