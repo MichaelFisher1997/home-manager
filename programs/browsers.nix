@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, zen-browser, ... }:
 
 {
   home.packages = with pkgs; [
@@ -8,5 +8,6 @@
     firefox
     tor-browser
     kdePackages.falkon
+    zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.twilight
   ];
 }

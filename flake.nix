@@ -15,9 +15,13 @@
     windsurf-flake.url = "github:MichaelFisher1997/windsurf-flake";
     droid-flake.url = "github:MichaelFisher1997/droid-flake";
     opencode-desktop-flake.url = "github:OpenStaticFish/opencode-desktop-flake";
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, nixvim, cursor-flake, windsurf-flake, droid-flake, opencode-desktop-flake, ... }:
+  outputs = { nixpkgs, home-manager, nixvim, cursor-flake, windsurf-flake, droid-flake, opencode-desktop-flake, zen-browser, ... }:
     let
       system = "x86_64-linux";
       
@@ -38,6 +42,7 @@
           windsurf-flake = windsurf-flake;
           droid-flake = droid-flake;
           opencode-desktop-flake = opencode-desktop-flake;
+          zen-browser = zen-browser;
           unstable = pkgs;
         };
       };
