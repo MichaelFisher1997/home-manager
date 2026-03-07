@@ -2,6 +2,7 @@
 
 {
   home.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
     EDITOR = "nvim";
     BUN_INSTALL = "$HOME/.bun";
     SHELL = "${pkgs.fish}/bin/fish";

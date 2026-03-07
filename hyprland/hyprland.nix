@@ -87,6 +87,16 @@
     force = true;
   };
 
+  xdg.configFile."waybar/config.jsonc" = {
+    source = ../waybar/config.jsonc;
+    force = true;
+  };
+
+  xdg.configFile."hypr/hyprland.conf" = {
+    source = ./hyprland.conf;
+    force = true;
+  };
+
   xdg.configFile."rofi/config.rasi" = {
     source = ../rofi/config.rasi;
     force = true;
@@ -121,6 +131,7 @@
       Type = "simple";
       ExecStart = "${pkgs.waybar}/bin/waybar";
       ExecReload = "${pkgs.procps}/bin/pkill -x waybar; ${pkgs.waybar}/bin/waybar";
+      PassEnvironment = [ "HYPRLAND_INSTANCE_SIGNATURE" "WAYLAND_DISPLAY" "XDG_RUNTIME_DIR" ];
       Restart = "on-failure";
       RestartSec = 3;
     };
