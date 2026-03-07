@@ -1,8 +1,12 @@
 { config, pkgs, lib, ... }:
 
 {
-  # Hyprland config is managed externally in ~/.config/hypr/hyprland.conf
-  # This module only sets up related packages and services
+  wayland.windowManager.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+    systemd.enable = false;
+    extraConfig = builtins.readFile ./hyprland.conf;
+  };
 
   # Install Hyprland-related packages
   home.packages = with pkgs; [
@@ -92,11 +96,6 @@
     force = true;
   };
 
-  xdg.configFile."hypr/hyprland.conf" = {
-    source = ./hyprland.conf;
-    force = true;
-  };
-
   xdg.configFile."rofi/config.rasi" = {
     source = ../rofi/config.rasi;
     force = true;
@@ -120,23 +119,4 @@
     force = true;
   };
 
-  # Start waybar via systemd for reliability
-  systemd.user.services.waybar = {
-    Unit = {
-      Description = "Wayland bar for Hyprland";
-      Documentation = "https://github.com/Alexays/Waybar/wiki";
-      After = [ "graphical-session.target" ];
-    };
-    Service = {
-      Type = "simple";
-      ExecStart = "${pkgs.waybar}/bin/waybar";
-      ExecReload = "${pkgs.procps}/bin/pkill -x waybar; ${pkgs.waybar}/bin/waybar";
-      PassEnvironment = [ "HYPRLAND_INSTANCE_SIGNATURE" "WAYLAND_DISPLAY" "XDG_RUNTIME_DIR" ];
-      Restart = "on-failure";
-      RestartSec = 3;
-    };
-    Install = {
-      WantedBy = [ "default.target" ];
-    };
-  };
 }
