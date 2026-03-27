@@ -2,13 +2,14 @@
   description = "Home Manager configuration of micqdf";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim = {
-      url = "github:nix-community/nixvim";
+      url = "github:nix-community/nixvim/nixos-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     cursor-flake.url = "github:MichaelFisher1997/cursor-cli-flake";
@@ -21,11 +22,15 @@
     };
   };
 
-  outputs = { nixpkgs, home-manager, nixvim, cursor-flake, windsurf-flake, droid-flake, opencode-desktop-flake, zen-browser, ... }:
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, cursor-flake, windsurf-flake, droid-flake, opencode-desktop-flake, zen-browser, ... }:
     let
       system = "x86_64-linux";
-      
+
       pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+      unstable = import nixpkgs-unstable {
         inherit system;
         config.allowUnfree = true;
       };
@@ -43,9 +48,8 @@
           droid-flake = droid-flake;
           opencode-desktop-flake = opencode-desktop-flake;
           zen-browser = zen-browser;
-          unstable = pkgs;
+          unstable = unstable;
         };
       };
     };
 }
-

@@ -7,7 +7,6 @@
     "electron-36.9.5"
   ];
 
-  targets.genericLinux.enable = true;
   home.stateVersion = "25.05";
 
   imports = [

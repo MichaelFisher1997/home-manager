@@ -26,9 +26,9 @@
     hyprshot
     hyprland-protocols
     xfce.thunar-volman
-    thunar-dropbox-plugin
-    thunar-archive-plugin
-    tumbler
+    xfce.thunar-dropbox-plugin
+    xfce.thunar-archive-plugin
+    xfce.tumbler
     pavucontrol
     wlr-randr
     libcanberra-gtk3
@@ -86,15 +86,16 @@
     };
   };
 
-  xdg.configFile."waybar/style.css" = {
-    source = ../waybar/style.css;
-    force = true;
-  };
-
-  xdg.configFile."waybar/config.jsonc" = {
-    source = ../waybar/config.jsonc;
-    force = true;
-  };
+  # Waybar config - disabled in favor of eww (keeping for future use)
+  # xdg.configFile."waybar/style.css" = {
+  #   source = ../waybar/style.css;
+  #   force = true;
+  # };
+  # 
+  # xdg.configFile."waybar/config.jsonc" = {
+  #   source = ../waybar/config.jsonc;
+  #   force = true;
+  # };
 
   xdg.configFile."rofi/config.rasi" = {
     source = ../rofi/config.rasi;

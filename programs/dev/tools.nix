@@ -7,9 +7,7 @@
     unstable.stripe-cli
     unstable.doppler
     libsecret
-    unstable.backblaze-b2
     uv
-    unstable.goose-cli
     git-credential-manager
     wrangler
     unstable.railway
@@ -24,7 +22,5 @@
     nix-prefetch-git
     gh
     codex
-    unstable.claude-code
-    unstable.antigravity
   ];
 }

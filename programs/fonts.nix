@@ -10,6 +10,7 @@
     nerd-fonts.jetbrains-mono
     nerd-fonts.iosevka
     font-awesome
+    emacs-all-the-icons-fonts
     iosevka
   ];
 }

@@ -12,5 +12,6 @@
     pika-backup
     sunshine
     guacamole-client
+    socat
   ];
 }
