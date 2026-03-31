@@ -28,10 +28,10 @@
 
       font = {
         size = 10.0;
-        normal = { family = "monospace"; style = "Regular"; };
-        bold = { family = "monospace"; style = "Bold"; };
-        italic = { family = "monospace"; style = "Italic"; };
-        bold_italic = { family = "monospace"; style = "Bold Italic"; };
+        normal = { family = "Iosevka"; style = "Regular"; };
+        bold = { family = "Iosevka"; style = "Bold"; };
+        italic = { family = "Iosevka"; style = "Italic"; };
+        bold_italic = { family = "Iosevka"; style = "Bold Italic"; };
       };
 
       general = {
