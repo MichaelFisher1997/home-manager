@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs_32, nixvim, lib, unstable, cursor-flake, windsurf-flake, droid-flake, opencode-desktop-flake, ... }:
+{ config, pkgs, pkgs_32, nixvim, lib, unstable, windsurf-flake, droid-flake, opencode-desktop-flake, ... }:
 {
   home.username = "micqdf";
   home.homeDirectory = "/home/micqdf";
@@ -29,6 +29,7 @@
     ./programs/gaming/libs.nix
     ./programs/gaming/games.nix
     ./programs/shell/tools.nix
+    ./programs/shell/ghostty.nix
     ./programs/browsers.nix
     ./programs/multimedia.nix
     ./programs/crypto.nix

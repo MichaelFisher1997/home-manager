@@ -12,17 +12,22 @@
       url = "github:nix-community/nixvim/nixos-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    cursor-flake.url = "github:MichaelFisher1997/cursor-cli-flake";
     windsurf-flake.url = "github:MichaelFisher1997/windsurf-flake";
-    droid-flake.url = "github:MichaelFisher1997/droid-flake";
-    opencode-desktop-flake.url = "github:OpenStaticFish/opencode-desktop-flake";
+    droid-flake = {
+      url = "github:MichaelFisher1997/droid-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    opencode-desktop-flake = {
+      url = "github:OpenStaticFish/opencode-desktop-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, cursor-flake, windsurf-flake, droid-flake, opencode-desktop-flake, zen-browser, ... }:
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, windsurf-flake, droid-flake, opencode-desktop-flake, zen-browser, ... }:
     let
       system = "x86_64-linux";
 
@@ -43,7 +48,6 @@
         extraSpecialArgs = {
           nixvim = nixvim;
           pkgs_32 = pkgs_32;
-          cursor-flake = cursor-flake;
           windsurf-flake = windsurf-flake;
           droid-flake = droid-flake;
           opencode-desktop-flake = opencode-desktop-flake;

@@ -4,7 +4,7 @@
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
-    systemd.enable = false;
+    systemd.enable = true;
     extraConfig = builtins.readFile ./hyprland.conf;
   };
 
@@ -24,7 +24,6 @@
     dunst
     udiskie
     hyprshot
-    hyprland-protocols
     xfce.thunar-volman
     xfce.thunar-dropbox-plugin
     xfce.thunar-archive-plugin
@@ -35,14 +34,10 @@
     pamixer
     grim
     discocss
-    themechanger
     catppuccin-kvantum
     nwg-drawer
     hyprpaper
-    wlsunset  # For gamma/color temperature control
-    kdePackages.breeze
-    kdePackages.breeze-gtk
-    kdePackages.breeze-icons
+    wlsunset
   ];
 
   # Enable services that work well with Hyprland

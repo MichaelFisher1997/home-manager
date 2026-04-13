@@ -8,9 +8,7 @@ let
   ];
 in
 {
-  home.packages = with pkgs; [
-    lsd
-  ] ++ zshPlugins;
+  home.packages = zshPlugins;
 
   programs.zsh = {
     enable = true;

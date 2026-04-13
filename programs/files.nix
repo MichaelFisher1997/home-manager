@@ -8,6 +8,7 @@
     zip
     unzip
     gzip
+    file-roller
     tree
   ];
 }

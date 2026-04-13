@@ -28,9 +28,6 @@
     poetry
     ruby
     nodejs_24
-    yarn
-    pnpm
-    nodePackages.tailwindcss
     nodePackages.postcss
     playwright
   ];

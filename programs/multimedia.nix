@@ -12,7 +12,7 @@
     simplescreenrecorder
     haruna
     mpv
-    obsidian
+
     betterdiscord-installer
   ];
 }

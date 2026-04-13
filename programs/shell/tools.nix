@@ -2,8 +2,6 @@
 
 {
   home.packages = with pkgs; [
-    kitty
-    ghostty
     tmux
     unstable.zellij
     lsd

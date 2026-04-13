@@ -128,9 +128,9 @@
   "format-icons": {
     "default": ["󰕿", "󰖀", "󰕾"]
   },
-  "on-click": "bash ~/.scripts/volume mute",
-  "on-scroll-up": "bash ~/.scripts/volume up",
-  "on-scroll-down": "bash ~/.scripts/volume down",
+   "on-click": "pamixer --toggle-mute",
+   "on-scroll-up": "pamixer --increase 5",
+   "on-scroll-down": "pamixer --decrease 5",
   "scroll-step": 5,
   "on-click-right": "pavucontrol"
 },

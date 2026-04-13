@@ -11,8 +11,8 @@
         src = pkgs.fetchFromGitHub {
           owner = "jorgebucaran";
           repo = "fisher";
-          rev = "main";
-          sha256 = "sha256-pR5RKU+zIb7CS0Y6vjx2QIZ8Iu/3ojRfAcAdjCOxl1U=";
+          rev = "791da644d33d392216f6b1a9b5fc1e470db6d7f2";
+          sha256 = "185nzkbnsgrmq9pj1llmw6a6w29sbb656r4imkbv2qksdvr9sp2k";
         };
       }
       {
@@ -20,9 +20,8 @@
         src = pkgs.fetchFromGitHub {
           owner = "catppuccin";
           repo = "fish";
-          rev = "main";
-          sha256 = "sha256-Oc0emnIUI4LV7QJLs4B2/FQtCFewRFVp7EDv8GawFsA=";
-
+          rev = "5fc5ae9c2ec22eb376cb03ce76f0d262a38960f3";
+          sha256 = "19qd700wj0h7k68fs27qa1b1qzs8ccd8rw6qpml3ccyffxhmd8yw";
         };
       }
     ];
@@ -30,7 +29,6 @@
       appLaunch = "/home/micqdf/.config/rofi/launchers/type-1/launcher.sh";
       hyperLoad = "$HOME/.local/share/hyprload/hyprload.sh";
       cl = "clear";
-      kssh = "kitten ssh";
       hcat = "highlight";
       ls = "lsd -l";
       upgrade = "cd /home/micqdf/nixos/nix-config; nix flake update; sudo nixos-rebuild switch --flake .#hypr-nix";
