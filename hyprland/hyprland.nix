@@ -13,6 +13,7 @@
     waypaper
     wl-clipboard
     blueman
+    networkmanagerapplet
     rofi
     waybar
     wttrbar
