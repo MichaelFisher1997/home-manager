@@ -12,6 +12,7 @@
     pika-backup
     sunshine
     guacamole-client
+    rpi-imager
     socat
   ];
 }

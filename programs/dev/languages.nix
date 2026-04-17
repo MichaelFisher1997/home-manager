@@ -29,6 +29,5 @@
     ruby
     nodejs_24
     nodePackages.postcss
-    playwright
   ];
 }
