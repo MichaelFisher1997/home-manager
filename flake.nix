@@ -29,31 +29,30 @@
 
   outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, windsurf-flake, droid-flake, opencode-desktop-flake, zen-browser, ... }:
     let
-      system = "x86_64-linux";
-
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-      };
-      unstable = import nixpkgs-unstable {
-        inherit system;
-        config.allowUnfree = true;
-      };
-      pkgs_32 = nixpkgs.legacyPackages.i686-linux;
+      mkHome = hostName: vars:
+        let
+          pkgs = import nixpkgs {
+            inherit (vars) system;
+            config.allowUnfree = true;
+          };
+          unstable = import nixpkgs-unstable {
+            inherit (vars) system;
+            config.allowUnfree = true;
+          };
+          pkgs_32 = nixpkgs.legacyPackages.i686-linux;
+        in
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ ./hosts/${hostName}/default.nix ];
+          extraSpecialArgs = {
+            inherit vars nixvim pkgs_32 windsurf-flake droid-flake opencode-desktop-flake zen-browser unstable;
+          };
+        };
     in
     {
-      homeConfigurations."micqdf" = home-manager.lib.homeManagerConfiguration {
-        pkgs = pkgs;
-        modules = [ ./home.nix ];
-        extraSpecialArgs = {
-          nixvim = nixvim;
-          pkgs_32 = pkgs_32;
-          windsurf-flake = windsurf-flake;
-          droid-flake = droid-flake;
-          opencode-desktop-flake = opencode-desktop-flake;
-          zen-browser = zen-browser;
-          unstable = unstable;
-        };
+      homeConfigurations = {
+        hypr-nix = mkHome "hypr-nix" (import ./hosts/hypr-nix/vars.nix);
+        hyprtop = mkHome "hyprtop" (import ./hosts/hyprtop/vars.nix);
       };
     };
 }

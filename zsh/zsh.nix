@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, vars, ... }:
 
 let
   # Extra plugins not included in oh-my-zsh by default
@@ -16,8 +16,10 @@ in
     shellAliases = {
       ll = "lsd -l";
       hcat = "highlight";
-      upgrade = "cd /home/micqdf/nixos/nix-config; nix flake update; sudo nixos-rebuild switch --flake .#hypr-nix";
-      home-upgrade = "home-manager switch --flake ~/nixos/home-manager/#micqdf";
+      syscfg = "cd $HOME/nixos/nix-config";
+      homecfg = "cd $HOME/nixos/home-manager";
+      upgrade = "cd $HOME/nixos/nix-config; nix flake update; sudo nixos-rebuild switch --flake path:$HOME/nixos/nix-config#${vars.hostName}";
+      home-upgrade = "home-manager switch --flake path:$HOME/nixos/home-manager#${vars.hostName}";
     };
 
     oh-my-zsh = {
@@ -43,4 +45,3 @@ in
     '';
   };
 }
-

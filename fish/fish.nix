@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, vars, ... }:
 {
 
   programs.fish = {
@@ -26,13 +26,15 @@
       }
     ];
     shellAliases = {
-      appLaunch = "/home/micqdf/.config/rofi/launchers/type-1/launcher.sh";
+      appLaunch = "$HOME/.config/rofi/launchers/type-1/launcher.sh";
       hyperLoad = "$HOME/.local/share/hyprload/hyprload.sh";
       cl = "clear";
       hcat = "highlight";
       ls = "lsd -l";
-      upgrade = "cd /home/micqdf/nixos/nix-config; nix flake update; sudo nixos-rebuild switch --flake .#hypr-nix";
-      home-upgrade = "home-manager switch --flake ~/nixos/home-manager/#micqdf";
+      syscfg = "cd $HOME/nixos/nix-config";
+      homecfg = "cd $HOME/nixos/home-manager";
+      upgrade = "cd $HOME/nixos/nix-config; nix flake update; sudo nixos-rebuild switch --flake path:$HOME/nixos/nix-config#${vars.hostName}";
+      home-upgrade = "home-manager switch --flake path:$HOME/nixos/home-manager#${vars.hostName}";
     };
     interactiveShellInit = ''
       set fish_greeting ""
