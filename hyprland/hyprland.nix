@@ -11,14 +11,14 @@ let
     (builtins.readFile ./hyprland.conf);
   ewwYuckText = lib.replaceStrings
     [
-      "\"./scripts/"
+      "./scripts/"
       "\"scripts/"
-      "\"images/"
+      "images/"
     ]
     [
+      "${ewwConfigDir}/scripts/"
       "\"${ewwConfigDir}/scripts/"
-      "\"${ewwConfigDir}/scripts/"
-      "\"${ewwConfigDir}/images/"
+      "${ewwConfigDir}/images/"
     ]
     (builtins.readFile ../eww/eww.yuck);
   ewwScssText = lib.replaceStrings
