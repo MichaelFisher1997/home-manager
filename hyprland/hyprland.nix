@@ -147,8 +147,24 @@ in {
     force = true;
   };
 
-  xdg.configFile."eww" = lib.mkIf isLaptop {
-    source = ../eww;
+  xdg.configFile."eww/eww.scss" = lib.mkIf isLaptop {
+    source = ../eww/eww.scss;
+    force = true;
+  };
+
+  xdg.configFile."eww/launch_bar" = lib.mkIf isLaptop {
+    source = ../eww/launch_bar;
+    force = true;
+  };
+
+  xdg.configFile."eww/scripts" = lib.mkIf isLaptop {
+    source = ../eww/scripts;
+    recursive = true;
+    force = true;
+  };
+
+  xdg.configFile."eww/images" = lib.mkIf isLaptop {
+    source = ../eww/images;
     recursive = true;
     force = true;
   };
