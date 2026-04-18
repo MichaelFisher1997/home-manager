@@ -34,37 +34,13 @@ refresh_bar_state() {
     ) &
 }
 
-wait_for_daemon() {
-    log_info "Waiting for eww daemon to be ready..."
-    for i in {1..20}; do
-        if eww_cmd ping &> /dev/null; then
-            log_info "Daemon is ready!"
-            return 0
-        fi
-        sleep 0.2
-    done
-    log_error "Daemon failed to start"
-    return 1
-}
-
-start_daemon() {
-    log_info "Starting eww daemon..."
-    cd "$CONFIG_DIR"
-    eww_cmd daemon --restart &
-
-    wait_for_daemon
-}
-
 start_bar() {
     log_info "Starting eww bar..."
-
-    start_daemon
-    eww_cmd close-all >/dev/null 2>&1 || true
 
     touch "$FILE"
 
     log_info "Opening bar widget..."
-    if eww_cmd open bar; then
+    if eww_cmd open --restart bar; then
         refresh_bar_state
         log_info "Bar started successfully!"
     else
