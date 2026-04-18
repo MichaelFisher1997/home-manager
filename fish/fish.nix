@@ -33,7 +33,8 @@
       ls = "lsd -l";
       syscfg = "cd $HOME/nixos/nix-config";
       homecfg = "cd $HOME/nixos/home-manager";
-      upgrade = "cd $HOME/nixos/nix-config; nix flake update; sudo nixos-rebuild switch --flake path:$HOME/nixos/nix-config#${vars.hostName}";
+      upgrade = "cd $HOME/nixos/nix-config; sudo nixos-rebuild switch --flake path:$HOME/nixos/nix-config#${vars.hostName}";
+      upgrade-update = "cd $HOME/nixos/nix-config; nix flake update; sudo nixos-rebuild switch --flake path:$HOME/nixos/nix-config#${vars.hostName}";
       home-upgrade = "home-manager switch --flake path:$HOME/nixos/home-manager#${vars.hostName}";
     };
     interactiveShellInit = ''
