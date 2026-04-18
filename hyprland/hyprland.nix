@@ -6,7 +6,7 @@ let
   hyprlandConfig = lib.replaceStrings
     [ "exec-once = sh -c 'pkill -x waybar; waybar' &" ]
     [ (if isLaptop
-        then "exec-once = sh -c 'pkill -x waybar || true; rm -f \"$HOME/.cache/eww_launch.xyz\"; \"${ewwConfigDir}/launch_bar\"' &"
+        then "exec-once = sh -c 'pkill -x waybar || true; sleep 1; \"${ewwConfigDir}/launch_bar\" start' &"
         else "exec-once = sh -c 'pkill -x waybar; waybar' &") ]
     (builtins.readFile ./hyprland.conf);
 in {
