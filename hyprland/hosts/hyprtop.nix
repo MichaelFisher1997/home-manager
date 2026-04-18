@@ -8,6 +8,13 @@
     "WAYLAND-1,disable"
   ];
 
+  env = [
+    "SDL_VIDEODRIVER,wayland"
+    "SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS,0"
+    "WINE_FULLSCREEN_FSR,1"
+    "WINE_FULLSCREEN_INTEGER_SCALING,1"
+  ];
+
   bindel = [
     ", XF86MonBrightnessUp, exec, /run/current-system/sw/bin/brillo -A 5"
     ", XF86MonBrightnessDown, exec, /run/current-system/sw/bin/brillo -U 5"
