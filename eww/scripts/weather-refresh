@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-CONFIG_DIR="$(dirname "$(dirname "$(realpath "$0")")")"
+DIR="$(dirname "$(realpath "$0")")"
+CONFIG_DIR="$(dirname "$DIR")"
 
 eww_cmd() {
   eww --config "$CONFIG_DIR" "$@"
@@ -10,8 +11,8 @@ eww_cmd() {
   eww_cmd poll weather
   eww_cmd poll weather_svg
   eww_cmd poll weather_icon_path
-  eww_cmd update weather_full="$("$(dirname "$(realpath "$0")")/weather" --full)"
-  eww_cmd update weather_forecast="$("$(dirname "$(realpath "$0")")/weather-data)"
+  eww_cmd update weather_full="$("$DIR/weather" --full)"
+  eww_cmd update weather_forecast="$("$DIR/weather-data")"
 ) >/dev/null 2>&1 &
 
 exit 0

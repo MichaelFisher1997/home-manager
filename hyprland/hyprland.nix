@@ -21,6 +21,10 @@ let
       "\"${ewwConfigDir}/images/"
     ]
     (builtins.readFile ../eww/eww.yuck);
+  ewwScssText = lib.replaceStrings
+    [ "images/" ]
+    [ "${ewwConfigDir}/images/" ]
+    (builtins.readFile ../eww/eww.scss);
 in {
   wayland.windowManager.hyprland = {
     enable = true;
@@ -148,7 +152,7 @@ in {
   };
 
   xdg.configFile."eww/eww.scss" = lib.mkIf isLaptop {
-    source = ../eww/eww.scss;
+    text = ewwScssText;
     force = true;
   };
 

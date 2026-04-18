@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # Media control using playerctl
 
+DIR="$(dirname "$(realpath "$0")")"
+CONFIG_DIR="$(dirname "$DIR")"
+
 get_status() {
     status=$(playerctl status 2>/dev/null)
     if [[ "$status" == "Playing" ]]; then
@@ -45,7 +48,7 @@ get_album_art() {
         # Convert file:// URL to path if needed
         echo "$art" | sed 's|file://||'
     else
-        echo "images/music.png"
+        echo "$CONFIG_DIR/images/music.png"
     fi
 }
 
