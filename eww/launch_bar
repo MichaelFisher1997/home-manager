@@ -19,78 +19,81 @@ if ! command -v eww &> /dev/null; then
     exit 1
 fi
 
-eww_cmd() {
-    eww --config "$CONFIG_DIR" "$@"
-}
-
-reset_eww_processes() {
-    local pids
-    pids="$(pgrep -f '^eww ' || true)"
-
-    if [ -z "$pids" ]; then
+kill_eww() {
+    if ! pgrep -x "eww" > /dev/null 2>&1; then
         return 0
     fi
 
-    kill -9 $pids 2>/dev/null || true
+    killall eww 2>/dev/null || true
+    sleep 0.5
 
-    for _ in {1..20}; do
-        if ! pgrep -f '^eww ' >/dev/null 2>&1; then
-            return 0
-        fi
-        sleep 0.05
-    done
+    if pgrep -x "eww" > /dev/null 2>&1; then
+        log_warn "Daemon didn't respond to SIGTERM, sending SIGKILL..."
+        killall -9 eww 2>/dev/null || true
+        sleep 0.5
+    fi
+
+    if pgrep -x "eww" > /dev/null 2>&1; then
+        log_error "Failed to kill eww processes"
+        return 1
+    fi
 }
 
-start_bar() {
+wait_for_daemon() {
+    log_info "Waiting for eww daemon to be ready..."
+    for i in {1..20}; do
+        if eww ping &> /dev/null; then
+            log_info "Daemon is ready!"
+            return 0
+        fi
+        sleep 0.2
+    done
+    log_error "Daemon failed to start"
+    return 1
+}
+
+start_daemon() {
+    if eww ping &> /dev/null; then
+        log_warn "Eww daemon already running, killing it..."
+        kill_eww
+    elif pgrep -x "eww" > /dev/null 2>&1; then
+        log_warn "Stale eww process found, cleaning up..."
+        kill_eww
+    fi
+
+    log_info "Starting eww daemon..."
+    cd "$CONFIG_DIR"
+    eww daemon &
+    sleep 1
+
+    wait_for_daemon
+}
+
+if [[ ! -f "$FILE" ]]; then
     log_info "Starting eww bar..."
 
-    reset_eww_processes
+    start_daemon
 
     touch "$FILE"
 
     log_info "Opening bar widget..."
-    if eww_cmd open --restart bar; then
+    if eww open bar; then
         log_info "Bar started successfully!"
     else
         log_error "Failed to open bar"
         rm -f "$FILE"
         exit 1
     fi
-}
-
-stop_bar() {
+else
     log_info "Stopping eww bar..."
 
-    if eww_cmd ping &> /dev/null; then
-        eww_cmd close-all 2>/dev/null || true
+    if eww ping &> /dev/null; then
+        eww close-all 2>/dev/null || true
         log_info "Windows closed"
     fi
-    reset_eww_processes
+
+    kill_eww
     rm -f "$FILE"
 
     log_info "Bar stopped successfully!"
-}
-
-toggle_bar() {
-    if eww_cmd active-windows 2>/dev/null | grep -q '^bar:'; then
-        stop_bar
-    else
-        start_bar
-    fi
-}
-
-case "${1:-toggle}" in
-    start)
-        start_bar
-        ;;
-    stop)
-        stop_bar
-        ;;
-    toggle)
-        toggle_bar
-        ;;
-    *)
-        log_error "Usage: $0 [start|stop|toggle]"
-        exit 1
-        ;;
-esac
+fi

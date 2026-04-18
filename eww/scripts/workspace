@@ -51,23 +51,22 @@ workspaces
 
 # Listen for workspace changes
 if command -v socat >/dev/null 2>&1; then
-    runtime_dir="${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
-    socket_path="${runtime_dir}/hypr/${HYPRLAND_INSTANCE_SIGNATURE}/.socket2.sock"
+    socket_path="/tmp/hypr/${HYPRLAND_INSTANCE_SIGNATURE}/.socket2.sock"
     if [ -S "$socket_path" ]; then
         socat -u UNIX-CONNECT:"$socket_path" - | while read -r _ ; do
             workspaces
         done
     else
-        # Fallback to low-frequency polling if the socket is unavailable
+        # Fallback to faster polling (100ms)
         while true; do
-            sleep 1
+            sleep 0.1
             workspaces
         done
     fi
 else
-    # Fallback polling mode if socat is unavailable
+    # Fast polling mode (100ms) - install socat for instant updates
     while true; do
-        sleep 1
+        sleep 0.1
         workspaces
     done
 fi

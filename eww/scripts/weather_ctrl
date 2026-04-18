@@ -2,30 +2,26 @@
 # Weather popup controller - toggle/hide
 
 DIR="$(dirname "$(realpath "$0")")"
-CONFIG_DIR="$(dirname "$DIR")"
 LOCK_FILE="/tmp/eww_weather.lock"
 TIMER_TOKEN_FILE="/tmp/eww_weather_timer.token"
-eww_cmd() {
-  eww --config "$CONFIG_DIR" "$@"
-}
 
 show_weather() {
   if [ ! -f "$LOCK_FILE" ]; then
     "$DIR/pop" close-all
     touch "$LOCK_FILE"
     rm -f "$TIMER_TOKEN_FILE"
-    eww_cmd update weather_forecast='(label :text "Loading weather...")'
-    eww_cmd open weather_catcher 2>/dev/null
-    eww_cmd open weather_popup 2>/dev/null
-    "$DIR/weather-refresh"
+    eww open weather_catcher 2>/dev/null
+    eww open weather_popup 2>/dev/null
+    start_timer
   fi
 }
 
 hide_weather() {
+  [ ! -f "$LOCK_FILE" ] && return
   rm -f "$TIMER_TOKEN_FILE"
   rm -f "$LOCK_FILE"
-  eww_cmd close weather_popup 2>/dev/null
-  eww_cmd close weather_catcher 2>/dev/null
+  eww close weather_popup 2>/dev/null
+  eww close weather_catcher 2>/dev/null
 }
 
 toggle_weather() {
@@ -37,7 +33,15 @@ toggle_weather() {
 }
 
 start_timer() {
-  return 0
+  local token
+  token="$(date +%s%N)"
+  printf '%s\n' "$token" > "$TIMER_TOKEN_FILE"
+  (
+    sleep 4
+    if [ -f "$LOCK_FILE" ] && [ "$(cat "$TIMER_TOKEN_FILE" 2>/dev/null)" = "$token" ]; then
+      hide_weather
+    fi
+  ) &
 }
 
 cancel_timer() {

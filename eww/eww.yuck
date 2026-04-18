@@ -1,58 +1,58 @@
 ;; Variables
-;; NOTE: Eww's :monitor property does not accept variable references, so
-;;       windows use a matcher list with laptop-focused fallbacks.
-(defpoll clock_time :interval "5m" :initial "00" "date +%H")
-(defpoll clock_minute :interval "5s" :initial "00" "date +%M")
-(defpoll clock_date :interval "10h" :initial "" "date '+%d/%m'")
-(defpoll volume_percent :interval "3s" :initial "0" "./scripts/volume-percent")
-(defpoll volume_mute :interval "500ms" :initial "false" "./scripts/volume-mute")
-(defpoll volume_class :interval "500ms" :initial "volume-normal" "./scripts/volume-class")
-(defpoll volume_icon_glyph :interval "500ms" :initial "" "./scripts/volume-icon")
-(defpoll mic_percent :interval "3s" :initial "0" "pamixer --default-source --get-volume")
-(defpoll brightness_percent :interval "5s" :initial "100" "device=$(./scripts/brightness_device); if [ -n \"$device\" ]; then brightnessctl -m -d \"$device\" | awk -F, '{print substr($4, 0, length($4)-1)}' | tr -d '%'; else echo 100; fi")
-(defpoll battery :interval "10s" :initial "100" "./scripts/battery --bat")
-(defpoll battery_status :interval "15s" :initial "" "./scripts/battery --bat-st")
-(defpoll memory :interval "5s" :initial "0" "scripts/memory")
-(defpoll memory_used_mb :interval "30s" :initial "0" "scripts/mem-ad used")
-(defpoll memory_total_mb :interval "30s" :initial "0" "scripts/mem-ad total")
-(defpoll memory_free_mb :interval "30s" :initial "0" "scripts/mem-ad free")
+;; NOTE: Monitor is hardcoded as "DP-1" in defwindow blocks below.
+;;       Eww's :monitor property does not accept variable references.
+(defpoll clock_time :interval "5m" "date +%H")
+(defpoll clock_minute :interval "5s" "date +%M")
+(defpoll clock_date :interval "10h" "date '+%d/%m'")
+(defpoll volume_percent :interval "3s" "./scripts/volume-percent")
+(defpoll volume_mute :interval "500ms" "./scripts/volume-mute")
+(defpoll volume_class :interval "500ms" "./scripts/volume-class")
+(defpoll volume_icon_glyph :interval "500ms" "./scripts/volume-icon")
+(defpoll mic_percent :interval "3s" "pamixer --default-source --get-volume")
+(defpoll brightness_percent :interval "5s" "device=$(./scripts/brightness_device); if [ -n \"$device\" ]; then brightnessctl -m -d \"$device\" | awk -F, '{print substr($4, 0, length($4)-1)}' | tr -d '%'; else echo 100; fi")
+(defpoll battery :interval "15s" "./scripts/battery --bat")
+(defpoll battery_status :interval "1m" "./scripts/battery --bat-st")
+(defpoll memory :interval "15s" "scripts/memory")
+(defpoll memory_used_mb :interval "2m" "scripts/mem-ad used")
+(defpoll memory_total_mb :interval "2m" "scripts/mem-ad total")
+(defpoll memory_free_mb :interval "2m" "scripts/mem-ad free")
 (defvar vol_reveal false)
 (defvar br_reveal false)
 (defvar music_reveal false)
 (defvar wifi_rev false)
 (defvar time_rev false)
 (defvar launcher_query "")
-(defvar launcher_list "(label :class \"lp-empty\" :text \"Open launcher to load apps\")")
-(deflisten workspace :initial "(box :class \"works\" :orientation \"h\" :spacing 12 :space-evenly \"false\")" "scripts/workspace")
+(defpoll launcher_list :interval "5m" "./scripts/launcher-data")
+(deflisten workspace "scripts/workspace")
 
 (defvar eww "eww")
 
-(defpoll COL_WLAN :interval "10s" :initial "#a1bdce" "./scripts/wifi --COL")
-(defpoll ESSID_WLAN :interval "10s" :initial "" "./scripts/wifi --ESSID")
-(defpoll WLAN_ICON :interval "10s" :initial "󰖩" "./scripts/wifi --ICON")
+(defpoll COL_WLAN :interval "1m" "./scripts/wifi --COL")
+(defpoll ESSID_WLAN :interval "1m" "./scripts/wifi --ESSID")
+(defpoll WLAN_ICON :interval "1m" "./scripts/wifi --ICON")
 
 
-(defpoll song :interval "2s" :initial "Offline" "./scripts/music_info --song")
-(defpoll song_summary :interval "2s" :initial "Offline" "./scripts/music_info --summary")
-(defpoll song_artist :interval "2s" :initial "" "./scripts/music_info --artist")
-(defpoll current_status :interval "1s" :initial "0" "./scripts/music_info --time")
-(defpoll song_status :interval "2s" :initial "▶" "./scripts/music_info --status")
-(defpoll cover_art :interval "2s" :initial "" "./scripts/music_info --cover")
+(defpoll song :interval "2s"  "./scripts/music_info --song")
+(defpoll song_summary :interval "2s"  "./scripts/music_info --summary")
+(defpoll song_artist :interval "2s"  "./scripts/music_info --artist")
+(defpoll current_status :interval "1s"  "./scripts/music_info --time")
+(defpoll song_status :interval "2s"  "./scripts/music_info --status")
+(defpoll cover_art :interval "2s"  "./scripts/music_info --cover")
 
-(defpoll calendar_day :interval "20h" :initial "" "date '+%d'")
-(defpoll calendar_year :interval "20h" :initial "" "date '+%Y'")
-(defvar calendar_grid "(label :text \"Open calendar to load\")")
+(defpoll calendar_day :interval "20h" "date '+%d'")
+(defpoll calendar_year :interval "20h" "date '+%Y'")
+(defpoll calendar_grid :interval "1h" "./scripts/calendar-data")
 
 ;; New widgets - CPU, Disk, Weather, Notifications
-(defpoll cpu_usage :interval "2s" :initial "0" "./scripts/cpu")
-(defpoll disk_usage :interval "15s" :initial "0" "./scripts/disk")
-(defpoll disk_used :interval "15s" :initial "0" "./scripts/disk --used")
-(defpoll disk_total :interval "15s" :initial "0" "./scripts/disk --total")
-(defpoll weather :interval "5m" :initial "--" "./scripts/weather")
-(defpoll weather_svg :interval "5m" :initial "" "./scripts/weather-svg")
-(defpoll weather_icon_path :interval "5m" :initial "images/cloud.svg" "./scripts/weather-icon-path")
-(defvar weather_full "")
-(defvar weather_forecast "(label :text \"Open weather to load\")")
+(defpoll cpu_usage :interval "5s" "./scripts/cpu")
+(defpoll disk_usage :interval "30s" "./scripts/disk")
+(defpoll disk_used :interval "30s" "./scripts/disk --used")
+(defpoll disk_total :interval "30s" "./scripts/disk --total")
+(defpoll weather :interval "5m" "./scripts/weather")
+(defpoll weather_svg :interval "5m" "./scripts/weather-svg")
+(defpoll weather_icon_path :interval "5m" "./scripts/weather-icon-path")
+(defpoll weather_full :interval "5m" "./scripts/weather --full")
+(defpoll weather_forecast :interval "15m" "./scripts/weather-data")
 
 ;; widgets
 
@@ -142,21 +142,21 @@
       (literal :content launcher_list))))
 
 (defwindow launcher_popup
-  :monitor '["eDP-1", "<primary>", 0]'
+  :monitor "DP-1"
   :geometry (geometry :x "0%"
                       :y "45px"
                       :anchor "top center"
                       :width "440px"
-  :height "520px")
+                      :height "520px")
   :stacking "fg"
-  :focusable "ondemand"
+  :focusable true
   (eventbox
     :onhover "./scripts/launcher_ctrl cancel_timer"
     :onhoverlost "./scripts/launcher_ctrl start_timer"
     (launcher_pop)))
 
 (defwindow launcher_catcher
-  :monitor '["eDP-1", "<primary>", 0]'
+  :monitor "DP-1"
   :geometry (geometry :x "0%"
                       :y "0%"
                       :anchor "top center"
@@ -185,7 +185,7 @@
     (literal :content weather_forecast)))
 
 (defwindow weather_popup
-  :monitor '["eDP-1", "<primary>", 0]'
+  :monitor "DP-1"
   :geometry (geometry :x "0%"
                       :y "45px"
                       :anchor "top center"
@@ -198,7 +198,7 @@
     (weather_pop)))
 
 (defwindow weather_catcher
-  :monitor '["eDP-1", "<primary>", 0]'
+  :monitor "DP-1"
   :geometry (geometry :x "0%"
                       :y "0%"
                       :anchor "top center"
@@ -279,10 +279,12 @@
 		 :class "left_modules"
 		 (app_launcher)
 		 (sep)
-		 (workspaces)))
+		 (workspaces)
+		 (sep)
+		 (media_strip)))
 
 
-;; RIGHT SIDE: Battery only
+;; RIGHT SIDE: CPU | Mem | Disk | Separator | System Tray
 (defwidget right []
 	(box :orientation "h"
 		 :space-evenly "false"
@@ -290,7 +292,11 @@
 		 :hexpand "true"
 		 :vexpand "false"
 		 :class "right_modules"
-		 (bat)))
+		 (cpu_widget)
+		 (mem)
+		 (disk_widget)
+		 (sep)
+		 (sys_tray)))
 
 
 ;; CENTER: Volume | Clock | Weather (grouped together)
@@ -316,15 +322,13 @@
     ))
 
 (defwindow bar
-          :monitor '["eDP-1", "<primary>", 0]'
+          :monitor "DP-1"
            :geometry (geometry :x "0%"
 						:y "9px"
 						:width "95%"
 						:height "30px"
 						:anchor "top center")
           :stacking "fg"
-          :exclusive true
-          :focusable "ondemand"
           :windowtype "dock"
   (bar_1))
   
@@ -371,7 +375,7 @@
     (literal :content calendar_grid)))
 
 (defwindow calendar
-	:monitor '["eDP-1", "<primary>", 0]'
+	:monitor "DP-1"
 	:geometry (geometry :x "0%" 
 						:y "45px" 
                         :anchor "top center"
@@ -385,7 +389,7 @@
 
 ;; Click catcher - transparent overlay that closes calendar when clicked
 (defwindow calendar_catcher
-	:monitor '["eDP-1", "<primary>", 0]'
+	:monitor "DP-1"
 	:geometry (geometry :x "0%" 
 						:y "0%" 
 	                        :anchor "top center"
@@ -427,7 +431,7 @@
 			  :min 0))))))
 
 (defwindow audio_ctl
-	:monitor '["eDP-1", "<primary>", 0]'
+	:monitor "DP-1"
 	:stacking "overlay"
 	:geometry (geometry :x "-20px" 
 						:y "7%" 
@@ -438,7 +442,7 @@
 
 
 (defwindow system
-	:monitor '["eDP-1", "<primary>", 0]'
+	:monitor "DP-1"
 	:stacking "overlay"
 	:geometry (geometry :x "-20px" 
 						:y "7%" 
@@ -448,7 +452,7 @@
 (system))
 
 (defwindow system_catcher
-	:monitor '["eDP-1", "<primary>", 0]'
+	:monitor "DP-1"
 	:geometry (geometry :x "0%"
 						:y "0%"
 						:anchor "top center"
@@ -480,12 +484,12 @@
 
 ;;  music
 
-(defwindow music_win :stacking "overlay" :focusable "none" :monitor '["eDP-1", "<primary>", 0]'
+(defwindow music_win :stacking "overlay" :focusable "false" :monitor "DP-1"
 			    :geometry (geometry :x "0" :y "7%" :width 428 :height 104 :anchor "top center")
 								(music_pop))
 
 (defwindow music_catcher
-	:monitor '["eDP-1", "<primary>", 0]'
+	:monitor "DP-1"
 	:geometry (geometry :x "0%"
 						:y "0%"
 						:anchor "top center"

@@ -1,0 +1,12 @@
+*.backup
+*.bak
+*~
+*.tmp
+*.swp
+.DS_Store
+test.txt
+test_*.sh
+fix_*.css
+EOF
+simple_start.sh
+icon_reference.sh
