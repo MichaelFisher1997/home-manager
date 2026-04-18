@@ -2,8 +2,12 @@
 # Calendar control with multiple close triggers
 
 DIR="$(dirname "$(realpath "$0")")"
+CONFIG_DIR="$(dirname "$DIR")"
 LOCK_FILE="/tmp/eww_calendar.lock"
 TIMER_TOKEN_FILE="/tmp/eww_calendar_timer.token"
+eww_cmd() {
+    eww --config "$CONFIG_DIR" "$@"
+}
 
 show_calendar() {
     if [ ! -f "$LOCK_FILE" ]; then
@@ -11,17 +15,17 @@ show_calendar() {
         touch "$LOCK_FILE"
         rm -f "$TIMER_TOKEN_FILE"
         echo "$(date +%-m):$(date +%Y)" > "$STATE_FILE"
-        eww update calendar_grid="$($CAL_DATA)"
-        eww open calendar_catcher 2>/dev/null
-        eww open calendar 2>/dev/null
+        eww_cmd update calendar_grid="$($CAL_DATA)"
+        eww_cmd open calendar_catcher 2>/dev/null
+        eww_cmd open calendar 2>/dev/null
     fi
 }
 
 hide_calendar() {
   rm -f "$TIMER_TOKEN_FILE"
   rm -f "$LOCK_FILE"
-  eww close calendar 2>/dev/null
-  eww close calendar_catcher 2>/dev/null
+  eww_cmd close calendar 2>/dev/null
+  eww_cmd close calendar_catcher 2>/dev/null
 }
 
 toggle_calendar() {
@@ -57,7 +61,7 @@ nav_month() {
     if [ "$view_month" -gt 12 ]; then view_month=1;  view_year=$(( view_year + 1 )); fi
     if [ "$view_month" -lt 1  ]; then view_month=12; view_year=$(( view_year - 1 )); fi
     echo "${view_month}:${view_year}" > "$STATE_FILE"
-    eww update calendar_grid="$($CAL_DATA)"
+    eww_cmd update calendar_grid="$($CAL_DATA)"
 }
 
 nav_year() {
@@ -66,7 +70,7 @@ nav_year() {
     view_year=$(cut -d: -f2 "$STATE_FILE")
     view_year=$(( view_year + $1 ))
     echo "${view_month}:${view_year}" > "$STATE_FILE"
-    eww update calendar_grid="$($CAL_DATA)"
+    eww_cmd update calendar_grid="$($CAL_DATA)"
 }
 
 case "$1" in

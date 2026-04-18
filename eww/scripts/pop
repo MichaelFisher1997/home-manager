@@ -3,7 +3,12 @@
 set -euo pipefail
 
 LOCK_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/eww-popups"
+CONFIG_DIR="$(dirname "$(dirname "$(realpath "$0")")")"
 mkdir -p "$LOCK_DIR"
+
+eww_cmd() {
+  eww --config "$CONFIG_DIR" "$@"
+}
 
 clear_popup_state() {
   rm -f \
@@ -15,7 +20,7 @@ clear_popup_state() {
 
 close_if_open() {
   local window="$1"
-  eww close "$window" 2>/dev/null || true
+  eww_cmd close "$window" 2>/dev/null || true
 }
 
 close_all_popups() {
@@ -44,8 +49,8 @@ show_popup() {
 
   close_all_popups
   touch "$lock_file"
-  eww open "$catcher" 2>/dev/null
-  eww open "$window" 2>/dev/null
+  eww_cmd open "$catcher" 2>/dev/null
+  eww_cmd open "$window" 2>/dev/null
 }
 
 hide_popup() {
@@ -54,8 +59,8 @@ hide_popup() {
   local window="$3"
 
   rm -f "$lock_file"
-  eww close "$window" 2>/dev/null
-  eww close "$catcher" 2>/dev/null
+  eww_cmd close "$window" 2>/dev/null
+  eww_cmd close "$catcher" 2>/dev/null
 }
 
 audio() {
