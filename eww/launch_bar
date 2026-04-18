@@ -61,10 +61,8 @@ wait_for_daemon() {
 }
 
 start_daemon() {
-    if eww_cmd ping &> /dev/null; then
-        return 0
-    elif pgrep -x "eww" > /dev/null 2>&1; then
-        log_warn "Stale eww process found, cleaning up..."
+    if eww_cmd ping &> /dev/null || pgrep -x "eww" > /dev/null 2>&1; then
+        log_warn "Existing eww state found, restarting daemon..."
         kill_eww
     fi
 
