@@ -35,10 +35,6 @@ refresh_bar_state() {
     ) &
 }
 
-is_bar_open() {
-    eww_cmd active-windows 2>/dev/null | grep -q '^bar:'
-}
-
 wait_for_daemon() {
     log_info "Waiting for eww daemon to be ready..."
     for i in {1..20}; do
@@ -62,12 +58,6 @@ start_daemon() {
 
 start_bar() {
     log_info "Starting eww bar..."
-
-    if is_bar_open; then
-        log_info "Bar is already open"
-        touch "$FILE"
-        return 0
-    fi
 
     start_daemon
     eww_cmd close-all >/dev/null 2>&1 || true
@@ -98,7 +88,7 @@ stop_bar() {
 }
 
 toggle_bar() {
-    if is_bar_open; then
+    if eww_cmd active-windows 2>/dev/null | grep -q '^bar:'; then
         stop_bar
     else
         start_bar
