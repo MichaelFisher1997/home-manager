@@ -10,8 +10,10 @@ show_weather() {
     "$DIR/pop" close-all
     touch "$LOCK_FILE"
     rm -f "$TIMER_TOKEN_FILE"
+    eww update weather_forecast='(label :text "Loading weather...")'
     eww open weather_catcher 2>/dev/null
     eww open weather_popup 2>/dev/null
+    "$DIR/weather-refresh"
   fi
 }
 

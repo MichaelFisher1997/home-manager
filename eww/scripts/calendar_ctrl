@@ -10,6 +10,8 @@ show_calendar() {
         "$DIR/pop" close-all
         touch "$LOCK_FILE"
         rm -f "$TIMER_TOKEN_FILE"
+        echo "$(date +%-m):$(date +%Y)" > "$STATE_FILE"
+        eww update calendar_grid="$($CAL_DATA)"
         eww open calendar_catcher 2>/dev/null
         eww open calendar 2>/dev/null
     fi
@@ -69,8 +71,6 @@ nav_year() {
 
 case "$1" in
     toggle)
-        # Reset view to current month on open
-        echo "$(date +%-m):$(date +%Y)" > "$STATE_FILE"
         toggle_calendar
         ;;
     hide)

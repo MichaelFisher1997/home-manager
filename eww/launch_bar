@@ -29,9 +29,8 @@ refresh_bar_state() {
           brightness_percent battery battery_status memory memory_used_mb \
           memory_total_mb memory_free_mb COL_WLAN ESSID_WLAN WLAN_ICON \
           song song_summary song_artist current_status song_status cover_art \
-          calendar_grid cpu_usage disk_usage disk_used disk_total weather \
-          weather_svg weather_icon_path weather_full weather_forecast \
-          launcher_list >/dev/null 2>&1 || true
+          cpu_usage disk_usage disk_used disk_total weather weather_svg \
+          weather_icon_path >/dev/null 2>&1 || true
     ) &
 }
 

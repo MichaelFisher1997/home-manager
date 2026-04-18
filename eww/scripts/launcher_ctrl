@@ -16,6 +16,7 @@ show_launcher() {
   touch "$LOCK_FILE"
   rm -f "$TIMER_TOKEN_FILE"
   eww update launcher_query=""
+  eww update launcher_list='(label :class "lp-empty" :text "Loading...")'
   eww open launcher_catcher 2>/dev/null
   eww open launcher_popup 2>/dev/null
   (

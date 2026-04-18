@@ -22,7 +22,7 @@
 (defvar wifi_rev false)
 (defvar time_rev false)
 (defvar launcher_query "")
-(defpoll launcher_list :interval "5m" :initial "(label :class \"lp-empty\" :text \"Loading...\")" "./scripts/launcher-data")
+(defvar launcher_list "(label :class \"lp-empty\" :text \"Open launcher to load apps\")")
 (deflisten workspace :initial "(box :class \"works\" :orientation \"h\" :spacing 12 :space-evenly \"false\")" "scripts/workspace")
 
 (defvar eww "eww")
@@ -41,7 +41,7 @@
 
 (defpoll calendar_day :interval "20h" :initial "" "date '+%d'")
 (defpoll calendar_year :interval "20h" :initial "" "date '+%Y'")
-(defpoll calendar_grid :interval "1h" :initial "(label :text \"Loading calendar...\")" "./scripts/calendar-data")
+(defvar calendar_grid "(label :text \"Open calendar to load\")")
 
 ;; New widgets - CPU, Disk, Weather, Notifications
 (defpoll cpu_usage :interval "2s" :initial "0" "./scripts/cpu")
@@ -51,8 +51,8 @@
 (defpoll weather :interval "5m" :initial "--" "./scripts/weather")
 (defpoll weather_svg :interval "5m" :initial "" "./scripts/weather-svg")
 (defpoll weather_icon_path :interval "5m" :initial "images/cloud.svg" "./scripts/weather-icon-path")
-(defpoll weather_full :interval "5m" :initial "" "./scripts/weather --full")
-(defpoll weather_forecast :interval "15m" :initial "(label :text \"Loading weather...\")" "./scripts/weather-data")
+(defvar weather_full "")
+(defvar weather_forecast "(label :text \"Open weather to load\")")
 
 ;; widgets
 

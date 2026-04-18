@@ -5,11 +5,18 @@ LON="-2.08"
 LOCATION="Ashton-Under-Lyne"
 CACHE_FILE="/tmp/eww_weather_data.json"
 CACHE_AGE=900
+LOCK_FILE="/tmp/eww_weather_refresh.lock"
 
 refresh_cache() {
   if [ ! -f "$CACHE_FILE" ] || [ $(( $(date +%s) - $(stat -c %Y "$CACHE_FILE" 2>/dev/null || echo 0) )) -gt $CACHE_AGE ]; then
-    curl -s "https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum&current_weather=true&timezone=Europe%2FLondon&forecast_days=5" \
-      -o "$CACHE_FILE" 2>/dev/null
+    if [ ! -f "$LOCK_FILE" ]; then
+      touch "$LOCK_FILE"
+      (
+        curl -s "https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum&current_weather=true&timezone=Europe%2FLondon&forecast_days=5" \
+          -o "$CACHE_FILE.tmp" 2>/dev/null && mv "$CACHE_FILE.tmp" "$CACHE_FILE"
+        rm -f "$LOCK_FILE" "$CACHE_FILE.tmp"
+      ) >/dev/null 2>&1 &
+    fi
   fi
 }
 

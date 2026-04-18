@@ -4,8 +4,8 @@
   eww poll weather
   eww poll weather_svg
   eww poll weather_icon_path
-  eww poll weather_full
-  eww poll weather_forecast
+  eww update weather_full="$("$(dirname "$(realpath "$0")")/weather" --full)"
+  eww update weather_forecast="$("$(dirname "$(realpath "$0")")/weather-data)"
 ) >/dev/null 2>&1 &
 
 exit 0
