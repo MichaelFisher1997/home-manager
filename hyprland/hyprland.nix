@@ -3,9 +3,8 @@
 let
   isLaptop = vars.hostName == "hyprtop";
   ewwConfigDir = "${config.xdg.configHome}/eww";
-  hyprlandConfig = builtins.readFile ./hyprland.conf;
   sharedSettings = import ./shared.nix { inherit vars; };
-  hyprtopSettings = import ./hosts/hyprtop.nix;
+  hostSettings = if isLaptop then import ./hosts/hyprtop.nix else import ./hosts/hypr-nix.nix;
   ewwYuckText = lib.replaceStrings
     [
       "./scripts/"
@@ -22,19 +21,17 @@ let
     [ "images/" ]
     [ "${ewwConfigDir}/images/" ]
     (builtins.readFile ../eww/eww.scss);
-  mergedHyprtopSettings = sharedSettings // hyprtopSettings // {
-    exec-once = sharedSettings.exec-once ++ hyprtopSettings.exec-once;
+  mergedHostSettings = sharedSettings // hostSettings // {
+    exec-once = sharedSettings.exec-once ++ (hostSettings.exec-once or [ ]);
+    env = sharedSettings.env ++ (hostSettings.env or [ ]);
   };
 in {
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
     systemd.enable = true;
-  } // (if isLaptop then {
-    settings = mergedHyprtopSettings;
-  } else {
-    extraConfig = hyprlandConfig;
-  });
+    settings = mergedHostSettings;
+  };
 
   # Install Hyprland-related packages
   home.packages = with pkgs; [
