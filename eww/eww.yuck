@@ -147,9 +147,9 @@
                       :y "45px"
                       :anchor "top center"
                       :width "440px"
-                      :height "520px")
+  :height "520px")
   :stacking "fg"
-  :focusable true
+  :focusable "ondemand"
   (eventbox
     :onhover "./scripts/launcher_ctrl cancel_timer"
     :onhoverlost "./scripts/launcher_ctrl start_timer"
@@ -330,7 +330,7 @@
 						:anchor "top center")
           :stacking "fg"
           :exclusive true
-          :focusable "none"
+          :focusable "ondemand"
           :windowtype "dock"
   (bar_1))
   
@@ -486,7 +486,7 @@
 
 ;;  music
 
-(defwindow music_win :stacking "overlay" :focusable "false" :monitor '["eDP-1", "<primary>", 0]'
+(defwindow music_win :stacking "overlay" :focusable "none" :monitor '["eDP-1", "<primary>", 0]'
 			    :geometry (geometry :x "0" :y "7%" :width 428 :height 104 :anchor "top center")
 								(music_pop))
 

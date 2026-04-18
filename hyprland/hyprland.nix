@@ -2,16 +2,30 @@
 
 let
   isLaptop = vars.hostName == "hyprtop";
+  ewwConfigDir = "${config.xdg.configHome}/eww";
+  ewwExe = lib.getExe pkgs.eww;
   hyprlandConfig = lib.replaceStrings
     [ "exec-once = sh -c 'pkill -x waybar; waybar' &" ]
-    [ "exec-once = sh -c 'pkill -x waybar || true; pkill -x eww || true; rm -f \"$HOME/.cache/eww_launch.xyz\"; eww --config \"$HOME/.config/eww\" daemon; for i in 1 2 3 4 5 6 7 8 9 10; do eww --config \"$HOME/.config/eww\" ping >/dev/null 2>&1 && { eww --config \"$HOME/.config/eww\" open bar; exit 0; }; sleep 0.2; done; eww --config \"$HOME/.config/eww\" open bar' &" ]
+    [ (if isLaptop then "" else "exec-once = sh -c 'pkill -x waybar; waybar' &") ]
     (builtins.readFile ./hyprland.conf);
+  ewwYuckText = lib.replaceStrings
+    [
+      "\"./scripts/"
+      "\"scripts/"
+      "\"images/"
+    ]
+    [
+      "\"${ewwConfigDir}/scripts/"
+      "\"${ewwConfigDir}/scripts/"
+      "\"${ewwConfigDir}/images/"
+    ]
+    (builtins.readFile ../eww/eww.yuck);
 in {
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
     systemd.enable = true;
-    extraConfig = (if isLaptop then hyprlandConfig else builtins.readFile ./hyprland.conf) + lib.optionalString isLaptop ''
+    extraConfig = hyprlandConfig + lib.optionalString isLaptop ''
       exec-once = hypridle &
     '';
   };
@@ -136,6 +150,30 @@ in {
     source = ../eww;
     recursive = true;
     force = true;
+  };
+
+  xdg.configFile."eww/eww.yuck" = lib.mkIf isLaptop {
+    text = ewwYuckText;
+    force = true;
+  };
+
+  systemd.user.services.eww-bar = lib.mkIf isLaptop {
+    Unit = {
+      Description = "Eww bar for Hyprtop";
+      PartOf = [ "graphical-session.target" ];
+      After = [ "graphical-session-pre.target" ];
+    };
+
+    Service = {
+      Type = "simple";
+      ExecStart = "${ewwExe} --config ${ewwConfigDir} daemon --no-daemonize";
+      ExecStartPost = "${pkgs.bash}/bin/bash -lc 'for i in {1..25}; do ${ewwExe} --config ${ewwConfigDir} ping >/dev/null 2>&1 && exec ${ewwExe} --config ${ewwConfigDir} open bar; sleep 0.2; done; exit 1'";
+      ExecStopPost = "${pkgs.bash}/bin/bash -lc '${ewwExe} --config ${ewwConfigDir} close-all || true'";
+      Restart = "on-failure";
+      RestartSec = 1;
+    };
+
+    Install.WantedBy = [ "graphical-session.target" ];
   };
 
   # Override the adi1090x launcher's shared color/font files with our Waybar-matched palette
