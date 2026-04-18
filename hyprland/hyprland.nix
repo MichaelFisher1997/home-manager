@@ -3,7 +3,7 @@
 let
   isLaptop = vars.hostName == "hyprtop";
   ewwConfigDir = "${config.xdg.configHome}/eww";
-  sharedSettings = import ./shared.nix { inherit vars; };
+  sharedSettings = import ./shared { inherit vars; };
   hostSettings = if isLaptop then import ./hosts/hyprtop.nix else import ./hosts/hypr-nix.nix;
   ewwYuckText = lib.replaceStrings
     [
