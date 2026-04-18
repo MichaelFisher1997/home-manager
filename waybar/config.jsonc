@@ -6,7 +6,7 @@
   "margin-bottom": 0,
   "margin-left": 20,
   "margin-right": 20,
-  "modules-left": ["custom/launcher","backlight", "hyprland/workspaces", "custom/playerctl", "custom/playerlabel"],
+  "modules-left": @MODULES_LEFT@,
   "modules-center": ["custom/weather","clock","pulseaudio"],
   "modules-right": ["cpu", "memory", "disk", "tray"],
   // Modules configuration
@@ -115,7 +115,7 @@
     "return-type": "json"
 },
 "backlight": {
-      // "device": "acpi_video1",
+      "device": "intel_backlight",
 "format": "{icon} {percent}%",
       "format-icons": ["", "", "", "", "", "", "", "", ""],
 //  "on-scroll-up":,

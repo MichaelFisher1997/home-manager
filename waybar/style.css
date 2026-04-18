@@ -39,6 +39,7 @@ window#waybar {
 #custom-date,
 #clock,
 #battery,
+#backlight,
 #pulseaudio,
 #network,
 #custom-randwall,
@@ -83,14 +84,25 @@ window#waybar {
 }
 
 #battery,
+#battery.good,
+#battery.full,
 #battery.charging {
+  color: #9ece6a;
+  background-color: rgba(158, 206, 106, 0.12);
+}
+
+#backlight {
   color: #9ece6a;
 }
 
 #battery.warning:not(.charging) {
-  background-color: #f7768e;
-  color: #24283b;
-  border-radius: 5px;
+  color: #e0af68;
+  background-color: rgba(224, 175, 104, 0.14);
+}
+
+#battery.critical:not(.charging) {
+  color: #f7768e;
+  background-color: rgba(247, 118, 142, 0.16);
 }
 
 #network,
