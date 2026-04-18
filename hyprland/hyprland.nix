@@ -97,6 +97,11 @@
     force = true;
   };
 
+  xdg.configFile."hypr/wallpaper.jpg" = {
+    source = ./wallpaper.jpg;
+    force = true;
+  };
+
   # Override the adi1090x launcher's shared color/font files with our Waybar-matched palette
   xdg.configFile."rofi/colors/waybar.rasi" = {
     source = ../rofi/waybar.rasi;
