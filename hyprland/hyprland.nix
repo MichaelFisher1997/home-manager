@@ -1,11 +1,15 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, vars, ... }:
 
-{
+let
+  isLaptop = vars.hostName == "hyprtop";
+in {
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
     systemd.enable = true;
-    extraConfig = builtins.readFile ./hyprland.conf;
+    extraConfig = builtins.readFile ./hyprland.conf + lib.optionalString isLaptop ''
+      exec-once = hypridle &
+    '';
   };
 
   # Install Hyprland-related packages
@@ -40,6 +44,8 @@
     hyprpaper
     hyprlock
     wlsunset
+  ] ++ lib.optionals isLaptop [
+    hypridle
   ];
 
   # Enable services that work well with Hyprland
@@ -105,6 +111,11 @@
 
   xdg.configFile."hypr/hyprlock.conf" = {
     source = ./hyprlock.conf;
+    force = true;
+  };
+
+  xdg.configFile."hypr/hypridle.conf" = lib.mkIf isLaptop {
+    source = ./hypridle.conf;
     force = true;
   };
 
