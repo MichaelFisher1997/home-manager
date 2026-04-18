@@ -38,6 +38,7 @@
     catppuccin-kvantum
     nwg-drawer
     hyprpaper
+    hyprlock
     wlsunset
   ];
 
@@ -99,6 +100,11 @@
 
   xdg.configFile."hypr/wallpaper.jpg" = {
     source = ./wallpaper.jpg;
+    force = true;
+  };
+
+  xdg.configFile."hypr/hyprlock.conf" = {
+    source = ./hyprlock.conf;
     force = true;
   };
 
