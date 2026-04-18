@@ -3,25 +3,12 @@
 let
   isLaptop = vars.hostName == "hyprtop";
   ewwConfigDir = "${config.xdg.configHome}/eww";
-  ewwExe = lib.getExe pkgs.eww;
   hyprlandConfig = lib.replaceStrings
     [ "exec-once = sh -c 'pkill -x waybar; waybar' &" ]
     [ (if isLaptop
-        then "exec-once = sh -c 'pkill -x waybar || true; pkill -x eww || true; rm -f \"$HOME/.cache/eww_launch.xyz\"; ${ewwExe} --config \"${ewwConfigDir}\" daemon; for i in 1 2 3 4 5 6 7 8 9 10; do ${ewwExe} --config \"${ewwConfigDir}\" ping >/dev/null 2>&1 && { ${ewwExe} --config \"${ewwConfigDir}\" open bar; exit 0; }; sleep 0.2; done; ${ewwExe} --config \"${ewwConfigDir}\" open bar' &"
+        then "exec-once = sh -c 'pkill -x waybar || true; rm -f \"$HOME/.cache/eww_launch.xyz\"; \"${ewwConfigDir}/launch_bar\"' &"
         else "exec-once = sh -c 'pkill -x waybar; waybar' &") ]
     (builtins.readFile ./hyprland.conf);
-  ewwYuckText = lib.replaceStrings
-    [
-      "\"./scripts/"
-      "\"scripts/"
-      "\"images/"
-    ]
-    [
-      "\"${ewwConfigDir}/scripts/"
-      "\"${ewwConfigDir}/scripts/"
-      "\"${ewwConfigDir}/images/"
-    ]
-    (builtins.readFile ../eww/eww.yuck);
 in {
   wayland.windowManager.hyprland = {
     enable = true;
@@ -151,11 +138,6 @@ in {
   xdg.configFile."eww" = lib.mkIf isLaptop {
     source = ../eww;
     recursive = true;
-    force = true;
-  };
-
-  xdg.configFile."eww/eww.yuck" = lib.mkIf isLaptop {
-    text = ewwYuckText;
     force = true;
   };
 

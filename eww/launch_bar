@@ -19,6 +19,10 @@ if ! command -v eww &> /dev/null; then
     exit 1
 fi
 
+eww_cmd() {
+    eww --config "$CONFIG_DIR" "$@"
+}
+
 kill_eww() {
     if ! pgrep -x "eww" > /dev/null 2>&1; then
         return 0
@@ -42,7 +46,7 @@ kill_eww() {
 wait_for_daemon() {
     log_info "Waiting for eww daemon to be ready..."
     for i in {1..20}; do
-        if eww ping &> /dev/null; then
+        if eww_cmd ping &> /dev/null; then
             log_info "Daemon is ready!"
             return 0
         fi
@@ -53,7 +57,7 @@ wait_for_daemon() {
 }
 
 start_daemon() {
-    if eww ping &> /dev/null; then
+    if eww_cmd ping &> /dev/null; then
         log_warn "Eww daemon already running, killing it..."
         kill_eww
     elif pgrep -x "eww" > /dev/null 2>&1; then
@@ -63,8 +67,7 @@ start_daemon() {
 
     log_info "Starting eww daemon..."
     cd "$CONFIG_DIR"
-    eww daemon &
-    sleep 1
+    eww_cmd daemon &
 
     wait_for_daemon
 }
@@ -77,7 +80,7 @@ if [[ ! -f "$FILE" ]]; then
     touch "$FILE"
 
     log_info "Opening bar widget..."
-    if eww open bar; then
+    if eww_cmd open bar; then
         log_info "Bar started successfully!"
     else
         log_error "Failed to open bar"
@@ -87,8 +90,8 @@ if [[ ! -f "$FILE" ]]; then
 else
     log_info "Stopping eww bar..."
 
-    if eww ping &> /dev/null; then
-        eww close-all 2>/dev/null || true
+    if eww_cmd ping &> /dev/null; then
+        eww_cmd close-all 2>/dev/null || true
         log_info "Windows closed"
     fi
 
