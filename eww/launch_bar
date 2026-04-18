@@ -24,14 +24,17 @@ eww_cmd() {
 }
 
 reset_eww_processes() {
-    if ! pgrep -x eww >/dev/null 2>&1; then
+    local pids
+    pids="$(pgrep -f '^eww ' || true)"
+
+    if [ -z "$pids" ]; then
         return 0
     fi
 
-    pkill -9 -x eww 2>/dev/null || true
+    kill -9 $pids 2>/dev/null || true
 
     for _ in {1..20}; do
-        if ! pgrep -x eww >/dev/null 2>&1; then
+        if ! pgrep -f '^eww ' >/dev/null 2>&1; then
             return 0
         fi
         sleep 0.05
