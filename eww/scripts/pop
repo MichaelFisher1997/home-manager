@@ -15,9 +15,7 @@ clear_popup_state() {
 
 close_if_open() {
   local window="$1"
-  if eww active-windows 2>/dev/null | grep -q "^${window}:"; then
-    eww close "$window" 2>/dev/null || true
-  fi
+  eww close "$window" 2>/dev/null || true
 }
 
 close_all_popups() {

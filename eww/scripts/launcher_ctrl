@@ -22,13 +22,12 @@ show_launcher() {
     list=$("$LAUNCHER_DATA" "")
     eww update launcher_list="$list"
   ) &
-  schedule_close
 }
 
 hide_launcher() {
-  [ ! -f "$LOCK_FILE" ] && return
   rm -f "$TIMER_TOKEN_FILE"
   rm -f "$LOCK_FILE"
+  rm -f "$DEBOUNCE_FILE"
   eww update launcher_query=""
   eww close launcher_popup 2>/dev/null
   eww close launcher_catcher 2>/dev/null
@@ -43,15 +42,7 @@ toggle_launcher() {
 }
 
 schedule_close() {
-  local token
-  token="$(date +%s%N)"
-  printf '%s\n' "$token" > "$TIMER_TOKEN_FILE"
-  (
-    sleep 1.5
-    if [ -f "$LOCK_FILE" ] && [ "$(cat "$TIMER_TOKEN_FILE" 2>/dev/null)" = "$token" ]; then
-      hide_launcher
-    fi
-  ) &
+  return 0
 }
 
 cancel_close() {
@@ -72,7 +63,6 @@ search_apps() {
     sleep 0.08
     list=$("$LAUNCHER_DATA" "$query")
     eww update launcher_list="$list"
-    schedule_close
   ) &
   echo $! > "$DEBOUNCE_FILE"
 }

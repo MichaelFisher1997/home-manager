@@ -12,12 +12,10 @@ show_weather() {
     rm -f "$TIMER_TOKEN_FILE"
     eww open weather_catcher 2>/dev/null
     eww open weather_popup 2>/dev/null
-    start_timer
   fi
 }
 
 hide_weather() {
-  [ ! -f "$LOCK_FILE" ] && return
   rm -f "$TIMER_TOKEN_FILE"
   rm -f "$LOCK_FILE"
   eww close weather_popup 2>/dev/null
@@ -33,15 +31,7 @@ toggle_weather() {
 }
 
 start_timer() {
-  local token
-  token="$(date +%s%N)"
-  printf '%s\n' "$token" > "$TIMER_TOKEN_FILE"
-  (
-    sleep 4
-    if [ -f "$LOCK_FILE" ] && [ "$(cat "$TIMER_TOKEN_FILE" 2>/dev/null)" = "$token" ]; then
-      hide_weather
-    fi
-  ) &
+  return 0
 }
 
 cancel_timer() {

@@ -12,12 +12,10 @@ show_calendar() {
         rm -f "$TIMER_TOKEN_FILE"
         eww open calendar_catcher 2>/dev/null
         eww open calendar 2>/dev/null
-        start_hover_timer
     fi
 }
 
 hide_calendar() {
-  [ ! -f "$LOCK_FILE" ] && return
   rm -f "$TIMER_TOKEN_FILE"
   rm -f "$LOCK_FILE"
   eww close calendar 2>/dev/null
@@ -33,16 +31,7 @@ toggle_calendar() {
 }
 
 start_hover_timer() {
-    # Start new 3-second timer
-    local token
-    token="$(date +%s%N)"
-    printf '%s\n' "$token" > "$TIMER_TOKEN_FILE"
-    (
-        sleep 3
-        if [ -f "$LOCK_FILE" ] && [ "$(cat "$TIMER_TOKEN_FILE" 2>/dev/null)" = "$token" ]; then
-            hide_calendar
-        fi
-    ) &
+    return 0
 }
 
 cancel_hover_timer() {
