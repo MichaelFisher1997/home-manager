@@ -279,12 +279,10 @@
 		 :class "left_modules"
 		 (app_launcher)
 		 (sep)
-		 (workspaces)
-		 (sep)
-		 (media_strip)))
+		 (workspaces)))
 
 
-;; RIGHT SIDE: CPU | Mem | Disk | Separator | System Tray
+;; RIGHT SIDE: Battery only
 (defwidget right []
 	(box :orientation "h"
 		 :space-evenly "false"
@@ -292,11 +290,7 @@
 		 :hexpand "true"
 		 :vexpand "false"
 		 :class "right_modules"
-		 (cpu_widget)
-		 (mem)
-		 (disk_widget)
-		 (sep)
-		 (sys_tray)))
+		 (bat)))
 
 
 ;; CENTER: Volume | Clock | Weather (grouped together)
