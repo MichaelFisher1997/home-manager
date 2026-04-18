@@ -1,4 +1,4 @@
-{ config, pkgs, lib, vars, ... }:
+{ config, pkgs, lib, vars, eww-flake, ... }:
 
 let
   isLaptop = vars.hostName == "hyprtop";
@@ -69,6 +69,7 @@ in {
   ] ++ lib.optionals (!isLaptop) [
     waybar
   ] ++ lib.optionals isLaptop [
+    eww-flake.packages.${vars.system}.eww
     hypridle
   ];
 

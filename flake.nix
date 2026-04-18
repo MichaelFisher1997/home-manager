@@ -25,9 +25,13 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    eww-flake = {
+      url = "github:elkowar/eww/v0.6.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, windsurf-flake, droid-flake, opencode-desktop-flake, zen-browser, ... }:
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, windsurf-flake, droid-flake, opencode-desktop-flake, zen-browser, eww-flake, ... }:
     let
       mkHome = hostName: vars:
         let
@@ -45,7 +49,7 @@
           inherit pkgs;
           modules = [ ./hosts/${hostName}/default.nix ];
           extraSpecialArgs = {
-            inherit vars nixvim pkgs_32 windsurf-flake droid-flake opencode-desktop-flake zen-browser unstable;
+            inherit vars nixvim pkgs_32 windsurf-flake droid-flake opencode-desktop-flake zen-browser unstable eww-flake;
           };
         };
     in
