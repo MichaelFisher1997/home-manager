@@ -1,6 +1,6 @@
 ;; Variables
-;; NOTE: Monitor is hardcoded as "eDP-1" in defwindow blocks below.
-;;       Eww's :monitor property does not accept variable references.
+;; NOTE: Eww's :monitor property does not accept variable references, so
+;;       windows use a matcher list with laptop-focused fallbacks.
 (defpoll clock_time :interval "5m" "date +%H")
 (defpoll clock_minute :interval "5s" "date +%M")
 (defpoll clock_date :interval "10h" "date '+%d/%m'")
@@ -142,7 +142,7 @@
       (literal :content launcher_list))))
 
 (defwindow launcher_popup
-  :monitor "eDP-1"
+  :monitor '["eDP-1", "<primary>", 0]'
   :geometry (geometry :x "0%"
                       :y "45px"
                       :anchor "top center"
@@ -156,7 +156,7 @@
     (launcher_pop)))
 
 (defwindow launcher_catcher
-  :monitor "eDP-1"
+  :monitor '["eDP-1", "<primary>", 0]'
   :geometry (geometry :x "0%"
                       :y "0%"
                       :anchor "top center"
@@ -185,7 +185,7 @@
     (literal :content weather_forecast)))
 
 (defwindow weather_popup
-  :monitor "eDP-1"
+  :monitor '["eDP-1", "<primary>", 0]'
   :geometry (geometry :x "0%"
                       :y "45px"
                       :anchor "top center"
@@ -198,7 +198,7 @@
     (weather_pop)))
 
 (defwindow weather_catcher
-  :monitor "eDP-1"
+  :monitor '["eDP-1", "<primary>", 0]'
   :geometry (geometry :x "0%"
                       :y "0%"
                       :anchor "top center"
@@ -322,13 +322,15 @@
     ))
 
 (defwindow bar
-          :monitor "eDP-1"
+          :monitor '["eDP-1", "<primary>", 0]'
            :geometry (geometry :x "0%"
 						:y "9px"
 						:width "95%"
 						:height "30px"
 						:anchor "top center")
           :stacking "fg"
+          :exclusive true
+          :focusable "none"
           :windowtype "dock"
   (bar_1))
   
@@ -375,7 +377,7 @@
     (literal :content calendar_grid)))
 
 (defwindow calendar
-	:monitor "eDP-1"
+	:monitor '["eDP-1", "<primary>", 0]'
 	:geometry (geometry :x "0%" 
 						:y "45px" 
                         :anchor "top center"
@@ -389,7 +391,7 @@
 
 ;; Click catcher - transparent overlay that closes calendar when clicked
 (defwindow calendar_catcher
-	:monitor "eDP-1"
+	:monitor '["eDP-1", "<primary>", 0]'
 	:geometry (geometry :x "0%" 
 						:y "0%" 
 	                        :anchor "top center"
@@ -431,7 +433,7 @@
 			  :min 0))))))
 
 (defwindow audio_ctl
-	:monitor "eDP-1"
+	:monitor '["eDP-1", "<primary>", 0]'
 	:stacking "overlay"
 	:geometry (geometry :x "-20px" 
 						:y "7%" 
@@ -442,7 +444,7 @@
 
 
 (defwindow system
-	:monitor "eDP-1"
+	:monitor '["eDP-1", "<primary>", 0]'
 	:stacking "overlay"
 	:geometry (geometry :x "-20px" 
 						:y "7%" 
@@ -452,7 +454,7 @@
 (system))
 
 (defwindow system_catcher
-	:monitor "eDP-1"
+	:monitor '["eDP-1", "<primary>", 0]'
 	:geometry (geometry :x "0%"
 						:y "0%"
 						:anchor "top center"
@@ -484,12 +486,12 @@
 
 ;;  music
 
-(defwindow music_win :stacking "overlay" :focusable "false" :monitor "eDP-1"
+(defwindow music_win :stacking "overlay" :focusable "false" :monitor '["eDP-1", "<primary>", 0]'
 			    :geometry (geometry :x "0" :y "7%" :width 428 :height 104 :anchor "top center")
 								(music_pop))
 
 (defwindow music_catcher
-	:monitor "eDP-1"
+	:monitor '["eDP-1", "<primary>", 0]'
 	:geometry (geometry :x "0%"
 						:y "0%"
 						:anchor "top center"

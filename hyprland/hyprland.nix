@@ -4,7 +4,7 @@ let
   isLaptop = vars.hostName == "hyprtop";
   hyprlandConfig = lib.replaceStrings
     [ "exec-once = sh -c 'pkill -x waybar; waybar' &" ]
-    [ "exec-once = sh -c 'pkill -x waybar || true; pkill -x eww || true; rm -f \"$HOME/.cache/eww_launch.xyz\"; eww daemon; sleep 1; eww open bar' &" ]
+    [ "exec-once = sh -c 'pkill -x waybar || true; pkill -x eww || true; rm -f \"$HOME/.cache/eww_launch.xyz\"; eww --config \"$HOME/.config/eww\" daemon; for i in 1 2 3 4 5; do sleep 1; eww --config \"$HOME/.config/eww\" open bar && exit 0; done' &" ]
     (builtins.readFile ./hyprland.conf);
 in {
   wayland.windowManager.hyprland = {
@@ -23,7 +23,6 @@ in {
     blueman
     networkmanagerapplet
     rofi
-    waybar
     wttrbar
     hackgen-nf-font
     playerctl
@@ -48,6 +47,8 @@ in {
     hyprpaper
     hyprlock
     wlsunset
+  ] ++ lib.optionals (!isLaptop) [
+    waybar
   ] ++ lib.optionals isLaptop [
     hypridle
   ];
