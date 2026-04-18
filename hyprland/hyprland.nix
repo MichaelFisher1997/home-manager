@@ -4,7 +4,7 @@ let
   isLaptop = vars.hostName == "hyprtop";
   hyprlandConfig = lib.replaceStrings
     [ "exec-once = sh -c 'pkill -x waybar; waybar' &" ]
-    [ "exec-once = sh -c 'pkill -x waybar || true; pkill -x eww || true; rm -f \"$HOME/.cache/eww_launch.xyz\"; eww --config \"$HOME/.config/eww\" daemon; for i in 1 2 3 4 5; do sleep 1; eww --config \"$HOME/.config/eww\" open bar && exit 0; done' &" ]
+    [ "exec-once = sh -c 'pkill -x waybar || true; pkill -x eww || true; rm -f \"$HOME/.cache/eww_launch.xyz\"; eww --config \"$HOME/.config/eww\" daemon; for i in 1 2 3 4 5 6 7 8 9 10; do eww --config \"$HOME/.config/eww\" ping >/dev/null 2>&1 && { eww --config \"$HOME/.config/eww\" open bar; exit 0; }; sleep 0.2; done; eww --config \"$HOME/.config/eww\" open bar' &" ]
     (builtins.readFile ./hyprland.conf);
 in {
   wayland.windowManager.hyprland = {
