@@ -3,12 +3,7 @@
 let
   isLaptop = vars.hostName == "hyprtop";
   ewwConfigDir = "${config.xdg.configHome}/eww";
-  hyprlandConfig = lib.replaceStrings
-    [ "exec-once = sh -c 'pkill -x waybar; waybar' &" ]
-    [ (if isLaptop
-        then "exec-once = sh -c 'pkill -x waybar || true; \"${ewwConfigDir}/launch_bar\" start' &"
-        else "exec-once = sh -c 'pkill -x waybar; waybar' &") ]
-    (builtins.readFile ./hyprland.conf);
+  hyprlandConfig = builtins.readFile ./hyprland.conf;
   ewwYuckText = lib.replaceStrings
     [
       "./scripts/"
@@ -66,7 +61,6 @@ in {
     hyprpaper
     hyprlock
     wlsunset
-  ] ++ lib.optionals (!isLaptop) [
     waybar
   ] ++ lib.optionals isLaptop [
     hypridle
