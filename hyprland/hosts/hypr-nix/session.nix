@@ -1,0 +1,13 @@
+{
+  env = [
+    "LIBVA_DRIVER_NAME,radeonsi"
+    "WLR_RENDERER,vulkan"
+    "__GLX_VENDOR_LIBRARY_NAME,mesa"
+    "SDL_VIDEODRIVER,wayland"
+    "WLR_DRM_DEVICES,/dev/dri/card1:/dev/dri/card0"
+    "SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS,0"
+    "SDL_VIDEO_FULLSCREEN_DISPLAY,0"
+    "WINE_FULLSCREEN_FSR,1"
+    "WINE_FULLSCREEN_INTEGER_SCALING,1"
+  ];
+}
