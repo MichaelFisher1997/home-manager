@@ -8,6 +8,7 @@ INDEX_FILE="/tmp/eww_launcher_index.tsv"
 CMDS_FILE="/tmp/eww_launcher_cmds"
 INDEX_AGE=300  # rebuild if older than 5 min
 DELIM=$'\037'
+DIR="$(dirname "$(realpath "$0")")"
 
 # Trigger background index rebuild if missing or stale
 if [ ! -f "$INDEX_FILE" ] || [ $(( $(date +%s) - $(stat -c %Y "$INDEX_FILE") )) -gt $INDEX_AGE ]; then
@@ -67,7 +68,7 @@ else
     IFS="$DELIM" read -r name lc_search exec_clean icon_path comment <<< "${rows[$i]}"
     color_cls="${COLORS[$((i % ${#COLORS[@]}))]}"
 
-    row_el="(button :class \"lp-row ${color_cls}\" :onclick \"./scripts/launcher_ctrl launch ${i}\""
+    row_el="(button :class \"lp-row ${color_cls}\" :onclick \"${DIR}/launcher_ctrl launch ${i}\""
     row_el="$row_el (box :orientation \"h\" :spacing 10 :space-evenly false :hexpand true"
 
     if [ -n "$icon_path" ]; then

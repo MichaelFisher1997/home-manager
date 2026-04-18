@@ -23,6 +23,18 @@ eww_cmd() {
     eww --config "$CONFIG_DIR" "$@"
 }
 
+refresh_bar_state() {
+    (
+        eww_cmd poll volume_percent volume_mute volume_class volume_icon_glyph \
+          brightness_percent battery battery_status memory memory_used_mb \
+          memory_total_mb memory_free_mb COL_WLAN ESSID_WLAN WLAN_ICON \
+          song song_summary song_artist current_status song_status cover_art \
+          calendar_grid cpu_usage disk_usage disk_used disk_total weather \
+          weather_svg weather_icon_path weather_full weather_forecast \
+          launcher_list >/dev/null 2>&1 || true
+    ) &
+}
+
 is_bar_open() {
     eww_cmd active-windows 2>/dev/null | grep -q '^bar:'
 }
@@ -88,6 +100,7 @@ start_bar() {
 
     log_info "Opening bar widget..."
     if eww_cmd open bar; then
+        refresh_bar_state
         log_info "Bar started successfully!"
     else
         log_error "Failed to open bar"

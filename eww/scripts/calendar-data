@@ -3,6 +3,7 @@
 # Each day cell gets: class for dow color, ring, and today fill
 
 STATE_FILE="/tmp/eww_cal_view"
+DIR="$(dirname "$(realpath "$0")")"
 
 today_day=$(date +%-d)
 today_month=$(date +%-m)
@@ -124,13 +125,13 @@ grid="$grid)"
 
 # Nav header with correct viewed month/year
 nav="(box :class \"cal-nav-row\" :orientation \"h\" :space-evenly false :hexpand true"
-nav="$nav (button :class \"cal-nav-btn\" :onclick \"./scripts/calendar_ctrl prev\" \"<\")"
+nav="$nav (button :class \"cal-nav-btn\" :onclick \"${DIR}/calendar_ctrl prev\" \"<\")"
 nav="$nav (label  :class \"cal-month-label\" :text \"${month_name}\" :hexpand true :halign \"center\")"
-nav="$nav (button :class \"cal-nav-btn\" :onclick \"./scripts/calendar_ctrl next\" \">\")"
+nav="$nav (button :class \"cal-nav-btn\" :onclick \"${DIR}/calendar_ctrl next\" \">\")"
 nav="$nav (label  :class \"cal-year-sep\" :text \"|\")"
-nav="$nav (button :class \"cal-nav-btn cal-nav-yr\" :onclick \"./scripts/calendar_ctrl prev_year\" \"<\")"
+nav="$nav (button :class \"cal-nav-btn cal-nav-yr\" :onclick \"${DIR}/calendar_ctrl prev_year\" \"<\")"
 nav="$nav (label  :class \"cal-year-label\" :text \"${view_year}\")"
-nav="$nav (button :class \"cal-nav-btn cal-nav-yr\" :onclick \"./scripts/calendar_ctrl next_year\" \">\")"
+nav="$nav (button :class \"cal-nav-btn cal-nav-yr\" :onclick \"${DIR}/calendar_ctrl next_year\" \">\")"
 nav="$nav)"
 
 echo "(box :class \"cal-body\" :orientation \"v\" :spacing 4 :space-evenly false $nav $header $grid)"

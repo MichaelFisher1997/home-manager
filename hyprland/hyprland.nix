@@ -9,6 +9,18 @@ let
         then "exec-once = sh -c 'pkill -x waybar || true; sleep 1; \"${ewwConfigDir}/launch_bar\" start' &"
         else "exec-once = sh -c 'pkill -x waybar; waybar' &") ]
     (builtins.readFile ./hyprland.conf);
+  ewwYuckText = lib.replaceStrings
+    [
+      "\"./scripts/"
+      "\"scripts/"
+      "\"images/"
+    ]
+    [
+      "\"${ewwConfigDir}/scripts/"
+      "\"${ewwConfigDir}/scripts/"
+      "\"${ewwConfigDir}/images/"
+    ]
+    (builtins.readFile ../eww/eww.yuck);
 in {
   wayland.windowManager.hyprland = {
     enable = true;
@@ -138,6 +150,11 @@ in {
   xdg.configFile."eww" = lib.mkIf isLaptop {
     source = ../eww;
     recursive = true;
+    force = true;
+  };
+
+  xdg.configFile."eww/eww.yuck" = lib.mkIf isLaptop {
+    text = ewwYuckText;
     force = true;
   };
 
