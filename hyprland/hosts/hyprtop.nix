@@ -20,4 +20,10 @@
   bindl = [
     ", XF86AudioMute, exec, pamixer --toggle-mute"
   ];
+
+  windowrulev2 = [
+    "fullscreen,class:^(steam_app_.*)$"
+    "fullscreen,class:^(lutris)$"
+    "fullscreen,class:^(heroic)$"
+  ];
 }
