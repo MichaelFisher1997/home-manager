@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+battery() {
+	BAT=$(ls /sys/class/power_supply | grep -i bat | head -n 1)
+	if [[ -n "$BAT" ]]; then
+		cat /sys/class/power_supply/${BAT}/capacity
+	else
+		echo "100"  # Desktop or no battery, show 100%
+	fi
+}
+
+battery_stat() {
+	BAT=$(ls /sys/class/power_supply | grep -i bat | head -n 1)
+	if [[ -n "$BAT" ]]; then
+		cat /sys/class/power_supply/${BAT}/status
+	else
+		echo "Desktop"  # Desktop or no battery
+	fi
+}
+
+if [[ "$1" == "--bat" ]]; then
+	battery
+elif [[ "$1" == "--bat-st" ]]; then
+	battery_stat
+fi

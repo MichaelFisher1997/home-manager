@@ -2,12 +2,16 @@
 
 let
   isLaptop = vars.hostName == "hyprtop";
+  hyprlandConfig = lib.replaceStrings
+    [ "exec-once = sh -c 'pkill -x waybar; waybar' &" ]
+    [ "exec-once = sh -c 'pkill -x waybar || true; pkill -x eww || true; rm -f \"$HOME/.cache/eww_launch.xyz\"; eww daemon; sleep 1; eww open bar' &" ]
+    (builtins.readFile ./hyprland.conf);
 in {
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
     systemd.enable = true;
-    extraConfig = builtins.readFile ./hyprland.conf + lib.optionalString isLaptop ''
+    extraConfig = (if isLaptop then hyprlandConfig else builtins.readFile ./hyprland.conf) + lib.optionalString isLaptop ''
       exec-once = hypridle &
     '';
   };
@@ -124,6 +128,12 @@ in {
 
   xdg.configFile."hypr/hypridle.conf" = lib.mkIf isLaptop {
     source = ./hypridle.conf;
+    force = true;
+  };
+
+  xdg.configFile."eww" = lib.mkIf isLaptop {
+    source = ../eww;
+    recursive = true;
     force = true;
   };
 

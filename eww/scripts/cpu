@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# CPU usage monitor
+
+get_cpu_usage() {
+    # Get CPU usage percentage
+    # Using top for compatibility
+    cpu=$(top -bn1 | grep "Cpu(s)" | awk '{print $2}' | cut -d'%' -f1)
+    
+    # Alternative using /proc/stat
+    if [ -z "$cpu" ]; then
+        cpu=$(grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {printf "%.0f", usage}')
+    fi
+    
+    # If still empty, use 0
+    if [ -z "$cpu" ]; then
+        echo "0"
+    else
+        printf "%.0f" "$cpu"
+    fi
+}
+
+get_cpu_usage

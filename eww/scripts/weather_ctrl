@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# Weather popup controller - toggle/hide
+
+DIR="$(dirname "$(realpath "$0")")"
+LOCK_FILE="/tmp/eww_weather.lock"
+TIMER_TOKEN_FILE="/tmp/eww_weather_timer.token"
+
+show_weather() {
+  if [ ! -f "$LOCK_FILE" ]; then
+    "$DIR/pop" close-all
+    touch "$LOCK_FILE"
+    rm -f "$TIMER_TOKEN_FILE"
+    eww open weather_catcher 2>/dev/null
+    eww open weather_popup 2>/dev/null
+    start_timer
+  fi
+}
+
+hide_weather() {
+  [ ! -f "$LOCK_FILE" ] && return
+  rm -f "$TIMER_TOKEN_FILE"
+  rm -f "$LOCK_FILE"
+  eww close weather_popup 2>/dev/null
+  eww close weather_catcher 2>/dev/null
+}
+
+toggle_weather() {
+  if [ -f "$LOCK_FILE" ]; then
+    hide_weather
+  else
+    show_weather
+  fi
+}
+
+start_timer() {
+  local token
+  token="$(date +%s%N)"
+  printf '%s\n' "$token" > "$TIMER_TOKEN_FILE"
+  (
+    sleep 4
+    if [ -f "$LOCK_FILE" ] && [ "$(cat "$TIMER_TOKEN_FILE" 2>/dev/null)" = "$token" ]; then
+      hide_weather
+    fi
+  ) &
+}
+
+cancel_timer() {
+  rm -f "$TIMER_TOKEN_FILE"
+}
+
+case "$1" in
+  toggle)      toggle_weather ;;
+  hide)        hide_weather ;;
+  start_timer) start_timer ;;
+  cancel_timer) cancel_timer ;;
+esac

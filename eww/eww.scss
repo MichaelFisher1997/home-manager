@@ -1,0 +1,938 @@
+/** EWW.SCSS
+Created by saimoom **/
+* {
+	all: unset;
+	font-family: "JetBrainsMono Nerd Font", "JetBrainsMono NFP", "Iosevka Nerd Font", sans-serif;
+}
+
+/* Force Nerd Font on all icon elements */
+button, label {
+	font-family: "JetBrainsMono Nerd Font", "JetBrainsMono NFP", "Iosevka Nerd Font", sans-serif;
+}
+
+/** General **/
+.bar_class {
+    background-color: #0f0f17;
+    border-radius: 16px;
+    min-height: 36px;
+    padding: 4px 10px;
+}
+.module {
+    margin: 0px 0px 0px 0px;
+    border-radius: 10px 16px 0px 10px;
+}
+
+/** tooltip!! **/
+tooltip.background {
+    background-color: #0f0f17;
+    font-size: 18px;
+    border-radius: 10px;
+    color: #bfc9db;
+}
+
+tooltip label {
+    margin: 6px;
+}
+
+
+/** Widgets **/
+
+.clock_time_sep {
+    font-size: 16px;
+    color: #bfc9db;
+    margin: 0px 4px 1px 4px;
+}
+.clock_time_class, .clock_minute_class {
+    font-size: 23px;
+}
+.clock_date_class {
+    font-size: 18px;
+    margin: 0px 20px 0px -1px;
+    color: #d7beda;
+}
+.clock_minute_class {
+    margin: 0px 20px 0px 3px;
+    color: #bfc9db;
+}
+
+.clock_time_class {
+    color: #bfc9db;
+    font-weight: bold;
+    margin: 0px 5px 0px 0px;
+}
+
+
+.membar {
+  color: #e0b089;
+    background-color: #38384d;
+  border-radius: 10px;
+}
+.batbar {
+  color: #afbea2;
+    background-color: #38384d;
+  border-radius: 10px;
+}
+.brightbar trough highlight {
+  background-image: linear-gradient(to right, #e4c9af 30%, #f2cdcd 50%, #e0b089 100% *50);
+  border-radius: 10px;
+}
+.volbar trough highlight {
+  background-image: linear-gradient(to right, #afcee0 30%, #a1bdce 50%, #77a5bf 100% *50);
+  border-radius: 10px;
+}
+.volume_icon {
+    font-size: 18px;
+    color: #a1bdce;
+    margin: 0px 2px 0px 0px;
+    font-family: "JetBrainsMono Nerd Font", "JetBrainsMono NFP", monospace;
+    min-width: 18px;
+    min-height: 18px;
+}
+
+.volume_text {
+    font-size: 12px;
+    color: #a1bdce;
+    margin: 0px;
+}
+
+/* Normal volume - green */
+.volume-normal .volume_icon,
+.volume-normal .volume_text {
+    color: #98c379;
+}
+
+/* Muted volume - red */
+.volume-muted .volume_icon,
+.volume-muted .volume_text {
+    color: #e06c75;
+}
+
+.module_essid {
+    font-size: 18px;
+    color: #a1bdce;
+  margin: 0px 5px 0px 0px;
+}
+.module-wif {
+    font-size: 22px;
+    color: #a1bdce;
+    border-radius: 100%;
+  margin: 0px 5px 0px 3px;
+}
+
+.iconmem {
+    color: #e0b089;
+}
+.iconbat {
+    color: #afbea2;
+}
+.iconbat, .iconmem {
+    font-size: 12px;
+    margin: 3px;
+    min-width: 20px;
+    min-height: 20px;
+}
+
+/* Circular Progress - make them smaller */
+circular-progress {
+    min-width: 24px;
+    min-height: 24px;
+    font-size: 12px;
+}
+.bright_icon {
+    font-size: 22px;
+    color: #e4c9af;
+  margin: 0px 5px 0px 5px;
+}
+
+
+.separ {
+    color: #3e424f;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 0px 2px 0px 2px;
+  }
+
+.mem_module {
+    background-color: #0f0f17;
+	border-radius: 16px;
+  margin: 0px 5px 0px 2px;
+  }
+.bat_module {
+    background-color: #0f0f17;
+	border-radius: 16px;
+  margin: 0px 5px 0px 5px;
+  }
+
+
+scale trough {
+  all: unset;
+  background-color: #22242b;
+  box-shadow: 0 2px 3px 2px #06060b;
+  border-radius: 16px;
+  min-height: 10px;
+  min-width: 70px;
+  margin: 0px 5px 0px 0px;
+}
+
+.works {
+font-size: 20px;
+font-weight: normal;
+margin: 5px 0px 0px 10px;
+background-color: transparent;
+}
+
+.workspace-btn {
+    padding: 0px;
+}
+
+.workspace-btn:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+/* Rainbow workspace styling - each workspace has unique color */
+
+/* Workspace 1 - Red */
+.ws-1 { color: #e06c75; }
+.ws-1-active { color: #e06c75; font-weight: bold; }
+
+/* Workspace 2 - Orange */
+.ws-2 { color: #d19a66; }
+.ws-2-active { color: #d19a66; font-weight: bold; }
+
+/* Workspace 3 - Yellow */
+.ws-3 { color: #e5c07b; }
+.ws-3-active { color: #e5c07b; font-weight: bold; }
+
+/* Workspace 4 - Green */
+.ws-4 { color: #98c379; }
+.ws-4-active { color: #98c379; font-weight: bold; }
+
+/* Workspace 5 - Cyan */
+.ws-5 { color: #56b6c2; }
+.ws-5-active { color: #56b6c2; font-weight: bold; }
+
+/* Workspace 6 - Blue */
+.ws-6 { color: #61afef; }
+.ws-6-active { color: #61afef; font-weight: bold; }
+
+/* Workspace 7 - Purple */
+.ws-7 { color: #c678dd; }
+.ws-7-active { color: #c678dd; font-weight: bold; }
+
+/* Workspace 8 - Pink */
+.ws-8 { color: #ff79c6; }
+.ws-8-active { color: #ff79c6; font-weight: bold; }
+
+/* Workspace 9 - Teal */
+.ws-9 { color: #56b6c2; }
+.ws-9-active { color: #56b6c2; font-weight: bold; }
+
+/* Workspace 10 - White/Grey */
+.ws-10 { color: #abb2bf; }
+.ws-10-active { color: #abb2bf; font-weight: bold; }
+
+/* Note: Old workspace class names start with numbers (0, 01, 02, etc.)
+   which are invalid CSS class selectors. The new dynamic script uses
+   ws-active and ws-occupied class names instead. */
+
+/* NEW WIDGETS STYLING */
+
+/* App Launcher */
+.launcher_icon {
+    font-size: 20px;
+    color: #e5809e;  /* Red/pink color */
+    margin: 0px 5px 0px 0px;
+    padding: 4px 8px;
+    background-color: #22242b;
+    border-radius: 8px;
+    font-family: "JetBrainsMono Nerd Font", "JetBrainsMono NFP", monospace;
+    min-width: 24px;
+    min-height: 24px;
+}
+
+/* Weather Widget */
+.weather_widget {
+    margin: 0px 5px 0px 0px;
+}
+
+/* Inline media strip */
+.media_strip {
+    background-color: #0f0f17;
+    border-radius: 12px;
+    padding: 2px 7px;
+    margin: 0px 2px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+}
+
+.media_icon,
+.media_btn {
+    color: #bfc9db;
+    font-size: 12px;
+    min-width: 14px;
+    min-height: 14px;
+    padding: 0px 2px;
+    border-radius: 999px;
+}
+
+.media_icon:hover,
+.media_btn:hover {
+    background-color: rgba(255,255,255,0.05);
+}
+
+.media_icon {
+    color: #e4c9af;
+}
+
+.media_title {
+    color: #bfc9db;
+    font-size: 11px;
+    min-width: 0px;
+}
+
+.weather_svg {
+    /* SVG color is set in the file itself */
+}
+
+.weather_temp {
+    font-size: 14px;
+    color: #e4c9af;
+    font-weight: bold;
+}
+
+/* CPU Widget */
+.cpu_text {
+    font-size: 13px;
+    color: #d7beda;
+    margin: 0px 8px 0px 0px;
+}
+
+/* Memory Widget */
+.mem_text {
+    font-size: 13px;
+    color: #e0b089;
+    margin: 0px 8px 0px 0px;
+}
+
+/* Disk Widget */
+.disk_text {
+    font-size: 13px;
+    color: #afbea2;
+    margin: 0px 8px 0px 0px;
+}
+
+/* Calendar popup - consolidated styles below in .cal block */
+
+/* Click catcher for calendar - transparent overlay */
+.calendar_catcher {
+    background-color: transparent;
+}
+
+.launcher_catcher {
+    background-color: transparent;
+}
+
+.weather_catcher {
+    background-color: transparent;
+}
+
+.system_catcher {
+    background-color: transparent;
+}
+
+.music_catcher {
+    background-color: transparent;
+}
+
+/* System Tray */
+.tray {
+    margin: 0px 5px 0px 0px;
+}
+
+.tray menu {
+    background-color: #0f0f17;
+    border-radius: 10px;
+    color: #bfc9db;
+}
+
+.tray menuitem {
+    padding: 5px 10px;
+}
+
+.tray menuitem:hover {
+    background-color: #22242b;
+}
+
+
+.song_cover_art {
+	background-size: cover;	
+	background-position: center;
+	min-height: 24px;
+	min-width: 24px;
+	margin: 10px;
+	border-radius: 100px;
+}
+
+.song {
+	color: #a1bdce;
+	font-size : 18px;
+	font-weight : bold;
+	margin : 3px 5px 0px 0px;
+}
+
+.song_btn_play {
+	color: #a1bdce;
+	font-size : 28px;
+	margin : 3px 0px 0px 5px;
+
+}
+
+
+.song_btn_prev, .song_btn_next {
+	color: #bfc9db;
+	font-size : 24px;
+	margin : 3px 0px 0px 5px;
+
+}
+/* Calendar container */
+.cal {
+  background-color: #0f0f17;
+  font-family: JetBrainsMono Nerd Font;
+  font-size: 16px;
+  font-weight: normal;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 4px 20px 4px #06060b;
+}
+
+.cal-in {
+  padding: 8px;
+  color: #bfc9db;
+}
+
+/* Custom Calendar Widget */
+
+/* Outer container */
+.cal {
+  background-color: #0f0f17;
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 4px 20px 4px #06060b;
+}
+
+/* Nav row */
+.cal-nav-row {
+  margin-bottom: 8px;
+}
+
+.cal-month-label {
+  color: #d7beda;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.cal-year-label {
+  color: #a1bdce;
+  font-weight: bold;
+  font-size: 14px;
+  margin-left: 4px;
+}
+
+.cal-year-sep {
+  color: #3e424f;
+  margin: 0px 4px;
+}
+
+.cal-nav-btn {
+  color: #c678dd;
+  background-color: rgba(198, 120, 221, 0.15);
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-weight: bold;
+  font-size: 14px;
+  min-width: 20px;
+}
+
+.cal-nav-btn:hover {
+  background-color: #c678dd;
+  color: #0f0f17;
+}
+
+.cal-nav-yr {
+  color: #a1bdce;
+  background-color: rgba(161, 189, 206, 0.12);
+}
+
+.cal-nav-yr:hover {
+  background-color: #a1bdce;
+  color: #0f0f17;
+}
+
+/* Day-of-week header row */
+.cal-header-row {
+  margin-bottom: 6px;
+}
+
+.cal-dow {
+  font-size: 11px;
+  font-weight: bold;
+  min-width: 36px;
+  min-height: 20px;
+}
+
+/* Grid rows */
+.cal-row {
+  margin-bottom: 2px;
+}
+
+/* Every day cell - rounded pill with inset ring via box-shadow */
+.cal-day {
+  font-size: 13px;
+  font-weight: normal;
+  min-width: 36px;
+  min-height: 32px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.10);
+  padding: 4px 2px;
+}
+
+/* Out-of-month days dimmed - two-class selector beats single dow class */
+.cal-day.cal-other {
+  color: #3e424f;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+}
+
+/* Today: filled solid, stronger ring */
+.cal-today {
+  font-weight: bold;
+}
+
+/* Day-of-week colors */
+/* Mon - Blue (ws-6) */
+.cal-mon { color: #61afef; box-shadow: inset 0 0 0 1px rgba(97,175,239,0.35); }
+.cal-today.cal-mon { background-color: #61afef; color: #0f0f17; box-shadow: inset 0 0 0 2px #61afef; }
+
+/* Tue - Green (ws-4) */
+.cal-tue { color: #98c379; box-shadow: inset 0 0 0 1px rgba(152,195,121,0.35); }
+.cal-today.cal-tue { background-color: #98c379; color: #0f0f17; box-shadow: inset 0 0 0 2px #98c379; }
+
+/* Wed - Yellow (ws-3) */
+.cal-wed { color: #e5c07b; box-shadow: inset 0 0 0 1px rgba(229,192,123,0.35); }
+.cal-today.cal-wed { background-color: #e5c07b; color: #0f0f17; box-shadow: inset 0 0 0 2px #e5c07b; }
+
+/* Thu - Orange (ws-2) */
+.cal-thu { color: #d19a66; box-shadow: inset 0 0 0 1px rgba(209,154,102,0.35); }
+.cal-today.cal-thu { background-color: #d19a66; color: #0f0f17; box-shadow: inset 0 0 0 2px #d19a66; }
+
+/* Fri - Red (ws-1) */
+.cal-fri { color: #e06c75; box-shadow: inset 0 0 0 1px rgba(224,108,117,0.35); }
+.cal-today.cal-fri { background-color: #e06c75; color: #0f0f17; box-shadow: inset 0 0 0 2px #e06c75; }
+
+/* Sat - Purple (ws-7) */
+.cal-sat { color: #c678dd; box-shadow: inset 0 0 0 1px rgba(198,120,221,0.35); }
+.cal-today.cal-sat { background-color: #c678dd; color: #0f0f17; box-shadow: inset 0 0 0 2px #c678dd; }
+
+/* Sun - Pink (ws-8) */
+.cal-sun { color: #ff79c6; box-shadow: inset 0 0 0 1px rgba(255,121,198,0.35); }
+.cal-today.cal-sun { background-color: #ff79c6; color: #0f0f17; box-shadow: inset 0 0 0 2px #ff79c6; }
+
+/* Weather Popup */
+.wp-win {
+  background-color: #0f0f17;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 4px 20px 4px #06060b;
+}
+
+.wp-header {
+  margin-bottom: 4px;
+}
+
+.wp-location {
+  font-size: 13px;
+  font-weight: bold;
+  color: #d7beda;
+}
+
+.wp-curr-temp {
+  font-size: 22px;
+  font-weight: bold;
+  color: #bfc9db;
+}
+
+.wp-curr-desc {
+  font-size: 14px;
+  color: #a1bdce;
+  margin-top: 6px;
+}
+
+/* Forecast cards row */
+.wp-cards {
+  margin-top: 4px;
+}
+
+/* Base card - ring via box-shadow */
+.wp-card {
+  border-radius: 10px;
+  padding: 8px 6px;
+  min-width: 76px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+}
+
+.wp-day {
+  font-size: 12px;
+  font-weight: bold;
+  color: #bfc9db;
+}
+
+.wp-hi {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.wp-lo {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.wp-rain {
+  font-size: 11px;
+  color: #56b6c2;
+}
+
+/* Per-card palette - blue, green, yellow, orange, red */
+.wp-card.wp-blue  { box-shadow: inset 0 0 0 1px rgba(97,175,239,0.35);  }
+.wp-card.wp-green { box-shadow: inset 0 0 0 1px rgba(152,195,121,0.35); }
+.wp-card.wp-yellow{ box-shadow: inset 0 0 0 1px rgba(229,192,123,0.35); }
+.wp-card.wp-orange{ box-shadow: inset 0 0 0 1px rgba(209,154,102,0.35); }
+.wp-card.wp-red   { box-shadow: inset 0 0 0 1px rgba(224,108,117,0.35); }
+
+.wp-card.wp-blue   .wp-hi { color: #61afef; }
+.wp-card.wp-green  .wp-hi { color: #98c379; }
+.wp-card.wp-yellow .wp-hi { color: #e5c07b; }
+.wp-card.wp-orange .wp-hi { color: #d19a66; }
+.wp-card.wp-red    .wp-hi { color: #e06c75; }
+
+/* Today card - solid fill */
+.wp-card.wp-today {
+  background-color: rgba(97,175,239,0.15);
+  box-shadow: inset 0 0 0 2px #61afef;
+}
+.wp-card.wp-today .wp-day { color: #61afef; font-weight: bold; }
+.wp-card.wp-today .wp-hi  { color: #bfc9db; }
+
+/* App Launcher Popup */
+/* App Launcher Popup */
+.lp-win {
+  background-color: #0f0f17;
+  border-radius: 16px;
+  padding: 18px 16px 14px 16px;
+  box-shadow: 0 8px 32px 4px #06060b;
+}
+
+.lp-section-label {
+  font-size: 10px;
+  font-weight: bold;
+  color: #3e424f;
+  margin: 0px 0px 8px 2px;
+  letter-spacing: 1px;
+}
+
+/* Favorites */
+.lp-favs {
+  background-color: transparent;
+  padding: 6px 0px 2px 0px;
+  margin-bottom: 14px;
+}
+
+.lp-fav {
+  background-color: transparent;
+  padding: 6px;
+  min-width: 78px;
+  min-height: 78px;
+  border-radius: 999px;
+}
+
+/* Per-fav accents */
+.lp-fav:hover { background-color: transparent; }
+
+/* Divider */
+.lp-divider {
+  background-color: #1e2030;
+  min-height: 1px;
+  margin: 0px 0px 14px 0px;
+}
+
+/* Search */
+.lp-search-box {
+  background-color: #161820;
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  box-shadow: inset 0 0 0 1px rgba(97,175,239,0.2);
+}
+
+.lp-search-icon {
+  font-size: 14px;
+  color: #61afef;
+  margin-right: 6px;
+  font-family: "JetBrainsMono Nerd Font", "JetBrainsMono NFP", monospace;
+}
+
+.lp-search {
+  font-size: 15px;
+  color: #bfc9db;
+  min-width: 340px;
+  background-color: transparent;
+}
+
+/* App list */
+.lp-list-inner {
+  padding: 0px 2px;
+}
+
+.lp-row {
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 4px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+}
+
+.lp-row.lp-blue   { box-shadow: inset 0 0 0 1px rgba(97,175,239,0.25);  }
+.lp-row.lp-green  { box-shadow: inset 0 0 0 1px rgba(152,195,121,0.25); }
+.lp-row.lp-yellow { box-shadow: inset 0 0 0 1px rgba(229,192,123,0.25); }
+.lp-row.lp-orange { box-shadow: inset 0 0 0 1px rgba(209,154,102,0.25); }
+.lp-row.lp-red    { box-shadow: inset 0 0 0 1px rgba(224,108,117,0.25); }
+.lp-row.lp-purple { box-shadow: inset 0 0 0 1px rgba(198,120,221,0.25); }
+.lp-row.lp-pink   { box-shadow: inset 0 0 0 1px rgba(255,121,198,0.25); }
+
+.lp-row.lp-blue:hover   { background-color: rgba(97,175,239,0.10);  box-shadow: inset 0 0 0 1px rgba(97,175,239,0.5);  }
+.lp-row.lp-green:hover  { background-color: rgba(152,195,121,0.10); box-shadow: inset 0 0 0 1px rgba(152,195,121,0.5); }
+.lp-row.lp-yellow:hover { background-color: rgba(229,192,123,0.10); box-shadow: inset 0 0 0 1px rgba(229,192,123,0.5); }
+.lp-row.lp-orange:hover { background-color: rgba(209,154,102,0.10); box-shadow: inset 0 0 0 1px rgba(209,154,102,0.5); }
+.lp-row.lp-red:hover    { background-color: rgba(224,108,117,0.10); box-shadow: inset 0 0 0 1px rgba(224,108,117,0.5); }
+.lp-row.lp-purple:hover { background-color: rgba(198,120,221,0.10); box-shadow: inset 0 0 0 1px rgba(198,120,221,0.5); }
+.lp-row.lp-pink:hover   { background-color: rgba(255,121,198,0.10); box-shadow: inset 0 0 0 1px rgba(255,121,198,0.5); }
+
+.lp-icon {
+  min-width: 32px;
+  min-height: 32px;
+}
+
+.lp-icon-fallback {
+  font-size: 22px;
+  color: #3e424f;
+  min-width: 32px;
+  font-family: "JetBrainsMono Nerd Font", "JetBrainsMono NFP", monospace;
+}
+
+.lp-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: #bfc9db;
+}
+
+.lp-comment {
+  font-size: 11px;
+  color: #4b5263;
+}
+
+.lp-empty {
+  font-size: 13px;
+  color: #3e424f;
+  padding: 24px;
+}
+
+.sys_sep {
+    color: #38384d;
+    font-size: 18px;
+    margin: 0px 5px 0px 5px;
+}
+.sys_text_bat_sub, .sys_text_mem_sub {
+    font-size: 16px;
+    color: #bbc5d7;
+    margin: 5px 0px 0px 25px;
+}
+.sys_text_bat, .sys_text_mem {
+    font-size: 21px;
+    font-weight: bold;
+    margin: 14px 0px 0px 25px;
+}
+.sys_icon_bat, .sys_icon_mem {
+    font-size: 30px;
+    margin: 30px;
+}
+.sys_win {
+    background-color: #0f0f17;
+}
+.sys_bat {
+  color: #afbea2;
+    background-color: #38384d;
+  border-radius: 10px;
+}
+.sys_mem {
+  color: #e4c9af;
+    background-color: #38384d;
+  border-radius: 10px;
+}
+.sys_icon_bat, .sys_text_bat {
+    color: #afbea2;
+}
+.sys_icon_mem, .sys_text_mem {
+    color: #e4c9af;
+}
+.sys_bat_box {
+	border-radius: 16px;
+    margin: 15px 10px 10px 20px;
+  }
+.sys_mem_box {
+	border-radius: 16px;
+    margin: 10px 10px 15px 20px;
+  }
+
+
+
+
+
+
+
+.music_pop {
+    background-color: #0f0f17;
+	border-radius: 16px;
+}
+  .music_cover_art {
+	background-size: cover;
+	background-position: center;
+	min-height: 100px;
+    box-shadow: 5px 5px 5px 5px #06060b;
+	min-width: 170px;
+	margin: 20px;
+	border-radius: 20px;
+}
+
+.music {
+	color: #a1bdce;
+	font-size : 20px;
+	font-weight : bold;
+	margin : 20px 0px 0px -15px;
+}
+
+.music_artist {
+	color: #bbc5d7;
+	font-size : 16px;
+	font-weight : normal;
+	margin : 0px 0px 0px 0px;
+}
+
+.music_btn_prev, .music_btn_play, .music_btn_next {
+	font-family: Iosevka Nerd Font;
+}
+.music_btn_prev {
+	color: #bbc5d7;
+	font-size : 32px;
+	font-weight : normal;
+	margin: 0px 0px 0px 0px;
+}
+.music_btn_play {
+	color: #a1bdce;
+	font-size : 48px;
+	font-weight : normal;
+	margin: 0px 0px 0px 0px;
+}
+.music_btn_next {
+	color: #bbc5d7;
+	font-size : 32px;
+	font-weight : normal;
+	margin: 0px 0px 0px 0px;
+}
+
+.music_bar scale trough highlight {
+	all: unset;
+    background-image: linear-gradient(to right, #afcee0 30%, #a1bdce 50%, #77a5bf 100% *50);
+	border-radius: 24px;
+}
+.music_bar scale trough {
+	all: unset;
+	background-color: #232232;
+    box-shadow: 0 6px 5px 2px #06060b;
+	border-radius: 24px;
+	min-height: 13px;
+	min-width: 190px;
+	margin : -10px 10px 20px 0px;
+}
+
+.audio-box {
+    background-color: #0f0f17;
+	border-radius: 16px;
+}
+.speaker_icon {
+	background-size: cover;
+    background-image: url('images/speaker.png');
+	background-position: center;
+	min-height: 70px;
+	min-width: 75px;
+	margin: 10px 20px 5px 20px;
+	border-radius: 12px;
+}
+
+.speaker_text {
+	color: #a1bdce;
+	font-size : 26px;
+	font-weight : bold;
+	margin: 20px 0px 0px 0px;
+}
+
+.speaker_bar scale trough highlight {
+	all: unset;
+    background-image: linear-gradient(to right, #afcee0 30%, #a1bdce 50%, #77a5bf 100% *50);
+	border-radius: 24px;
+}
+.speaker_bar scale trough {
+	all: unset;
+	background-color: #232232;
+    box-shadow: 0 6px 5px 2px #06060b;
+	border-radius: 24px;
+	min-height: 13px;
+	min-width: 120px;
+	margin : 0px 0px 5px 0px;
+}
+
+
+
+
+.mic_icon {
+	background-size: cover;
+    background-image: url('images/mic.png');
+	background-position: center;
+	min-height: 70px;
+	min-width: 75px;
+	margin: 5px 20px 20px 20px;
+	border-radius: 12px;
+}
+
+.mic_text {
+	color: #a1bdce;
+	font-size : 26px;
+	font-weight : bold;
+	margin: 0px 0px 0px 0px;
+}
+
+.mic_bar scale trough highlight {
+	all: unset;
+    background-image: linear-gradient(to right, #afcee0 30%, #a1bdce 50%, #77a5bf 100% *50);
+	border-radius: 24px;
+}
+.mic_bar scale trough {
+	all: unset;
+    box-shadow: 0 6px 5px 2px #06060b;
+	background-color: #232232;
+	border-radius: 24px;
+	min-height: 13px;
+	min-width: 120px;
+	margin : 0px 0px 20px 0px;
+}
+
+.audio_sep {
+    color: #38384d;
+    font-size: 18px;
+	margin : 0px 0px 0px 0px;
+}

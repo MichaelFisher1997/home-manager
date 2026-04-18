@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Notification count using dunst
+
+get_notification_count() {
+    # Dunst doesn't have a direct way to get notification count
+    # We can use dunstctl to check history
+    count=$(dunstctl history | grep -c '"appname"' 2>/dev/null)
+    if [ -z "$count" ] || [ "$count" -eq 0 ]; then
+        echo "0"
+    else
+        echo "$count"
+    fi
+}
+
+# Dismiss all notifications
+dismiss_all() {
+    dunstctl close-all 2>/dev/null
+}
+
+# Open dunst history
+show_history() {
+    dunstctl history-pop 2>/dev/null
+}
+
+case "$1" in
+    --dismiss)
+        dismiss_all
+        ;;
+    --history)
+        show_history
+        ;;
+    *)
+        get_notification_count
+        ;;
+esac

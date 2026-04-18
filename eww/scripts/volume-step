@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+case "$1" in
+  up)
+    pamixer --increase 5 >/dev/null 2>&1
+    ;;
+  down)
+    pamixer --decrease 5 >/dev/null 2>&1
+    ;;
+  *)
+    exit 1
+    ;;
+esac
+
+vol=$("$(dirname "$0")/volume-percent")
+mute=$("$(dirname "$0")/volume-mute")
+class=$("$(dirname "$0")/volume-class")
+icon=$("$(dirname "$0")/volume-icon")
+
+eww update volume_percent="$vol" volume_mute="$mute" volume_class="$class" volume_icon_glyph="$icon" >/dev/null 2>&1

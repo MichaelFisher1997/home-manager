@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+svg=$(timeout 3 "$(dirname "$0")/weather" --svg 2>/dev/null)
+if [ -n "$svg" ]; then
+  echo "$svg"
+else
+  echo sun.svg
+fi

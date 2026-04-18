@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+LOCK_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/eww-popups"
+mkdir -p "$LOCK_DIR"
+
+clear_popup_state() {
+  rm -f \
+    /tmp/eww_launcher.lock /tmp/eww_launcher_timer.token /tmp/eww_launcher_debounce.pid \
+    /tmp/eww_weather.lock /tmp/eww_weather_timer.token \
+    /tmp/eww_calendar.lock /tmp/eww_calendar_timer.token \
+    "$LOCK_DIR"/calendar.lock "$LOCK_DIR"/system.lock "$LOCK_DIR"/music.lock "$LOCK_DIR"/audio.lock
+}
+
+close_if_open() {
+  local window="$1"
+  if eww active-windows 2>/dev/null | grep -q "^${window}:"; then
+    eww close "$window" 2>/dev/null || true
+  fi
+}
+
+close_all_popups() {
+  close_if_open launcher_popup
+  close_if_open launcher_catcher
+  close_if_open weather_popup
+  close_if_open weather_catcher
+  close_if_open calendar
+  close_if_open calendar_catcher
+  close_if_open music_win
+  close_if_open music_catcher
+  close_if_open system
+  close_if_open system_catcher
+  clear_popup_state
+}
+
+show_popup() {
+  local lock_file="$1"
+  local catcher="$2"
+  local window="$3"
+
+  if [ -f "$lock_file" ]; then
+    hide_popup "$lock_file" "$catcher" "$window"
+    return
+  fi
+
+  close_all_popups
+  touch "$lock_file"
+  eww open "$catcher" 2>/dev/null
+  eww open "$window" 2>/dev/null
+}
+
+hide_popup() {
+  local lock_file="$1"
+  local catcher="$2"
+  local window="$3"
+
+  rm -f "$lock_file"
+  eww close "$window" 2>/dev/null
+  eww close "$catcher" 2>/dev/null
+}
+
+audio() {
+  pavucontrol &
+}
+
+calendar() {
+  show_popup "$LOCK_DIR/calendar.lock" calendar_catcher calendar
+}
+
+system() {
+  show_popup "$LOCK_DIR/system.lock" system_catcher system
+}
+
+music() {
+  show_popup "$LOCK_DIR/music.lock" music_catcher music_win
+}
+
+case "${1:-}" in
+  close-all) close_all_popups ;;
+  calendar) calendar ;;
+  system) system ;;
+  music) music ;;
+  audio) audio ;;
+esac

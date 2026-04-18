@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+case $1 in
+	used)
+		free -m | grep Mem | awk '{print $3}'
+		;;
+	total)
+		free -m | grep Mem | awk '{print $2}'
+		;;
+	free)
+		free -m | grep Mem | awk '{print $4}'
+		;;
+esac

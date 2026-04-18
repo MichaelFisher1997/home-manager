@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Disk usage monitor
+
+get_disk_usage() {
+    # Get nvme1n1p2 partition usage percentage
+    disk=$(df -h /nix/store 2>/dev/null | tail -1 | awk '{print $5}' | tr -d '%')
+    
+    if [ -z "$disk" ]; then
+        echo "0"
+    else
+        echo "$disk"
+    fi
+}
+
+# Get used space in human readable format
+get_disk_used() {
+    df -h /nix/store 2>/dev/null | tail -1 | awk '{print $3}'
+}
+
+# Get total space
+get_disk_total() {
+    df -h /nix/store 2>/dev/null | tail -1 | awk '{print $2}'
+}
+
+case "$1" in
+    --used)
+        get_disk_used
+        ;;
+    --total)
+        get_disk_total
+        ;;
+    *)
+        get_disk_usage
+        ;;
+esac

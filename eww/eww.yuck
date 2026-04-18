@@ -1,0 +1,503 @@
+;; Variables
+;; NOTE: Monitor is hardcoded as "eDP-1" in defwindow blocks below.
+;;       Eww's :monitor property does not accept variable references.
+(defpoll clock_time :interval "5m" "date +%H")
+(defpoll clock_minute :interval "5s" "date +%M")
+(defpoll clock_date :interval "10h" "date '+%d/%m'")
+(defpoll volume_percent :interval "3s" "./scripts/volume-percent")
+(defpoll volume_mute :interval "500ms" "./scripts/volume-mute")
+(defpoll volume_class :interval "500ms" "./scripts/volume-class")
+(defpoll volume_icon_glyph :interval "500ms" "./scripts/volume-icon")
+(defpoll mic_percent :interval "3s" "pamixer --default-source --get-volume")
+(defpoll brightness_percent :interval "5s" "device=$(./scripts/brightness_device); if [ -n \"$device\" ]; then brightnessctl -m -d \"$device\" | awk -F, '{print substr($4, 0, length($4)-1)}' | tr -d '%'; else echo 100; fi")
+(defpoll battery :interval "15s" "./scripts/battery --bat")
+(defpoll battery_status :interval "1m" "./scripts/battery --bat-st")
+(defpoll memory :interval "15s" "scripts/memory")
+(defpoll memory_used_mb :interval "2m" "scripts/mem-ad used")
+(defpoll memory_total_mb :interval "2m" "scripts/mem-ad total")
+(defpoll memory_free_mb :interval "2m" "scripts/mem-ad free")
+(defvar vol_reveal false)
+(defvar br_reveal false)
+(defvar music_reveal false)
+(defvar wifi_rev false)
+(defvar time_rev false)
+(defvar launcher_query "")
+(defpoll launcher_list :interval "5m" "./scripts/launcher-data")
+(deflisten workspace "scripts/workspace")
+
+(defvar eww "eww")
+
+(defpoll COL_WLAN :interval "1m" "./scripts/wifi --COL")
+(defpoll ESSID_WLAN :interval "1m" "./scripts/wifi --ESSID")
+(defpoll WLAN_ICON :interval "1m" "./scripts/wifi --ICON")
+
+
+(defpoll song :interval "2s"  "./scripts/music_info --song")
+(defpoll song_summary :interval "2s"  "./scripts/music_info --summary")
+(defpoll song_artist :interval "2s"  "./scripts/music_info --artist")
+(defpoll current_status :interval "1s"  "./scripts/music_info --time")
+(defpoll song_status :interval "2s"  "./scripts/music_info --status")
+(defpoll cover_art :interval "2s"  "./scripts/music_info --cover")
+
+(defpoll calendar_day :interval "20h" "date '+%d'")
+(defpoll calendar_year :interval "20h" "date '+%Y'")
+(defpoll calendar_grid :interval "1h" "./scripts/calendar-data")
+
+;; New widgets - CPU, Disk, Weather, Notifications
+(defpoll cpu_usage :interval "5s" "./scripts/cpu")
+(defpoll disk_usage :interval "30s" "./scripts/disk")
+(defpoll disk_used :interval "30s" "./scripts/disk --used")
+(defpoll disk_total :interval "30s" "./scripts/disk --total")
+(defpoll weather :interval "5m" "./scripts/weather")
+(defpoll weather_svg :interval "5m" "./scripts/weather-svg")
+(defpoll weather_icon_path :interval "5m" "./scripts/weather-icon-path")
+(defpoll weather_full :interval "5m" "./scripts/weather --full")
+(defpoll weather_forecast :interval "15m" "./scripts/weather-data")
+
+;; widgets
+
+(defwidget wifi [] 
+  (eventbox :onhover "${eww} update wifi_rev=true"
+			  :onhoverlost "${eww} update wifi_rev=false"
+		(box :vexpand "false" :hexpand "false" :space-evenly "false"
+				(button :class "module-wif" :onclick "networkmanager_dmenu" :style "color: ${COL_WLAN};" WLAN_ICON)
+	(revealer :transition "slideright"
+			  :reveal wifi_rev
+			  :duration "350ms"
+	(label    :class "module_essid"
+			  :text ESSID_WLAN
+			  :orientation "h"
+			  )))))
+
+
+(defwidget workspaces []
+  (literal :content workspace))
+
+
+(defwidget bat []
+		(box :class "bat_module" :vexpand "false" :hexpand "false" 
+            (circular-progress :value battery
+                :class "batbar"
+                :thickness 4
+            (button 
+                :class "iconbat"
+                :tooltip "battery on ${battery}%"
+                :onclick "./scripts/pop system"
+                ""))))
+
+
+;; Memory Widget - simple text display
+(defwidget mem []
+  (label :class "mem_text" :text "󰘚 ${memory}%"))
+
+;; NEW WIDGETS
+
+;; App Launcher bar button
+(defwidget app_launcher []
+  (button
+    :class "launcher_icon"
+    :tooltip "Open App Launcher"
+    :onclick "./scripts/launcher_ctrl toggle"
+    "󰀻"))
+
+;; App Launcher Popup
+(defwidget launcher_pop []
+  (box :class "lp-win" :orientation "v" :spacing 0 :space-evenly false
+
+    ;; Favorites section
+    (label :class "lp-section-label" :text "Favourites" :halign "start")
+    (box :class "lp-favs" :orientation "h" :space-evenly true :spacing 0
+      (button :class "lp-fav lp-fav-opencode"
+              :onclick "./scripts/launcher_ctrl launch_direct opencode-desktop"
+        (image :path "images/opencode-desktop.png"
+               :image-width 54 :image-height 54))
+      (button :class "lp-fav lp-fav-zed"
+              :onclick "./scripts/launcher_ctrl launch_direct zeditor"
+        (image :path "images/zed.svg"
+               :image-width 54 :image-height 54))
+      (button :class "lp-fav lp-fav-zen"
+              :onclick "./scripts/launcher_ctrl launch_direct zen-twilight"
+        (image :path "images/zen-twilight.png"
+               :image-width 54 :image-height 54))
+      (button :class "lp-fav lp-fav-spotify"
+              :onclick "./scripts/launcher_ctrl launch_direct com.spotify.Client"
+        (image :path "images/spotify.svg"
+               :image-width 54 :image-height 54)))
+
+    ;; Divider
+    (box :class "lp-divider")
+
+    ;; Search field
+    (box :class "lp-search-box" :orientation "h" :spacing 10 :space-evenly false
+      (label :class "lp-search-icon" :text "")
+      (input :class "lp-search"
+             :value launcher_query
+             :onchange "./scripts/launcher_ctrl search {}"))
+
+    ;; Results label
+    (label :class "lp-section-label" :text "Applications" :halign "start")
+
+    ;; Results list
+    (scroll :vscroll true :hscroll false :height 260
+      (literal :content launcher_list))))
+
+(defwindow launcher_popup
+  :monitor "eDP-1"
+  :geometry (geometry :x "0%"
+                      :y "45px"
+                      :anchor "top center"
+                      :width "440px"
+                      :height "520px")
+  :stacking "fg"
+  :focusable true
+  (eventbox
+    :onhover "./scripts/launcher_ctrl cancel_timer"
+    :onhoverlost "./scripts/launcher_ctrl start_timer"
+    (launcher_pop)))
+
+(defwindow launcher_catcher
+  :monitor "eDP-1"
+  :geometry (geometry :x "0%"
+                      :y "0%"
+                      :anchor "top center"
+                      :width "100%"
+                      :height "100%")
+  :stacking "overlay"
+  (eventbox
+    :onclick "./scripts/launcher_ctrl hide"
+    (box :class "launcher_catcher"
+         :hexpand true
+         :vexpand true)))
+
+;; Weather Widget
+(defwidget weather_widget []
+  (eventbox
+    :onclick "./scripts/weather_ctrl toggle"
+    :onrightclick "./scripts/weather-refresh"
+    (box :orientation "h" :space-evenly false :spacing 6
+      :class "weather_widget"
+      (image :class "weather_svg" :path {weather_icon_path != "" ? weather_icon_path : "images/sun.svg"} :image-width 20 :image-height 20)
+      (label :class "weather_temp" :text "${weather}C"))))
+
+;; Weather Popup
+(defwidget weather_pop []
+  (box :class "wp-win" :orientation "v"
+    (literal :content weather_forecast)))
+
+(defwindow weather_popup
+  :monitor "eDP-1"
+  :geometry (geometry :x "0%"
+                      :y "45px"
+                      :anchor "top center"
+                      :width "480px"
+                      :height "200px")
+  :stacking "overlay"
+  (eventbox
+    :onhover "./scripts/weather_ctrl cancel_timer"
+    :onhoverlost "./scripts/weather_ctrl start_timer"
+    (weather_pop)))
+
+(defwindow weather_catcher
+  :monitor "eDP-1"
+  :geometry (geometry :x "0%"
+                      :y "0%"
+                      :anchor "top center"
+                      :width "100%"
+                      :height "100%")
+  :stacking "fg"
+  (eventbox
+    :onclick "./scripts/weather_ctrl hide"
+    (box :class "weather_catcher"
+         :hexpand true
+         :vexpand true)))
+
+;; CPU Widget - simple text display
+(defwidget cpu_widget []
+  (label :class "cpu_text" :text " ${cpu_usage}%"))
+
+;; Disk Widget - simple text display
+(defwidget disk_widget []
+  (label :class "disk_text" :text " ${disk_usage}%"))
+
+(defwidget sys_tray []
+  (systray
+    :class "tray"
+    :spacing 8))
+
+(defwidget sep []
+  (box :class "module-2" :vexpand "false" :hexpand "false"
+    (label :class "separ" :text "|")))
+
+(defwidget clock_module []
+  (button :onclick "./scripts/calendar_ctrl toggle"
+    (box :class "module" :space-evenly "false" :orientation "h" :spacing "3"
+        (label :text "${clock_time}:${clock_minute}" :class "clock_time_class"))))
+  
+(defwidget volume []
+  (eventbox
+    :onscroll "./scripts/volume-step {}"
+    (box :orientation "h" :spacing "2" :class volume_class
+	(button
+		 :onclick "pamixer --toggle-mute"
+		 :class "volume_icon"
+		 volume_icon_glyph)
+	(label :text "${volume_percent}%" :class "volume_text"))))
+
+(defwidget bright []
+  (eventbox :onhover "${eww} update br_reveal=true" :onhoverlost "${eww} update br_reveal=false"
+  (box :class "module-2" :space-evenly "false" :orientation "h" :spacing "3" 
+    (label :text "" :class "bright_icon" :tooltip "brightness")
+	(revealer :transition "slideleft"
+			  :reveal br_reveal
+			  :duration "350ms"
+	(scale    :class "brightbar"
+			  :value brightness_percent
+			  :orientation "h"
+			  :tooltip "${brightness_percent}%"
+			  :max 100
+			  :min 0
+			  :onchange "brightnessctl set {}%" )))))
+
+
+
+;; Media strip
+(defwidget media_strip []
+  (box :class "media_strip" :orientation "h" :space-evenly false :spacing 8
+    (button :class "media_icon" :onclick "./scripts/pop music" "♪")
+    (label :class "media_title" :text song_summary :tooltip song_summary :xalign 0 :limit-width 32)
+    (button :class "media_btn" :onclick "./scripts/music_info --prev" "")
+    (button :class "media_btn" :onclick "./scripts/music_info --play-pause" song_status)
+    (button :class "media_btn" :onclick "./scripts/music_info --next" "")))
+
+
+
+;; LEFT SIDE: Launcher and Workspaces only
+(defwidget left []
+	(box :orientation "h"
+		 :space-evenly false
+         :halign "start"
+		 :class "left_modules"
+		 (app_launcher)
+		 (sep)
+		 (workspaces)
+		 (sep)
+		 (media_strip)))
+
+
+;; RIGHT SIDE: CPU | Mem | Disk | Separator | System Tray
+(defwidget right []
+	(box :orientation "h"
+		 :space-evenly "false"
+         :halign "end"
+		 :hexpand "true"
+		 :vexpand "false"
+		 :class "right_modules"
+		 (cpu_widget)
+		 (mem)
+		 (disk_widget)
+		 (sep)
+		 (sys_tray)))
+
+
+;; CENTER: Volume | Clock | Weather (grouped together)
+(defwidget center []
+	(box :orientation "h"
+         :halign "center"
+		 :hexpand "true"
+		 :vexpand "false"
+		 :class "center_modules"
+		 :spacing 2
+		 (volume)
+		 (sep)
+		 (clock_module)
+		 (sep)
+		 (weather_widget)))
+
+(defwidget bar_1 []
+  (centerbox :class "bar_class"
+       :orientation "h"
+  (left)
+  (center)
+  (right)
+    ))
+
+(defwindow bar
+          :monitor "eDP-1"
+           :geometry (geometry :x "0%"
+						:y "9px"
+						:width "95%"
+						:height "30px"
+						:anchor "top center")
+          :stacking "fg"
+          :windowtype "dock"
+  (bar_1))
+  
+(defwidget system []
+  (box :class "sys_win" :orientation "v" :space-evenly "false" :hexpand "false" :vexpand "false" :spacing 0
+  (box :class "sys_bat_box" :orientation "h" :space-evenly "false"
+      (circular-progress :value {battery != "" ? battery : 100}
+                :class "sys_bat"
+                :thickness 9
+            (label :text ""
+                :class "sys_icon_bat"))
+            (box :orientation "v" :space-evenly "false" :spacing 0 :hexpand "false" :vexpand "false"
+            (label :text "battery"
+                :halign "start"
+                :class "sys_text_bat")
+            (label :text "${battery}%"
+                :halign "start"
+                :class "sys_text_bat_sub")
+            (label :text "${battery_status}"
+                :halign "start"
+                :class "sys_text_bat_sub")))
+            (label :text "" :class "sys_sep" :halign "center")
+   (box :class "sys_mem_box" :orientation "h" :space-evenly "false" :halign "start"
+        (circular-progress :value {memory != "" ? memory : 0}
+                  :class "sys_mem"
+                  :thickness 9
+             (label :text ""
+                 :class "sys_icon_mem"
+                 :angle 0.0))
+             (box :orientation "v" :space-evenly "false" :spacing 0 :hexpand "false" :vexpand "false"
+             (label :text "memory"
+                 :halign "start"
+                 :class "sys_text_mem")
+             (label :text "${memory_used_mb} | ${memory_total_mb}mb "
+                 :halign "start"
+                 :class "sys_text_mem_sub")
+             (label :text "${memory_free_mb}mb free"
+                 :halign "start"
+                 :class "sys_text_mem_sub")))))
+
+(defwidget cal []
+  (box :class "cal" :orientation "v" :spacing 6 :space-evenly false
+    ;; Nav header + grid both rendered by calendar-data script
+    (literal :content calendar_grid)))
+
+(defwindow calendar
+	:monitor "eDP-1"
+	:geometry (geometry :x "0%" 
+						:y "45px" 
+                        :anchor "top center"
+						:width "310px" 
+						:height "290px")
+	:stacking "overlay"
+  (eventbox 
+    :onhover "./scripts/calendar_ctrl cancel_timer"
+    :onhoverlost "./scripts/calendar_ctrl start_timer"
+    (cal)))
+
+;; Click catcher - transparent overlay that closes calendar when clicked
+(defwindow calendar_catcher
+	:monitor "eDP-1"
+	:geometry (geometry :x "0%" 
+						:y "0%" 
+	                        :anchor "top center"
+						:width "100%" 
+						:height "100%")
+	:stacking "fg"
+  (eventbox 
+    :onclick "./scripts/calendar_ctrl hide"
+    (box :class "calendar_catcher"
+         :hexpand true
+         :vexpand true)))
+
+(defwidget audio []
+	(box :class "audio-box" :orientation "v" :space-evenly "false" :vexpand "false" :hexpand "false"
+	(box :halign "v" :space-evenly "false" :hexpand "false" :vexpand "false"
+	(box :class "speaker_icon" :orientation "v")
+	(box :orientation "v" :halign "center" :vexpand "false" :hexpand "false"
+    (label :class "speaker_text" :text "speaker" :valign "center" :halign "left" )
+	(box :class "speaker_bar" :halign "center" :vexpand "false" :hexpand "false"
+	(scale    :value volume_percent
+              :space-evenly "false"
+			  :orientation "h"
+			  :onchange "pamixer --set-volume {}" 
+              :tooltip "volume on ${volume_percent}%"
+			  :max 100
+			  :min 0))))
+            (label :text "" :class "audio_sep" :halign "center")
+	(box :halign "v" :space-evenly "false" :hexpand "false" :vexpand "false"
+	(box :class "mic_icon" :orientation "v")
+	(box :orientation "v" :halign "center" :vexpand "false" :hexpand "false"
+    (label :class "mic_text" :text "mic" :valign "center" :halign "left" )
+	(box :class "mic_bar" :halign "center" :vexpand "false" :hexpand "false"
+	(scale    :value mic_percent
+              :space-evenly "false"
+			  :orientation "h"
+              :tooltip "mic on ${mic_percent}%"
+			  :onchange "pamixer --default-source --set-volume {}" 
+			  :max 100
+			  :min 0))))))
+
+(defwindow audio_ctl
+	:monitor "eDP-1"
+	:stacking "overlay"
+	:geometry (geometry :x "-20px" 
+						:y "7%" 
+                        :anchor "top right"
+						:width "280px" 
+						:height "60px")
+(audio))
+
+
+(defwindow system
+	:monitor "eDP-1"
+	:stacking "overlay"
+	:geometry (geometry :x "-20px" 
+						:y "7%" 
+                        :anchor "top right"
+						:width "290px" 
+						:height "120px")
+(system))
+
+(defwindow system_catcher
+	:monitor "eDP-1"
+	:geometry (geometry :x "0%"
+						:y "0%"
+						:anchor "top center"
+						:width "100%"
+						:height "100%")
+	:stacking "fg"
+	(eventbox
+	  :onclick "./scripts/pop system"
+	  (box :class "system_catcher"
+	       :hexpand true
+	       :vexpand true)))
+
+
+
+;;  Music
+(defwidget music_pop []
+		(box :class "music_pop" :orientation "h" :space-evenly "false" :vexpand "false" :hexpand "false"
+			(box :class "music_cover_art" :vexpand "false" :hexpand "false" :style "background-image: url('${cover_art}');")
+			(box :orientation "v" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false"
+				(label :halign "center" :class "music" :text song)
+				(label :halign "center" :class "music_artist" :text song_artist)
+				(box :orientation "h" :spacing 15 :halign "center" :space-evenly "false" :vexpand "false" :hexpand "false"
+					(button :class "music_btn_prev" :onclick "./scripts/music_info --prev" "")
+					(button :class "music_btn_play" :onclick "./scripts/music_info --play-pause" song_status)
+					(button :class "music_btn_next" :onclick "./scripts/music_info --next" ""))
+				(box :class "music_bar" :halign "center" :vexpand "false" :hexpand "false" :space-evenly "false"
+					(scale :onscroll "mpc -q seek {}" :min 0 :active "true" :max 100 :value current_status)))))
+
+
+;;  music
+
+(defwindow music_win :stacking "overlay" :focusable "false" :monitor "eDP-1"
+			    :geometry (geometry :x "0" :y "7%" :width 428 :height 104 :anchor "top center")
+								(music_pop))
+
+(defwindow music_catcher
+	:monitor "eDP-1"
+	:geometry (geometry :x "0%"
+						:y "0%"
+						:anchor "top center"
+						:width "100%"
+						:height "100%")
+	:stacking "fg"
+	(eventbox
+	  :onclick "./scripts/pop music"
+	  (box :class "music_catcher"
+	       :hexpand true
+	       :vexpand true)))

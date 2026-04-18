@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+# Calendar control with multiple close triggers
+
+DIR="$(dirname "$(realpath "$0")")"
+LOCK_FILE="/tmp/eww_calendar.lock"
+TIMER_TOKEN_FILE="/tmp/eww_calendar_timer.token"
+
+show_calendar() {
+    if [ ! -f "$LOCK_FILE" ]; then
+        "$DIR/pop" close-all
+        touch "$LOCK_FILE"
+        rm -f "$TIMER_TOKEN_FILE"
+        eww open calendar_catcher 2>/dev/null
+        eww open calendar 2>/dev/null
+        start_hover_timer
+    fi
+}
+
+hide_calendar() {
+  [ ! -f "$LOCK_FILE" ] && return
+  rm -f "$TIMER_TOKEN_FILE"
+  rm -f "$LOCK_FILE"
+  eww close calendar 2>/dev/null
+  eww close calendar_catcher 2>/dev/null
+}
+
+toggle_calendar() {
+    if [ -f "$LOCK_FILE" ]; then
+        hide_calendar
+    else
+        show_calendar
+    fi
+}
+
+start_hover_timer() {
+    # Start new 3-second timer
+    local token
+    token="$(date +%s%N)"
+    printf '%s\n' "$token" > "$TIMER_TOKEN_FILE"
+    (
+        sleep 3
+        if [ -f "$LOCK_FILE" ] && [ "$(cat "$TIMER_TOKEN_FILE" 2>/dev/null)" = "$token" ]; then
+            hide_calendar
+        fi
+    ) &
+}
+
+cancel_hover_timer() {
+    rm -f "$TIMER_TOKEN_FILE"
+}
+
+STATE_FILE="/tmp/eww_cal_view"
+CAL_DATA="$(dirname "$0")/calendar-data"
+
+init_state() {
+    if [ ! -f "$STATE_FILE" ]; then
+        echo "$(date +%-m):$(date +%Y)" > "$STATE_FILE"
+    fi
+}
+
+nav_month() {
+    init_state
+    view_month=$(cut -d: -f1 "$STATE_FILE")
+    view_year=$(cut -d: -f2 "$STATE_FILE")
+    view_month=$(( view_month + $1 ))
+    if [ "$view_month" -gt 12 ]; then view_month=1;  view_year=$(( view_year + 1 )); fi
+    if [ "$view_month" -lt 1  ]; then view_month=12; view_year=$(( view_year - 1 )); fi
+    echo "${view_month}:${view_year}" > "$STATE_FILE"
+    eww update calendar_grid="$($CAL_DATA)"
+}
+
+nav_year() {
+    init_state
+    view_month=$(cut -d: -f1 "$STATE_FILE")
+    view_year=$(cut -d: -f2 "$STATE_FILE")
+    view_year=$(( view_year + $1 ))
+    echo "${view_month}:${view_year}" > "$STATE_FILE"
+    eww update calendar_grid="$($CAL_DATA)"
+}
+
+case "$1" in
+    toggle)
+        # Reset view to current month on open
+        echo "$(date +%-m):$(date +%Y)" > "$STATE_FILE"
+        toggle_calendar
+        ;;
+    hide)
+        hide_calendar
+        ;;
+    start_timer)
+        start_hover_timer
+        ;;
+    cancel_timer)
+        cancel_hover_timer
+        ;;
+    prev)      nav_month -1 ;;
+    next)      nav_month  1 ;;
+    prev_year) nav_year  -1 ;;
+    next_year) nav_year   1 ;;
+esac

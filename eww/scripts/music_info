@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+# Media control using playerctl
+
+get_status() {
+    status=$(playerctl status 2>/dev/null)
+    if [[ "$status" == "Playing" ]]; then
+        echo "⏸"
+    else
+        echo "▶"
+    fi
+}
+
+get_song() {
+    playerctl metadata title 2>/dev/null || echo "Offline"
+}
+
+get_summary() {
+    title=$(playerctl metadata title 2>/dev/null)
+    artist=$(playerctl metadata artist 2>/dev/null)
+    summary=""
+
+    if [[ -z "$title" ]]; then
+        summary="Offline"
+    elif [[ -n "$artist" ]]; then
+        summary="$title - $artist"
+    else
+        summary="$title"
+    fi
+
+    if [[ ${#summary} -gt 56 ]]; then
+        echo "${summary:0:53}..."
+    else
+        echo "$summary"
+    fi
+}
+
+get_artist() {
+    playerctl metadata artist 2>/dev/null || echo ""
+}
+
+get_album_art() {
+    # Try to get album art URL or use placeholder
+    art=$(playerctl metadata mpris:artUrl 2>/dev/null)
+    if [[ -n "$art" ]]; then
+        # Convert file:// URL to path if needed
+        echo "$art" | sed 's|file://||'
+    else
+        echo "images/music.png"
+    fi
+}
+
+get_position() {
+    # Get position percentage
+    position=$(playerctl position 2>/dev/null)
+    length=$(playerctl metadata mpris:length 2>/dev/null)
+    if [[ -n "$position" && -n "$length" ]]; then
+        # Convert length from microseconds to seconds if needed
+        if [[ ${#length} -gt 6 ]]; then
+            length=$((length / 1000000))
+        fi
+        echo "$((position * 100 / length))"
+    else
+        echo "0"
+    fi
+}
+
+case "$1" in
+    --status)
+        get_status
+        ;;
+    --song)
+        get_song
+        ;;
+    --summary)
+        get_summary
+        ;;
+    --artist)
+        get_artist
+        ;;
+    --cover)
+        get_album_art
+        ;;
+    --time)
+        get_position
+        ;;
+    --toggle)
+        playerctl play-pause
+        ;;
+    --play-pause)
+        playerctl play-pause
+        ;;
+    --next)
+        playerctl next
+        ;;
+    --prev)
+        playerctl previous
+        ;;
+esac

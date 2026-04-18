@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# Rainbow workspace script for Hyprland - each workspace has unique color
+
+workspaces() {
+    # Get current monitor
+    monitor=$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')
+    
+    # Get active workspace ID
+    active_ws=$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .activeWorkspace.id')
+    
+    # Get all occupied workspaces across ALL monitors
+    occupied_workspaces=$(hyprctl workspaces -j | jq -r '.[] | .id' | sort -n)
+    
+    # Start building the box
+    output="(box :class \"works\" :orientation \"h\" :spacing 12 :space-evenly \"false\""
+    
+    # Add current workspace even if empty (so user knows where they are)
+    current_in_list=false
+    
+    # Generate buttons for each occupied workspace
+    while IFS= read -r ws_id; do
+        if [ -n "$ws_id" ]; then
+            # Check if this is the focused workspace
+            if [ "$ws_id" -eq "$active_ws" ]; then
+                # Active: filled circle with workspace-specific color
+                icon=""
+                class="ws-${ws_id}-active"
+                current_in_list=true
+            else
+                # Occupied: outlined circle with workspace-specific color
+                icon=""
+                class="ws-${ws_id}"
+            fi
+            
+            output="$output (button :onclick \"hyprctl dispatch workspace $ws_id\" :class \"$class workspace-btn\" \"$icon\")"
+        fi
+    done <<< "$occupied_workspaces"
+    
+    # If current workspace is not in the occupied list (empty workspace), add it
+    if [ "$current_in_list" = false ]; then
+        output="$output (button :onclick \"hyprctl dispatch workspace $active_ws\" :class \"ws-${active_ws}-active workspace-btn\" \"\")"
+    fi
+    
+    # Close the box
+    output="$output)"
+    
+    echo "$output"
+}
+
+workspaces
+
+# Listen for workspace changes
+if command -v socat >/dev/null 2>&1; then
+    socket_path="/tmp/hypr/${HYPRLAND_INSTANCE_SIGNATURE}/.socket2.sock"
+    if [ -S "$socket_path" ]; then
+        socat -u UNIX-CONNECT:"$socket_path" - | while read -r _ ; do
+            workspaces
+        done
+    else
+        # Fallback to faster polling (100ms)
+        while true; do
+            sleep 0.1
+            workspaces
+        done
+    fi
+else
+    # Fast polling mode (100ms) - install socat for instant updates
+    while true; do
+        sleep 0.1
+        workspaces
+    done
+fi

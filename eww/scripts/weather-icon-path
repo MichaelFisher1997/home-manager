@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+svg=$("$(dirname "$0")/weather-svg")
+if [ -n "$svg" ]; then
+  printf 'images/%s\n' "$svg"
+else
+  printf 'images/sun.svg\n'
+fi

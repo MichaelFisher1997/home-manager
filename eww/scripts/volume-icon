@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [ "$("$(dirname "$0")/volume-mute")" = "true" ]; then
+  printf '\n'
+else
+  printf '\n'
+fi

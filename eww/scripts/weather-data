@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+# Outputs 5-day weather forecast popup as eww literal markup
+# Uses Open-Meteo (free, no API key) + wttr.in for current conditions
+
+LAT="53.49"
+LON="-2.08"
+LOCATION="Ashton-Under-Lyne"
+CACHE_FILE="/tmp/eww_weather_data.json"
+CACHE_AGE=900  # 15 minutes
+
+# Refresh cache if stale or missing
+if [ ! -f "$CACHE_FILE" ] || [ $(( $(date +%s) - $(stat -c %Y "$CACHE_FILE" 2>/dev/null || echo 0) )) -gt $CACHE_AGE ]; then
+  curl -s "https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum&current_weather=true&timezone=Europe%2FLondon&forecast_days=5" \
+    -o "$CACHE_FILE" 2>/dev/null
+fi
+
+# Read from cache
+DATA=$(cat "$CACHE_FILE" 2>/dev/null)
+if [ -z "$DATA" ]; then
+  echo "(label :text \"Weather unavailable\")"
+  exit 0
+fi
+
+# Current conditions
+CURR_TEMP=$(echo "$DATA" | jq -r '.current_weather.temperature' 2>/dev/null | cut -d. -f1)
+CURR_CODE=$(echo "$DATA" | jq -r '.current_weather.weathercode' 2>/dev/null)
+
+# Map WMO weather code to SVG filename and short label
+code_to_svg() {
+  local code=$1
+  if   [ "$code" -eq 0 ];                             then echo "sun.svg"
+  elif [ "$code" -le 2 ];                             then echo "cloud-sun.svg"
+  elif [ "$code" -le 3 ];                             then echo "cloud.svg"
+  elif [ "$code" -le 48 ];                            then echo "cloud.svg"
+  elif [ "$code" -le 57 ];                            then echo "rain.svg"
+  elif [ "$code" -le 67 ];                            then echo "rain.svg"
+  elif [ "$code" -le 77 ];                            then echo "snow.svg"
+  elif [ "$code" -le 82 ];                            then echo "rain.svg"
+  elif [ "$code" -le 86 ];                            then echo "snow.svg"
+  else                                                     echo "storm.svg"
+  fi
+}
+
+code_to_desc() {
+  local code=$1
+  if   [ "$code" -eq 0 ];  then echo "Clear"
+  elif [ "$code" -le 2 ];  then echo "Partly Cloudy"
+  elif [ "$code" -le 3 ];  then echo "Overcast"
+  elif [ "$code" -le 48 ]; then echo "Fog"
+  elif [ "$code" -le 57 ]; then echo "Drizzle"
+  elif [ "$code" -le 67 ]; then echo "Rain"
+  elif [ "$code" -le 77 ]; then echo "Snow"
+  elif [ "$code" -le 82 ]; then echo "Showers"
+  elif [ "$code" -le 86 ]; then echo "Snow Showers"
+  else                          echo "Thunderstorm"
+  fi
+}
+
+# Workspace palette for 5 cards: blue, green, yellow, orange, red
+COLORS=("#61afef" "#98c379" "#e5c07b" "#d19a66" "#e06c75")
+CLASSES=("wp-blue" "wp-green" "wp-yellow" "wp-orange" "wp-red")
+
+TODAY=$(date +%Y-%m-%d)
+CURR_SVG=$(code_to_svg "$CURR_CODE")
+CURR_DESC=$(code_to_desc "$CURR_CODE")
+
+# Build header
+header="(box :class \"wp-header\" :orientation \"h\" :space-evenly false :spacing 10"
+header="$header (image :class \"wp-curr-icon\" :path \"images/${CURR_SVG}\" :image-width 40 :image-height 40)"
+header="$header (box :orientation \"v\" :space-evenly false :spacing 2"
+header="$header   (label :class \"wp-location\" :text \"${LOCATION}\" :halign \"start\")"
+header="$header   (box :orientation \"h\" :space-evenly false :spacing 6"
+header="$header     (label :class \"wp-curr-temp\" :text \"${CURR_TEMP}C\" :halign \"start\")"
+header="$header     (label :class \"wp-curr-desc\" :text \"${CURR_DESC}\" :halign \"start\"))"
+header="$header ))"
+
+# Build forecast cards
+cards="(box :class \"wp-cards\" :orientation \"h\" :space-evenly true :spacing 6"
+
+for i in 0 1 2 3 4; do
+  date_str=$(echo "$DATA" | jq -r ".daily.time[$i]" 2>/dev/null)
+  code=$(echo "$DATA" | jq -r ".daily.weathercode[$i]" 2>/dev/null)
+  max=$(echo "$DATA" | jq -r ".daily.temperature_2m_max[$i]" 2>/dev/null | cut -d. -f1)
+  min=$(echo "$DATA" | jq -r ".daily.temperature_2m_min[$i]" 2>/dev/null | cut -d. -f1)
+  rain=$(echo "$DATA" | jq -r ".daily.precipitation_sum[$i]" 2>/dev/null | cut -d. -f1)
+
+  svg=$(code_to_svg "$code")
+  day_label=$(date -d "$date_str" +%a 2>/dev/null)
+
+  cls="${CLASSES[$i]}"
+  # Today gets solid fill class
+  if [ "$date_str" = "$TODAY" ]; then
+    cls="$cls wp-today"
+    day_label="Today"
+  fi
+
+  card="(box :class \"wp-card $cls\" :orientation \"v\" :space-evenly false :spacing 4"
+  card="$card (label :class \"wp-day\" :text \"${day_label}\" :halign \"center\")"
+  card="$card (image :class \"wp-icon\" :path \"images/${svg}\" :image-width 28 :image-height 28)"
+  card="$card (label :class \"wp-hi\" :text \"${max}C\" :halign \"center\")"
+  card="$card (label :class \"wp-lo\" :text \"${min}C\" :halign \"center\")"
+  card="$card (label :class \"wp-rain\" :text \"${rain}mm\" :halign \"center\")"
+  card="$card)"
+
+  cards="$cards $card"
+done
+
+cards="$cards)"
+
+echo "(box :class \"wp-body\" :orientation \"v\" :spacing 12 :space-evenly false $header $cards)"

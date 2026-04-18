@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+status=$(nmcli g | grep -oE "disconnected")
+# Auto-detect WiFi interface
+WIFI_IFACE=$(nmcli device status | grep wifi | grep connected | awk '{print $1}' | head -n 1)
+
+if [ -z "$WIFI_IFACE" ]; then
+    essid=""
+else
+    essid=$(nmcli -t -f NAME,DEVICE connection show --active | grep "$WIFI_IFACE" | cut -d: -f1)
+fi
+
+if [ "$status" ]; then
+    icon="󰤭"
+    text=""
+    col="#575268"
+else
+    icon=""
+    text="${essid}"
+    col="#a1bdce"
+fi
+
+if [[ "$1" == "--COL" ]]; then
+    echo $col	
+elif [[ "$1" == "--ESSID" ]]; then
+	echo $text
+elif [[ "$1" == "--ICON" ]]; then
+	echo $icon
+fi

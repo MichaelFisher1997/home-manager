@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+mute=$(timeout 1 pamixer --get-mute 2>/dev/null)
+if [ -n "$mute" ]; then
+  echo "$mute"
+else
+  echo false
+fi

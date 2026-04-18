@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+
+LOCK_FILE="/tmp/eww_launcher.lock"
+TIMER_TOKEN_FILE="/tmp/eww_launcher_timer.token"
+DEBOUNCE_FILE="/tmp/eww_launcher_debounce.pid"
+CMDS_FILE="/tmp/eww_launcher_cmds"
+DIR="$(dirname "$(realpath "$0")")"
+LAUNCHER_DATA="$DIR/launcher-data"
+LAUNCHER_INDEX="$DIR/launcher-index"
+
+show_launcher() {
+  if [ -f "$LOCK_FILE" ]; then
+    return
+  fi
+  "$DIR/pop" close-all
+  touch "$LOCK_FILE"
+  rm -f "$TIMER_TOKEN_FILE"
+  eww update launcher_query=""
+  eww open launcher_catcher 2>/dev/null
+  eww open launcher_popup 2>/dev/null
+  (
+    list=$("$LAUNCHER_DATA" "")
+    eww update launcher_list="$list"
+  ) &
+  schedule_close
+}
+
+hide_launcher() {
+  [ ! -f "$LOCK_FILE" ] && return
+  rm -f "$TIMER_TOKEN_FILE"
+  rm -f "$LOCK_FILE"
+  eww update launcher_query=""
+  eww close launcher_popup 2>/dev/null
+  eww close launcher_catcher 2>/dev/null
+}
+
+toggle_launcher() {
+  if [ -f "$LOCK_FILE" ]; then
+    hide_launcher
+  else
+    show_launcher
+  fi
+}
+
+schedule_close() {
+  local token
+  token="$(date +%s%N)"
+  printf '%s\n' "$token" > "$TIMER_TOKEN_FILE"
+  (
+    sleep 1.5
+    if [ -f "$LOCK_FILE" ] && [ "$(cat "$TIMER_TOKEN_FILE" 2>/dev/null)" = "$token" ]; then
+      hide_launcher
+    fi
+  ) &
+}
+
+cancel_close() {
+  rm -f "$TIMER_TOKEN_FILE"
+}
+
+search_apps() {
+  local query="$1"
+  eww update launcher_query="$query"
+  cancel_close
+
+  if [ -f "$DEBOUNCE_FILE" ]; then
+    kill "$(cat "$DEBOUNCE_FILE")" 2>/dev/null
+    rm -f "$DEBOUNCE_FILE"
+  fi
+
+  (
+    sleep 0.08
+    list=$("$LAUNCHER_DATA" "$query")
+    eww update launcher_list="$list"
+    schedule_close
+  ) &
+  echo $! > "$DEBOUNCE_FILE"
+}
+
+launch_app() {
+  local idx="$1"
+  local cmd
+  cmd=$(sed -n "$((idx + 1))p" "$CMDS_FILE" 2>/dev/null)
+  if [ -n "$cmd" ]; then
+    hide_launcher
+    bash -c "$cmd" &
+    disown
+  fi
+}
+
+launch_direct() {
+  local cmd="$1"
+  hide_launcher
+  bash -c "$cmd" &
+  disown
+}
+
+case "$1" in
+  toggle)        toggle_launcher ;;
+  hide)          hide_launcher ;;
+  start_timer)   schedule_close ;;
+  cancel_timer)  cancel_close ;;
+  search)        search_apps "$2" ;;
+  launch)        launch_app "$2" ;;
+  launch_direct) launch_direct "$2" ;;
+esac

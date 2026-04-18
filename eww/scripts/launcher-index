@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+# Builds /tmp/eww_launcher_index.tsv
+# Fields (unit-separator separated): name | lc_search | exec | icon_path | comment
+
+INDEX_FILE="/tmp/eww_launcher_index.tsv"
+LOCK="/tmp/eww_launcher_index.lock"
+DELIM=$'\037'
+
+[ -f "$LOCK" ] && exit 0
+touch "$LOCK"
+
+DIRS=(
+  "$HOME/.local/share/applications"
+  "$HOME/.nix-profile/share/applications"
+  "/run/current-system/sw/share/applications"
+)
+
+ICON_DIRS=(
+  "$HOME/.nix-profile/share/icons/hicolor/48x48/apps"
+  "$HOME/.nix-profile/share/icons/hicolor/32x32/apps"
+  "$HOME/.nix-profile/share/icons/hicolor/256x256/apps"
+  "/run/current-system/sw/share/icons/hicolor/48x48/apps"
+  "/run/current-system/sw/share/icons/hicolor/32x32/apps"
+  "$HOME/.nix-profile/share/pixmaps"
+  "/run/current-system/sw/share/pixmaps"
+)
+
+find_icon() {
+  local icon="$1"
+  [ -z "$icon" ] && return
+  [[ "$icon" == /* ]] && [ -f "$icon" ] && echo "$icon" && return
+  for dir in "${ICON_DIRS[@]}"; do
+    for ext in png svg; do
+      [ -f "${dir}/${icon}.${ext}" ] && echo "${dir}/${icon}.${ext}" && return
+    done
+  done
+}
+
+declare -A seen
+tmp_file=$(mktemp)
+
+for dir in "${DIRS[@]}"; do
+  [ -d "$dir" ] || continue
+  for f in "$dir"/*.desktop; do
+    [ -f "$f" ] || continue
+
+    type=$(grep -m1 "^Type=" "$f" 2>/dev/null | cut -d= -f2-)
+    [[ "$type" != "Application" ]] && continue
+
+    nodisplay=$(grep -m1 "^NoDisplay=" "$f" 2>/dev/null | cut -d= -f2-)
+    [[ "$nodisplay" == "true" ]] && continue
+
+    name=$(grep -m1 "^Name=" "$f" 2>/dev/null | cut -d= -f2-)
+    [ -z "$name" ] && continue
+    [[ -n "${seen[$name]}" ]] && continue
+    seen["$name"]=1
+
+    exec_raw=$(grep -m1 "^Exec=" "$f" 2>/dev/null | cut -d= -f2-)
+    [ -z "$exec_raw" ] && continue
+
+    icon=$(grep -m1 "^Icon=" "$f" 2>/dev/null | cut -d= -f2-)
+    comment=$(grep -m1 "^Comment=" "$f" 2>/dev/null | cut -d= -f2-)
+    keywords=$(grep -m1 "^Keywords=" "$f" 2>/dev/null | cut -d= -f2-)
+    terminal=$(grep -m1 "^Terminal=" "$f" 2>/dev/null | cut -d= -f2-)
+
+    exec_clean=$(echo "$exec_raw" | sed 's/ %[a-zA-Z]//g; s/%[a-zA-Z]//g' | xargs)
+    [[ "$terminal" == "true" ]] && exec_clean="foot -e $exec_clean"
+
+    icon_path=$(find_icon "$icon")
+    name=${name//$'\t'/ }
+    comment=${comment//$'\t'/ }
+    exec_clean=${exec_clean//$'\t'/ }
+    icon_path=${icon_path//$'\t'/ }
+    lc_search=$(echo "${name} ${comment} ${keywords}" | tr '[:upper:]' '[:lower:]')
+    lc_search=${lc_search//$'\t'/ }
+
+    printf '%s%s%s%s%s%s%s%s%s\n' "$name" "$DELIM" "$lc_search" "$DELIM" "$exec_clean" "$DELIM" "$icon_path" "$DELIM" "$comment" >> "$tmp_file"
+  done
+done
+
+# Sort by name and save
+sort -f "$tmp_file" > "$INDEX_FILE"
+rm -f "$tmp_file" "$LOCK"

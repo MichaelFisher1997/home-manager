@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Auto-detect backlight device
+
+for device in /sys/class/backlight/*; do
+    if [ -d "$device" ]; then
+        basename "$device"
+        exit 0
+    fi
+done
+
+# No backlight found - desktop system
+# Return empty to indicate no brightness control available
+echo ""

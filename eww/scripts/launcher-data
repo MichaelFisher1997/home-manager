@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+# Fast launcher markup from pre-built index.
+# Fields: name | lc_search | exec | icon_path | comment
+
+QUERY="${1:-}"
+LIMIT=10
+INDEX_FILE="/tmp/eww_launcher_index.tsv"
+CMDS_FILE="/tmp/eww_launcher_cmds"
+INDEX_AGE=300  # rebuild if older than 5 min
+DELIM=$'\037'
+
+# Trigger background index rebuild if missing or stale
+if [ ! -f "$INDEX_FILE" ] || [ $(( $(date +%s) - $(stat -c %Y "$INDEX_FILE") )) -gt $INDEX_AGE ]; then
+  "$(dirname "$(realpath "$0")")/launcher-index" &
+fi
+
+# If index doesn't exist yet, bail cleanly
+if [ ! -f "$INDEX_FILE" ]; then
+  echo "(label :class \"lp-empty\" :text \"Building index...\")"
+  exit 0
+fi
+
+lc_query=$(echo "$QUERY" | tr '[:upper:]' '[:lower:]')
+
+# Filter with awk — fast, single pass, no subshells
+mapfile -t rows < <(
+  awk -F'\037' -v q="$lc_query" '
+    function lower(s) { return tolower(s) }
+    {
+      name = lower($1)
+      hay = lower($2)
+      if (q == "") {
+        print "9\037" $0
+        next
+      }
+
+      if (index(hay, q) == 0) next
+
+      score = 0
+      if (name == q) score = 0
+      else if (index(name, q) == 1) score = 1
+      else if (name ~ ("(^|[^a-z0-9])" q)) score = 2
+      else if (index(name, q) > 0) score = 3
+      else score = 4
+
+      printf "%d\037%s\n", score, $0
+    }
+  ' "$INDEX_FILE" | sort -t $'\037' -k1,1n -k2,2f | head -"$LIMIT" | cut -d $'\037' -f2-
+)
+
+# Write exec commands to CMDS_FILE (one per line, indexed)
+> "$CMDS_FILE"
+for row in "${rows[@]}"; do
+  IFS="$DELIM" read -r name lc_search exec_clean icon_path comment <<< "$row"
+  echo "$exec_clean" >> "$CMDS_FILE"
+done
+
+# Palette cycling
+COLORS=("lp-blue" "lp-green" "lp-yellow" "lp-orange" "lp-red" "lp-purple" "lp-pink")
+
+out="(box :class \"lp-list-inner\" :orientation \"v\" :spacing 3 :space-evenly false"
+
+if [ "${#rows[@]}" -eq 0 ]; then
+  out="$out (label :class \"lp-empty\" :text \"No apps found\")"
+else
+  for i in "${!rows[@]}"; do
+    IFS="$DELIM" read -r name lc_search exec_clean icon_path comment <<< "${rows[$i]}"
+    color_cls="${COLORS[$((i % ${#COLORS[@]}))]}"
+
+    row_el="(button :class \"lp-row ${color_cls}\" :onclick \"./scripts/launcher_ctrl launch ${i}\""
+    row_el="$row_el (box :orientation \"h\" :spacing 10 :space-evenly false :hexpand true"
+
+    if [ -n "$icon_path" ]; then
+      row_el="$row_el (image :class \"lp-icon\" :path \"${icon_path}\" :image-width 32 :image-height 32)"
+    else
+      row_el="$row_el (label :class \"lp-icon-fallback\" :text \"\")"
+    fi
+
+    row_el="$row_el (box :orientation \"v\" :spacing 1 :space-evenly false :hexpand true"
+    row_el="$row_el (label :class \"lp-name\" :text \"${name}\" :halign \"start\")"
+    if [ -n "$comment" ]; then
+      row_el="$row_el (label :class \"lp-comment\" :text \"${comment:0:48}\" :halign \"start\")"
+    fi
+    row_el="$row_el )))"
+
+    out="$out $row_el"
+  done
+fi
+
+out="$out)"
+echo "$out"

@@ -1,0 +1,136 @@
+#!/usr/bin/env bash
+# Outputs calendar grid as eww literal markup
+# Each day cell gets: class for dow color, ring, and today fill
+
+STATE_FILE="/tmp/eww_cal_view"
+
+today_day=$(date +%-d)
+today_month=$(date +%-m)
+today_year=$(date +%Y)
+
+# Read viewed month/year from state file, fall back to today
+if [ -f "$STATE_FILE" ]; then
+  view_month=$(cut -d: -f1 "$STATE_FILE")
+  view_year=$(cut -d: -f2 "$STATE_FILE")
+else
+  view_month=$today_month
+  view_year=$today_year
+fi
+
+# Month name
+month_name=$(date -d "${view_year}-${view_month}-01" +%B)
+
+# Day of week classes (Mon=0 .. Sun=6 from date)
+# colors: Mon=#61afef Tue=#98c379 Wed=#e5c07b Thu=#d19a66 Fri=#e06c75 Sat=#c678dd Sun=#ff79c6
+dow_classes=("cal-mon" "cal-tue" "cal-wed" "cal-thu" "cal-fri" "cal-sat" "cal-sun")
+dow_labels=("Mon" "Tue" "Wed" "Thu" "Fri" "Sat" "Sun")
+
+# First day of the month (0=Mon ... 6=Sun using isoweek)
+first_dow=$(date -d "${view_year}-${view_month}-01" +%u)
+first_dow=$(( first_dow - 1 ))  # 0=Mon
+
+# Days in month
+days_in_month=$(date -d "${view_year}-${view_month}-01 +1 month -1 day" +%-d)
+
+# Days in previous month
+prev_month=$((view_month - 1))
+prev_year=$view_year
+if [ "$prev_month" -eq 0 ]; then
+  prev_month=12
+  prev_year=$((view_year - 1))
+fi
+days_in_prev=$(date -d "${prev_year}-${prev_month}-01 +1 month -1 day" +%-d)
+
+# Build header row
+header="(box :class \"cal-header-row\" :orientation \"h\" :space-evenly true"
+for label in "${dow_labels[@]}"; do
+  dow_idx=0
+  for i in "${!dow_labels[@]}"; do
+    [[ "${dow_labels[$i]}" == "$label" ]] && dow_idx=$i
+  done
+  cls="${dow_classes[$dow_idx]}"
+  header="$header (label :class \"cal-dow $cls\" :text \"$label\")"
+done
+header="$header)"
+
+# Build day grid
+grid="(box :class \"cal-grid\" :orientation \"v\" :space-evenly false"
+
+col=0
+row_open=false
+
+open_row() {
+  grid="$grid (box :class \"cal-row\" :orientation \"h\" :space-evenly true"
+  row_open=true
+}
+
+close_row() {
+  grid="$grid)"
+  row_open=false
+}
+
+open_row
+
+# Pad with previous month days
+for (( i = first_dow - 1; i >= 0; i-- )); do
+  day=$(( days_in_prev - i ))
+  dow_idx=$col
+  cls="${dow_classes[$dow_idx]}"
+  grid="$grid (label :class \"cal-day cal-other $cls\" :text \"${day}\")"
+  col=$(( (col + 1) % 7 ))
+  if [ "$col" -eq 0 ] && [ "$i" -ne 0 ]; then
+    close_row
+    open_row
+  fi
+done
+
+# Current month days
+for (( d = 1; d <= days_in_month; d++ )); do
+  dow_idx=$col
+  cls="${dow_classes[$dow_idx]}"
+
+  is_today=false
+  if [ "$d" -eq "$today_day" ] && [ "$view_month" -eq "$today_month" ] && [ "$view_year" -eq "$today_year" ]; then
+    is_today=true
+  fi
+
+  if $is_today; then
+    grid="$grid (label :class \"cal-day cal-today $cls\" :text \"${d}\")"
+  else
+    grid="$grid (label :class \"cal-day $cls\" :text \"${d}\")"
+  fi
+
+  col=$(( (col + 1) % 7 ))
+  if [ "$col" -eq 0 ] && [ "$d" -ne "$days_in_month" ]; then
+    close_row
+    open_row
+  fi
+done
+
+# Pad with next month days
+next_pad=0
+if [ "$col" -ne 0 ]; then
+  next_pad=$(( 7 - col ))
+fi
+for (( i = 1; i <= next_pad; i++ )); do
+  dow_idx=$col
+  cls="${dow_classes[$dow_idx]}"
+  grid="$grid (label :class \"cal-day cal-other $cls\" :text \"${i}\")"
+  col=$(( (col + 1) % 7 ))
+done
+
+close_row
+grid="$grid)"
+
+# Nav header with correct viewed month/year
+nav="(box :class \"cal-nav-row\" :orientation \"h\" :space-evenly false :hexpand true"
+nav="$nav (button :class \"cal-nav-btn\" :onclick \"./scripts/calendar_ctrl prev\" \"<\")"
+nav="$nav (label  :class \"cal-month-label\" :text \"${month_name}\" :hexpand true :halign \"center\")"
+nav="$nav (button :class \"cal-nav-btn\" :onclick \"./scripts/calendar_ctrl next\" \">\")"
+nav="$nav (label  :class \"cal-year-sep\" :text \"|\")"
+nav="$nav (button :class \"cal-nav-btn cal-nav-yr\" :onclick \"./scripts/calendar_ctrl prev_year\" \"<\")"
+nav="$nav (label  :class \"cal-year-label\" :text \"${view_year}\")"
+nav="$nav (button :class \"cal-nav-btn cal-nav-yr\" :onclick \"./scripts/calendar_ctrl next_year\" \">\")"
+nav="$nav)"
+
+echo "(box :class \"cal-body\" :orientation \"v\" :spacing 4 :space-evenly false $nav $header $grid)"

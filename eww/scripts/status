@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Check eww status
+
+echo "=== Eww Status ==="
+EWW_PID=$(pgrep -f "eww daemon" | head -1)
+if [ -n "$EWW_PID" ]; then
+    echo "✓ Daemon running (PID: $EWW_PID)"
+    echo ""
+    echo "Active widgets:"
+    eww state 2>/dev/null | head -20 || echo "  (check with: eww state)"
+else
+    echo "✗ Daemon not running"
+fi
