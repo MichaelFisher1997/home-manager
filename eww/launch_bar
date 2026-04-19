@@ -2,8 +2,15 @@
 
 set -euo pipefail
 
-FILE="$HOME/.cache/eww_launch.xyz"
-CONFIG_DIR="$HOME/.config/eww"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}"
+FILE="$CACHE_DIR/eww_launch.xyz"
+CONFIG_DIR="${EWW_CONFIG_DIR:-$SCRIPT_DIR}"
+
+if [ ! -d "$CONFIG_DIR" ]; then
+    echo "[ERROR] Eww config directory not found: $CONFIG_DIR"
+    exit 1
+fi
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -18,6 +25,48 @@ if ! command -v eww &> /dev/null; then
     log_error "eww is not installed or not in PATH"
     exit 1
 fi
+
+detect_monitor() {
+    local monitor="DP-1"
+
+    if command -v hyprctl >/dev/null 2>&1 && command -v jq >/dev/null 2>&1; then
+        monitor="$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .name' | head -n1)"
+        if [ -z "$monitor" ] || [ "$monitor" = "null" ]; then
+            monitor="$(hyprctl monitors -j | jq -r '.[0].name' | head -n1)"
+        fi
+    fi
+
+    if [ -z "$monitor" ] || [ "$monitor" = "null" ]; then
+        monitor="DP-1"
+    fi
+
+    echo "$monitor"
+}
+
+prepare_eww_config() {
+    local monitor="$1"
+    local source_yuck="$CONFIG_DIR/eww.yuck"
+    ACTIVE_CONFIG_DIR="$CONFIG_DIR"
+
+    if [ "$monitor" = "DP-1" ]; then
+        return 0
+    fi
+
+    if [ ! -f "$source_yuck" ]; then
+        log_error "eww config file missing: $source_yuck"
+        exit 1
+    fi
+
+    ACTIVE_CONFIG_DIR="$CACHE_DIR/eww/config-${monitor}"
+    rm -rf "$ACTIVE_CONFIG_DIR"
+    mkdir -p "$ACTIVE_CONFIG_DIR"
+    cp -a "$CONFIG_DIR/." "$ACTIVE_CONFIG_DIR/"
+    sed -i "s/\"DP-1\"/\"$monitor\"/g" "$ACTIVE_CONFIG_DIR/eww.yuck"
+}
+
+eww_cmd() {
+    eww --config "$ACTIVE_CONFIG_DIR" "$@"
+}
 
 kill_eww() {
     if ! pgrep -x "eww" > /dev/null 2>&1; then
@@ -42,7 +91,7 @@ kill_eww() {
 wait_for_daemon() {
     log_info "Waiting for eww daemon to be ready..."
     for i in {1..20}; do
-        if eww ping &> /dev/null; then
+        if eww_cmd ping &> /dev/null; then
             log_info "Daemon is ready!"
             return 0
         fi
@@ -53,23 +102,27 @@ wait_for_daemon() {
 }
 
 start_daemon() {
-    if eww ping &> /dev/null; then
+    if eww_cmd ping &> /dev/null; then
         log_warn "Eww daemon already running, killing it..."
         kill_eww
     elif pgrep -x "eww" > /dev/null 2>&1; then
         log_warn "Stale eww process found, cleaning up..."
         kill_eww
     fi
-
+    
     log_info "Starting eww daemon..."
-    cd "$CONFIG_DIR"
-    eww daemon &
+    cd "$ACTIVE_CONFIG_DIR"
+    eww --config "$ACTIVE_CONFIG_DIR" daemon &
     sleep 1
 
     wait_for_daemon
 }
 
 if [[ ! -f "$FILE" ]]; then
+    mkdir -p "$CACHE_DIR"
+    TARGET_MONITOR="${EWW_TARGET_MONITOR:-$(detect_monitor)}"
+    prepare_eww_config "$TARGET_MONITOR"
+
     log_info "Starting eww bar..."
 
     start_daemon
@@ -77,7 +130,7 @@ if [[ ! -f "$FILE" ]]; then
     touch "$FILE"
 
     log_info "Opening bar widget..."
-    if eww open bar; then
+    if eww_cmd open bar; then
         log_info "Bar started successfully!"
     else
         log_error "Failed to open bar"
@@ -86,9 +139,12 @@ if [[ ! -f "$FILE" ]]; then
     fi
 else
     log_info "Stopping eww bar..."
+    mkdir -p "$CACHE_DIR"
+    TARGET_MONITOR="${EWW_TARGET_MONITOR:-$(detect_monitor)}"
+    prepare_eww_config "$TARGET_MONITOR"
 
-    if eww ping &> /dev/null; then
-        eww close-all 2>/dev/null || true
+    if eww_cmd ping &> /dev/null; then
+        eww_cmd close-all 2>/dev/null || true
         log_info "Windows closed"
     fi
 

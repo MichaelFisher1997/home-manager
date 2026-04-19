@@ -69,7 +69,8 @@ eww logs
 
 ### Configuration
 
-- **Monitor**: Change `(defvar monitor "DP-1")` in `eww.yuck` line 2
+- **Monitor**: This repo uses `DP-1` by default. In host-managed snapshots, it is replaced per-host
+  (desktop: `DP-1`, laptop: `eDP-1`).
 - **Colors/Theme**: Edit `eww.scss`
 - **Scripts**: Edit files in `scripts/`
 

@@ -1,5 +1,5 @@
 ;; Variables
-;; NOTE: Monitor is hardcoded as "DP-1" in defwindow blocks below.
+;; NOTE: Monitor is injected at deployment time (desktop: "DP-1", laptop: "eDP-1").
 ;;       Eww's :monitor property does not accept variable references.
 (defpoll clock_time :interval "5m" "date +%H")
 (defpoll clock_minute :interval "5s" "date +%M")
