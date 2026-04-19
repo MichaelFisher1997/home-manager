@@ -76,6 +76,7 @@ detect_monitor() {
     local hypr_text
     local host_monitor_map
     local hostname
+    local short_hostname
 
     if [ -n "${EWW_TARGET_MONITOR:-}" ]; then
         monitor="$EWW_TARGET_MONITOR"
@@ -107,14 +108,18 @@ detect_monitor() {
 
     host_monitor_map="${MONITOR_MAP:-}"
     hostname="$(hostname 2>/dev/null || cat /etc/hostname 2>/dev/null || printf 'desktop')"
+    hostname="${hostname,,}"
+    short_hostname="$hostname"
+    short_hostname="${short_hostname%%.*}"
+    short_hostname="${short_hostname%%-*}"
 
     case "$hostname" in
-      hyprtop|laptop) monitor="eDP-1" ;;
+      *hyprtop*|*laptop*) monitor="eDP-1" ;;
       *) monitor="DP-1" ;;
     esac
 
     if [ -n "$host_monitor_map" ]; then
-        monitor="$(printf '%s' "$host_monitor_map" | awk -F= -v host="$hostname" '$1 == host { print $2; exit }')"
+        monitor="$(printf '%s' "$host_monitor_map" | awk -F= -v host="$hostname" -v short_host="$short_hostname" '$1 == host || $1 == short_host { print $2; exit }')"
     fi
 
     if [ -z "$monitor" ] || [ "$monitor" = "null" ]; then
