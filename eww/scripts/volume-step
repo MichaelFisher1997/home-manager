@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+DIR="$(dirname "$(realpath "$0")")"
+EWW_CONFIG_DIR="${EWW_CONFIG_DIR:-$(realpath "$DIR/..")}"
+
+eww_cmd() {
+    eww --config "$EWW_CONFIG_DIR" "$@"
+}
+
 case "$1" in
   up)
     pamixer --increase 5 >/dev/null 2>&1
@@ -12,9 +19,9 @@ case "$1" in
     ;;
 esac
 
-vol=$("$(dirname "$0")/volume-percent")
-mute=$("$(dirname "$0")/volume-mute")
-class=$("$(dirname "$0")/volume-class")
-icon=$("$(dirname "$0")/volume-icon")
+vol=$("$DIR/volume-percent")
+mute=$("$DIR/volume-mute")
+class=$("$DIR/volume-class")
+icon=$("$DIR/volume-icon")
 
-eww update volume_percent="$vol" volume_mute="$mute" volume_class="$class" volume_icon_glyph="$icon" >/dev/null 2>&1
+eww_cmd update volume_percent="$vol" volume_mute="$mute" volume_class="$class" volume_icon_glyph="$icon" >/dev/null 2>&1

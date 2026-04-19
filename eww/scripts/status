@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
 # Check eww status
+DIR="$(dirname "$(realpath "$0")")"
+EWW_CONFIG_DIR="${EWW_CONFIG_DIR:-$(realpath "$DIR/..")}"
+
+eww_cmd() {
+    eww --config "$EWW_CONFIG_DIR" "$@"
+}
 
 echo "=== Eww Status ==="
 EWW_PID=$(pgrep -f "eww daemon" | head -1)
@@ -8,7 +14,7 @@ if [ -n "$EWW_PID" ]; then
     echo "✓ Daemon running (PID: $EWW_PID)"
     echo ""
     echo "Active widgets:"
-    eww state 2>/dev/null | head -20 || echo "  (check with: eww state)"
+    eww_cmd state 2>/dev/null | head -20 || echo "  (check with: eww state)"
 else
     echo "✗ Daemon not running"
 fi

@@ -7,20 +7,25 @@ CMDS_FILE="/tmp/eww_launcher_cmds"
 DIR="$(dirname "$(realpath "$0")")"
 LAUNCHER_DATA="$DIR/launcher-data"
 LAUNCHER_INDEX="$DIR/launcher-index"
+EWW_CONFIG_DIR="${EWW_CONFIG_DIR:-$(realpath "$DIR/..")}"
+
+eww_cmd() {
+    eww --config "$EWW_CONFIG_DIR" "$@"
+}
 
 show_launcher() {
   if [ -f "$LOCK_FILE" ]; then
     return
   fi
   "$DIR/pop" close-all
-  touch "$LOCK_FILE"
-  rm -f "$TIMER_TOKEN_FILE"
-  eww update launcher_query=""
-  eww open launcher_catcher 2>/dev/null
-  eww open launcher_popup 2>/dev/null
+        touch "$LOCK_FILE"
+    rm -f "$TIMER_TOKEN_FILE"
+    eww_cmd update launcher_query=""
+    eww_cmd open launcher_catcher 2>/dev/null
+    eww_cmd open launcher_popup 2>/dev/null
   (
     list=$("$LAUNCHER_DATA" "")
-    eww update launcher_list="$list"
+    eww_cmd update launcher_list="$list"
   ) &
   schedule_close
 }
@@ -29,9 +34,9 @@ hide_launcher() {
   [ ! -f "$LOCK_FILE" ] && return
   rm -f "$TIMER_TOKEN_FILE"
   rm -f "$LOCK_FILE"
-  eww update launcher_query=""
-  eww close launcher_popup 2>/dev/null
-  eww close launcher_catcher 2>/dev/null
+  eww_cmd update launcher_query=""
+  eww_cmd close launcher_popup 2>/dev/null
+  eww_cmd close launcher_catcher 2>/dev/null
 }
 
 toggle_launcher() {
@@ -60,7 +65,7 @@ cancel_close() {
 
 search_apps() {
   local query="$1"
-  eww update launcher_query="$query"
+  eww_cmd update launcher_query="$query"
   cancel_close
 
   if [ -f "$DEBOUNCE_FILE" ]; then
@@ -71,7 +76,7 @@ search_apps() {
   (
     sleep 0.08
     list=$("$LAUNCHER_DATA" "$query")
-    eww update launcher_list="$list"
+    eww_cmd update launcher_list="$list"
     schedule_close
   ) &
   echo $! > "$DEBOUNCE_FILE"

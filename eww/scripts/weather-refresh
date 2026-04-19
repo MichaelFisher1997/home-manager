@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 
+DIR="$(dirname "$(realpath "$0")")"
+EWW_CONFIG_DIR="${EWW_CONFIG_DIR:-$(realpath "$DIR/..")}"
+
+eww_cmd() {
+    eww --config "$EWW_CONFIG_DIR" "$@"
+}
+
 (
-  eww poll weather
-  eww poll weather_svg
-  eww poll weather_icon_path
-  eww poll weather_full
-  eww poll weather_forecast
+  eww_cmd poll weather
+  eww_cmd poll weather_svg
+  eww_cmd poll weather_icon_path
+  eww_cmd poll weather_full
+  eww_cmd poll weather_forecast
 ) >/dev/null 2>&1 &
 
 exit 0

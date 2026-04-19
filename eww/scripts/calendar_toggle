@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
 # Calendar toggle
 
-if eww list-windows 2>/dev/null | grep -q "^calendar$"; then
-    eww close calendar
+DIR="$(dirname "$(realpath "$0")")"
+EWW_CONFIG_DIR="${EWW_CONFIG_DIR:-$(realpath "$DIR/..")}"
+
+eww_cmd() {
+    eww --config "$EWW_CONFIG_DIR" "$@"
+}
+
+if eww_cmd list-windows 2>/dev/null | grep -q "^calendar$"; then
+    eww_cmd close calendar
 else
-    eww open calendar
+    eww_cmd open calendar
 fi

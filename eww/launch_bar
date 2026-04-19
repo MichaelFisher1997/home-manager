@@ -145,6 +145,10 @@ prepare_eww_config() {
     sed -i "s/\"DP-1\"/\"$monitor\"/g" "$ACTIVE_CONFIG_DIR/eww.yuck"
 }
 
+export_eww_config_env() {
+    export EWW_CONFIG_DIR="$ACTIVE_CONFIG_DIR"
+}
+
 eww_cmd() {
     eww --config "$ACTIVE_CONFIG_DIR" "$@"
 }
@@ -192,6 +196,7 @@ start_daemon() {
     fi
     
     log_info "Starting eww daemon..."
+    export_eww_config_env
     cd "$ACTIVE_CONFIG_DIR"
     eww --config "$ACTIVE_CONFIG_DIR" daemon &
     sleep 1

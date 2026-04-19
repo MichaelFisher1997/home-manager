@@ -5,6 +5,13 @@ set -euo pipefail
 LOCK_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/eww-popups"
 mkdir -p "$LOCK_DIR"
 
+DIR="$(dirname "$(realpath "$0")")"
+EWW_CONFIG_DIR="${EWW_CONFIG_DIR:-$(realpath "$DIR/..")}"
+
+eww_cmd() {
+    eww --config "$EWW_CONFIG_DIR" "$@"
+}
+
 clear_popup_state() {
   rm -f \
     /tmp/eww_launcher.lock /tmp/eww_launcher_timer.token /tmp/eww_launcher_debounce.pid \
@@ -15,8 +22,8 @@ clear_popup_state() {
 
 close_if_open() {
   local window="$1"
-  if eww active-windows 2>/dev/null | grep -q "^${window}:"; then
-    eww close "$window" 2>/dev/null || true
+  if eww_cmd active-windows 2>/dev/null | grep -q "^${window}:"; then
+    eww_cmd close "$window" 2>/dev/null || true
   fi
 }
 
@@ -46,8 +53,8 @@ show_popup() {
 
   close_all_popups
   touch "$lock_file"
-  eww open "$catcher" 2>/dev/null
-  eww open "$window" 2>/dev/null
+  eww_cmd open "$catcher" 2>/dev/null
+  eww_cmd open "$window" 2>/dev/null
 }
 
 hide_popup() {
@@ -56,8 +63,8 @@ hide_popup() {
   local window="$3"
 
   rm -f "$lock_file"
-  eww close "$window" 2>/dev/null
-  eww close "$catcher" 2>/dev/null
+  eww_cmd close "$window" 2>/dev/null
+  eww_cmd close "$catcher" 2>/dev/null
 }
 
 audio() {
