@@ -1,15 +1,59 @@
 #!/usr/bin/env bash
 # Rainbow workspace script for Hyprland - each workspace has unique color
 
+resolve_hyprctl_json_field() {
+    local json="$1"
+    local filter="$2"
+
+    if [ -z "$json" ]; then
+        return 1
+    fi
+
+    if ! printf "%s" "$json" | jq -e '.[0]' >/dev/null 2>&1; then
+        return 1
+    fi
+
+    local value
+    value="$(printf "%s" "$json" | jq -r "$filter" 2>/dev/null | head -n1)"
+
+    if [ -z "$value" ] || [ "$value" = "null" ]; then
+        return 1
+    fi
+
+    printf "%s" "$value"
+}
+
 workspaces() {
-    # Get current monitor
-    monitor=$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')
-    
-    # Get active workspace ID
-    active_ws=$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .activeWorkspace.id')
-    
-    # Get all occupied workspaces across ALL monitors
-    occupied_workspaces=$(hyprctl workspaces -j | jq -r '.[] | .id' | sort -n)
+    local monitor_json
+    local occupied_json
+    local active_ws
+    local occupied_workspaces
+
+    if ! command -v hyprctl >/dev/null 2>&1; then
+        printf '%s\n' '(label :class "works" :text "No hyprctl")'
+        return
+    fi
+
+    if ! command -v jq >/dev/null 2>&1; then
+        printf '%s\n' '(label :class "works" :text "No jq")'
+        return
+    fi
+
+    monitor_json="$(hyprctl -j monitors 2>/dev/null || hyprctl monitors -j 2>/dev/null || true)"
+    active_ws="$(resolve_hyprctl_json_field "$monitor_json" '.[] | select(.focused) | .activeWorkspace.id')" || true
+
+    if [ -z "$active_ws" ]; then
+        printf '%s\n' '(label :class "works" :text "No workspace")'
+        return
+    fi
+
+    occupied_json="$(hyprctl workspaces -j 2>/dev/null || true)"
+    if printf "%s" "$occupied_json" | jq -e '.[0]' >/dev/null 2>&1; then
+        # Get all occupied workspaces across ALL monitors
+        occupied_workspaces="$(printf "%s" "$occupied_json" | jq -r '.[] | .id' 2>/dev/null | sort -n)"
+    else
+        occupied_workspaces=""
+    fi
     
     # Start building the box
     output="(box :class \"works\" :orientation \"h\" :spacing 12 :space-evenly \"false\""
