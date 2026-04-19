@@ -154,6 +154,15 @@ export_eww_config_env() {
     export EWW_CONFIG_DIR="$ACTIVE_CONFIG_DIR"
 }
 
+export_eww_runtime_env() {
+    local user_bin="${HOME}/.nix-profile/bin"
+    local profile_bin="/etc/profiles/per-user/${USER}/bin"
+    local system_bin="/run/current-system/sw/bin"
+    local default_profile_bin="/nix/var/nix/profiles/default/bin"
+
+    export PATH="$user_bin:$profile_bin:$system_bin:$default_profile_bin:$PATH"
+}
+
 eww_cmd() {
     eww --config "$ACTIVE_CONFIG_DIR" "$@"
 }
@@ -192,6 +201,8 @@ wait_for_daemon() {
 }
 
 start_daemon() {
+    export_eww_runtime_env
+
     if eww_cmd ping &> /dev/null; then
         log_warn "Eww daemon already running, killing it..."
         kill_eww

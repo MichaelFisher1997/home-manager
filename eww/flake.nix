@@ -34,7 +34,10 @@
               jq
               socat
               brightnessctl
+              curl
               ffmpeg
+              pamixer
+              playerctl
             ];
 
             xdg.configFile."eww" = {
@@ -53,13 +56,16 @@
       };
 
       devShells.${system}.default = pkgs.mkShell {
-        packages = with pkgs; [
-          eww
-          jq
-          socat
-          brightnessctl
-          ffmpeg
-        ];
+            packages = with pkgs; [
+              eww
+              jq
+              socat
+              brightnessctl
+              curl
+              ffmpeg
+              pamixer
+              playerctl
+            ];
       };
     };
 }
