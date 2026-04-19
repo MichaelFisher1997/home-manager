@@ -12,10 +12,10 @@
 (defpoll brightness_percent :interval "5s" "device=$(./scripts/brightness_device); if [ -n \"$device\" ]; then brightnessctl -m -d \"$device\" | awk -F, '{print substr($4, 0, length($4)-1)}' | tr -d '%'; else echo 100; fi")
 (defpoll battery :interval "15s" "./scripts/battery --bat")
 (defpoll battery_status :interval "1m" "./scripts/battery --bat-st")
-(defpoll memory :interval "15s" "scripts/memory")
-(defpoll memory_used_mb :interval "2m" "scripts/mem-ad used")
-(defpoll memory_total_mb :interval "2m" "scripts/mem-ad total")
-(defpoll memory_free_mb :interval "2m" "scripts/mem-ad free")
+(defpoll memory :interval "15s" "./scripts/memory")
+(defpoll memory_used_mb :interval "2m" "./scripts/mem-ad used")
+(defpoll memory_total_mb :interval "2m" "./scripts/mem-ad total")
+(defpoll memory_free_mb :interval "2m" "./scripts/mem-ad free")
 (defvar vol_reveal false)
 (defvar br_reveal false)
 (defvar music_reveal false)
@@ -23,7 +23,7 @@
 (defvar time_rev false)
 (defvar launcher_query "")
 (defpoll launcher_list :interval "5m" "./scripts/launcher-data")
-(deflisten workspace "scripts/workspace")
+(deflisten workspace "./scripts/workspace")
 
 (defvar eww "eww")
 
