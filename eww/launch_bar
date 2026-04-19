@@ -26,21 +26,102 @@ if ! command -v eww &> /dev/null; then
     exit 1
 fi
 
+resolve_monitor_from_hyprctl_json() {
+    local json="$1"
+
+    if [ -z "$json" ]; then
+        return 1
+    fi
+
+    if ! echo "$json" | jq -e '.[0]' >/dev/null 2>&1; then
+        return 1
+    fi
+
+    local focused
+    focused="$(echo "$json" | jq -r '.[] | select(.focused == true) | .name' | head -n1)"
+    if [ -z "$focused" ] || [ "$focused" = "null" ]; then
+        focused="$(echo "$json" | jq -r '.[] | .name' | head -n1)"
+    fi
+
+    if [ -n "$focused" ] && [ "$focused" != "null" ]; then
+        printf "%s" "$focused"
+        return 0
+    fi
+
+    return 1
+}
+
+resolve_monitor_from_hyprctl_text() {
+    local text="$1"
+
+    if [ -z "$text" ]; then
+        return 1
+    fi
+
+    # Typical output: "Monitor eDP-1 (ID 0):"
+    local text_monitor
+    text_monitor="$(printf "%s" "$text" | awk '/^Monitor / {print $2; exit}')"
+
+    if [ -n "$text_monitor" ]; then
+        printf "%s" "$text_monitor"
+        return 0
+    fi
+
+    return 1
+}
+
 detect_monitor() {
     local monitor="DP-1"
+    local hypr_json
+    local hypr_text
+    local host_monitor_map
+    local hostname
 
-    if command -v hyprctl >/dev/null 2>&1 && command -v jq >/dev/null 2>&1; then
-        monitor="$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .name' | head -n1)"
-        if [ -z "$monitor" ] || [ "$monitor" = "null" ]; then
-            monitor="$(hyprctl monitors -j | jq -r '.[0].name' | head -n1)"
+    if [ -n "${EWW_TARGET_MONITOR:-}" ]; then
+        monitor="$EWW_TARGET_MONITOR"
+        printf '%s\n' "$monitor"
+        return 0
+    fi
+
+    if command -v hyprctl >/dev/null 2>&1; then
+        if command -v jq >/dev/null 2>&1; then
+            hypr_json="$(hyprctl -j monitors 2>/dev/null || true)"
+            if monitor="$(resolve_monitor_from_hyprctl_json "$hypr_json")"; then
+                printf '%s\n' "$monitor"
+                return 0
+            fi
+
+            hypr_json="$(hyprctl monitors -j 2>/dev/null || true)"
+            if monitor="$(resolve_monitor_from_hyprctl_json "$hypr_json")"; then
+                printf '%s\n' "$monitor"
+                return 0
+            fi
         fi
+
+        hypr_text="$(hyprctl monitors 2>/dev/null || true)"
+        if monitor="$(resolve_monitor_from_hyprctl_text "$hypr_text")"; then
+            printf '%s\n' "$monitor"
+            return 0
+        fi
+    fi
+
+    host_monitor_map="${MONITOR_MAP:-}"
+    hostname="$(hostname 2>/dev/null || cat /etc/hostname 2>/dev/null || printf 'desktop')"
+
+    case "$hostname" in
+      hyprtop|laptop) monitor="eDP-1" ;;
+      *) monitor="DP-1" ;;
+    esac
+
+    if [ -n "$host_monitor_map" ]; then
+        monitor="$(printf '%s' "$host_monitor_map" | awk -F= -v host="$hostname" '$1 == host { print $2; exit }')"
     fi
 
     if [ -z "$monitor" ] || [ "$monitor" = "null" ]; then
         monitor="DP-1"
     fi
 
-    echo "$monitor"
+    printf '%s\n' "$monitor"
 }
 
 prepare_eww_config() {
