@@ -26,8 +26,6 @@
       }
     ];
     shellAliases = {
-      appLaunch = "$HOME/.config/rofi/launchers/type-1/launcher.sh";
-      hyperLoad = "$HOME/.local/share/hyprload/hyprload.sh";
       cl = "clear";
       hcat = "highlight";
       ls = "lsd -l";

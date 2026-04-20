@@ -8,13 +8,9 @@
 
   programs.home-manager.enable = true;
 
-  programs.fish = {
-    enable = true;
-    package = pkgs.fish;
-    interactiveShellInit = ''
-      set fish_greeting ""
-    '';
-  };
+  imports = [
+    ../../fish/fish.nix
+  ];
 
   programs.git = {
     enable = true;
