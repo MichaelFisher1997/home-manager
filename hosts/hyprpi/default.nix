@@ -29,6 +29,8 @@
     htop
     curl
     wget
+    nodejs
+    bun
     tmux
     ripgrep
     fd
