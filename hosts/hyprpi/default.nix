@@ -20,6 +20,8 @@
     };
   };
 
+  programs.fish.shellAliases.opencode = "${pkgs.opencode}/bin/opencode";
+
   home.sessionVariables = {
     SHELL = "${pkgs.fish}/bin/fish";
   };
@@ -27,10 +29,12 @@
   home.packages = with pkgs; [
     git
     htop
+    grc
     curl
     wget
     nodejs
     bun
+    opencode
     tmux
     ripgrep
     fd
