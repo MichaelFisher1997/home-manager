@@ -53,6 +53,7 @@
       homeConfigurations = {
         hypr-nix = mkHome "hypr-nix" (import ./hosts/hypr-nix/vars.nix);
         hyprtop = mkHome "hyprtop" (import ./hosts/hyprtop/vars.nix);
+        hyprpi = mkHome "hyprpi" (import ./hosts/hyprpi/vars.nix);
       };
     };
 }
