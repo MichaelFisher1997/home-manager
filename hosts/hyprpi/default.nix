@@ -1,4 +1,4 @@
-{ pkgs, vars, ... }:
+{ pkgs, unstable, vars, ... }:
 {
   home.username = vars.user.name;
   home.homeDirectory = vars.user.homeDirectory;
@@ -48,5 +48,6 @@
     tldr
     highlight
     lolcat
+    unstable.zellij
   ];
 }
