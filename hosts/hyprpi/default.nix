@@ -29,6 +29,7 @@
   home.packages = with pkgs; [
     git
     htop
+    btop
     grc
     curl
     wget
@@ -40,5 +41,12 @@
     fd
     tree
     rsync
+    lsd
+    bat
+    fzf
+    jq
+    tldr
+    highlight
+    lolcat
   ];
 }
