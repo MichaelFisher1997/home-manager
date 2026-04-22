@@ -14,5 +14,6 @@
     guacamole-client
     rpi-imager
     socat
+    speedtest-cli
   ];
 }
