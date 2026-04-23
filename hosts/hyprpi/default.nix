@@ -36,6 +36,7 @@
     nodejs
     bun
     opencode
+    kubectl
     tmux
     ripgrep
     fd
