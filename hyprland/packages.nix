@@ -15,6 +15,7 @@ in {
     swww
     nwg-look
     udiskie
+    hyprsunset
     hyprshot
     xfce.thunar-volman
     xfce.thunar-dropbox-plugin
@@ -30,7 +31,6 @@ in {
     nwg-drawer
     hyprpaper
     hyprlock
-    wlsunset
   ] ++ lib.optionals isLaptop [
     hypridle
   ];

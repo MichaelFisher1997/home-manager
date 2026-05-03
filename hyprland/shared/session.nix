@@ -3,6 +3,7 @@
     "swww-daemon"
     "sh -c 'pkill -x waybar; waybar'"
     "swww img ~/.config/hypr/wallpaper.jpg --transition-type simple || swaybg -i ~/.config/hypr/wallpaper.jpg -m fill"
+    "hyprsunset"
     "udiskie"
     "blueman-applet"
     "nm-applet --indicator"
