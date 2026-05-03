@@ -1,8 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, neonfetch, ... }:
 
 {
   home.packages = with pkgs; [
     fastfetch
+    neonfetch.packages.${pkgs.system}.default
     calc
     maim
     xclip
@@ -15,5 +16,6 @@
     rpi-imager
     socat
     speedtest-cli
+    libinput
   ];
 }

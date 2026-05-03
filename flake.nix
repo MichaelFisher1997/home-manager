@@ -25,9 +25,13 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    neonfetch = {
+      url = "github:OpenStaticFish/neonfetch";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, windsurf-flake, droid-flake, opencode-desktop-flake, zen-browser, ... }:
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, windsurf-flake, droid-flake, opencode-desktop-flake, zen-browser, neonfetch, ... }:
     let
       mkHome = hostName: vars:
         let
@@ -45,7 +49,7 @@
           inherit pkgs;
           modules = [ ./hosts/${hostName}/default.nix ];
           extraSpecialArgs = {
-            inherit vars nixvim pkgs_32 windsurf-flake droid-flake opencode-desktop-flake zen-browser unstable;
+            inherit vars nixvim pkgs_32 windsurf-flake droid-flake opencode-desktop-flake zen-browser neonfetch unstable;
           };
         };
     in

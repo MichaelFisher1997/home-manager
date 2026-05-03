@@ -1,4 +1,4 @@
-{ pkgs, unstable, vars, ... }:
+{ pkgs, unstable, neonfetch, vars, ... }:
 {
   home.username = vars.user.name;
   home.homeDirectory = vars.user.homeDirectory;
@@ -30,6 +30,7 @@
     git
     htop
     btop
+    neonfetch.packages.${pkgs.system}.default
     grc
     curl
     wget

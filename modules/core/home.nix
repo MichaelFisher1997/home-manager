@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs_32, nixvim, lib, unstable, windsurf-flake, droid-flake, opencode-desktop-flake, vars, ... }:
+{ config, pkgs, pkgs_32, nixvim, lib, unstable, windsurf-flake, droid-flake, opencode-desktop-flake, neonfetch, vars, ... }:
 {
   home.username = vars.user.name;
   home.homeDirectory = vars.user.homeDirectory;
