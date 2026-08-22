@@ -1,4 +1,4 @@
-{ pkgs, unstable, neonfetch, vars, ... }:
+{ pkgs, unstable, bun_1_4_0, neonfetch, vars, ... }:
 {
   home.username = vars.user.name;
   home.homeDirectory = vars.user.homeDirectory;
@@ -30,12 +30,12 @@
     git
     htop
     btop
-    neonfetch.packages.${pkgs.system}.default
+    neonfetch.packages.${pkgs.stdenv.hostPlatform.system}.default
     grc
     curl
     wget
     nodejs
-    bun
+    bun_1_4_0
     opencode
     kubectl
     tmux

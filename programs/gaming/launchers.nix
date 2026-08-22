@@ -8,6 +8,7 @@
     protontricks
     lutris
     bottles
+    unstable.prismlauncher
     unstable.luanti
     wine
     gamemode

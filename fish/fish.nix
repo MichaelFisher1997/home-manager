@@ -38,7 +38,12 @@
     interactiveShellInit = ''
       set fish_greeting ""
       fish_config theme choose "Catppuccin Mocha"
-      
+
+      # Vite+ (vp) environment — managed runtime in ~/.vite-plus
+      if test -f "$HOME/.vite-plus/env.fish"
+        source "$HOME/.vite-plus/env.fish"
+      end
+
       # Solana environment variables
       set -gx SOLANA_INSTALL_INIT_SKIP_PATH_CHECK 1
       set -gx SOLANA_HOME "$HOME/.local/share/solana"

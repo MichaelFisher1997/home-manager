@@ -5,7 +5,7 @@
     unstable.famistudio
     teams-for-linux
     discord
-    webcord
+    unstable.webcord
     slack
     vesktop
     vlc

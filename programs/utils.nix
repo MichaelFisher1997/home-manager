@@ -3,7 +3,7 @@
 {
   home.packages = with pkgs; [
     fastfetch
-    neonfetch.packages.${pkgs.system}.default
+    neonfetch.packages.${pkgs.stdenv.hostPlatform.system}.default
     calc
     maim
     xclip

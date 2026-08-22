@@ -1,4 +1,4 @@
-{ pkgs, unstable, ... }:
+{ pkgs, unstable, bun_1_4_0, ... }:
 
 {
   home.packages = with pkgs; [
@@ -12,8 +12,8 @@
     vulkan-headers
     python3
     php
-    php83Packages.composer
-    bun
+    phpPackages.composer
+    bun_1_4_0
     air
     tailwindcss
     unstable.go
@@ -21,7 +21,7 @@
     unstable.golangci-lint-langserver
     unstable.hugo
     unstable.templ
-    cargo
+    unstable.rustup
     zig
     lua
     love

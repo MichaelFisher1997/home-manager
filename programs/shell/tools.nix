@@ -10,7 +10,7 @@
     grc
     highlight
     nurl
-    nixpkgs-fmt
+    nixfmt-rfc-style
     nixpkgs-review
     pay-respects
     jq

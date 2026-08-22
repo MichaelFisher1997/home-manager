@@ -8,7 +8,7 @@
   "margin-right": 20,
   "modules-left": @MODULES_LEFT@,
   "modules-center": ["custom/weather","clock","pulseaudio"],
-  "modules-right": ["cpu", "memory", "disk", "tray"],
+  "modules-right": ["custom/dictation", "cpu", "memory", "disk", "tray"],
   // Modules configuration
 "clock": {
   "format": " {:%H:%M | %d/%m/%y}",
@@ -154,5 +154,14 @@
   "format": "󰈋",
   "on-click": "hyprpicker -a -f hex",
   "on-click-right": "hyprpicker -a -f rgb"
+},
+
+"custom/dictation": {
+  "format": "{}",
+  "return-type": "json",
+  "exec": "nix-tts status",
+  "interval": 1,
+  "on-click": "nix-tts toggle",
+  "tooltip": true
 },
 }

@@ -22,5 +22,7 @@
     nix-prefetch-git
     gh
     codex
+    unstable.pnpm
+    devenv
   ];
 }

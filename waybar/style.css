@@ -158,3 +158,33 @@ window#waybar {
   color: #e5809e;
   background-color: #1e1e2e;
 }
+
+#custom-dictation {
+  background: #282828;
+  border-radius: 16px;
+  margin: 5px;
+  padding: 0 10px;
+  color: #e5809e;
+  font-weight: 900;
+  min-width: 24px;
+}
+
+#custom-dictation.recording {
+  background-color: rgba(247, 118, 142, 0.16);
+  color: #f7768e;
+}
+
+#custom-dictation.transcribing {
+  background-color: rgba(224, 175, 104, 0.14);
+  color: #e0af68;
+}
+
+#custom-dictation.done {
+  background-color: rgba(158, 206, 106, 0.12);
+  color: #9ece6a;
+}
+
+#custom-dictation.error {
+  background-color: rgba(247, 118, 142, 0.16);
+  color: #f7768e;
+}
