@@ -4,7 +4,6 @@
   home.packages = with pkgs; [
     steamcmd
     protonup-ng
-    unstable.godot
     protontricks
     lutris
     bottles

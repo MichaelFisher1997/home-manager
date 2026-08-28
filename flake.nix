@@ -12,14 +12,6 @@
       url = "github:nix-community/nixvim/nixos-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    windsurf-flake = {
-      url = "github:MichaelFisher1997/windsurf-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    droid-flake = {
-      url = "github:MichaelFisher1997/droid-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     opencode-desktop-flake = {
       url = "github:OpenStaticFish/opencode-desktop-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -36,17 +28,13 @@
       url = "github:OpenStaticFish/neonfetch";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    modal-flake = {
-      url = "github:OpenStaticFish/modal-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-tts = {
       url = "github:OpenStaticFish/nix-tts";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, windsurf-flake, droid-flake, opencode-desktop-flake, t3code-nightly, zen-browser, neonfetch, modal-flake, nix-tts, ... }:
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, opencode-desktop-flake, t3code-nightly, zen-browser, neonfetch, nix-tts, ... }:
     let
       mkHome = hostName: vars:
         let
@@ -89,7 +77,7 @@
               }
             ];
           extraSpecialArgs = {
-            inherit vars nixvim pkgs_32 windsurf-flake droid-flake opencode-desktop-flake zen-browser neonfetch modal-flake nix-tts unstable bun_1_4_0;
+            inherit vars nixvim pkgs_32 opencode-desktop-flake zen-browser neonfetch nix-tts unstable bun_1_4_0;
           };
         };
     in

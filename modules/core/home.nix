@@ -1,4 +1,4 @@
-{ config, pkgs, pkgs_32, nixvim, lib, unstable, droid-flake, opencode-desktop-flake, neonfetch, modal-flake, vars, ... }:
+{ config, pkgs, pkgs_32, nixvim, lib, unstable, opencode-desktop-flake, neonfetch, vars, ... }:
 {
   home.username = vars.user.name;
   home.homeDirectory = vars.user.homeDirectory;
@@ -28,8 +28,6 @@
     ../../programs/shell/ghostty.nix
     ../../programs/browsers.nix
     ../../programs/multimedia.nix
-    ../../programs/crypto.nix
-    ../../programs/ai.nix
     ../../programs/utils.nix
     ../../programs/files.nix
     ../../programs/wm.nix

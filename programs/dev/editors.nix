@@ -1,4 +1,4 @@
-{ pkgs, unstable, windsurf-flake, opencode-desktop-flake, ... }:
+{ pkgs, unstable, opencode-desktop-flake, ... }:
 
 let
   cursor-agent = pkgs.stdenvNoCC.mkDerivation rec {
@@ -32,10 +32,8 @@ let
 in
 {
   home.packages = with pkgs; [
-    sublime
     vscode
     unstable.zed-editor
-    windsurf-flake.packages.x86_64-linux.default
     opencode-desktop-flake.packages.x86_64-linux.default
     cursor-agent
   ];

@@ -13,7 +13,6 @@
     unstable.railway
     nixpacks
     exercism
-    unstable.supabase-cli
     ffmpeg
     libavif
     whois

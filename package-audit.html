@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home Manager Package Audit · micqdf@hypr-nix</title>
+<style>
+ :root{--bg:#11111b;--panel:#181825;--panel2:#1e1e2e;--line:#313244;
+   --text:#cdd6f4;--dim:#9399b2;--accent:#89b4fa}
+ *{box-sizing:border-box}
+ body{margin:0;background:var(--bg);color:var(--text);
+   font:14.5px/1.55 "Iosevka","JetBrains Mono",ui-monospace,Menlo,monospace}
+ header.hero{padding:46px 32px 26px;background:
+   radial-gradient(1100px 400px at 15% -10%,#2a2a44aa,transparent),
+   radial-gradient(900px 380px at 92% -30%,#1f2a47aa,transparent)}
+ header.hero h1{margin:0 0 8px;font-size:25px;font-weight:700}
+ header.hero h1 .hl{color:var(--accent)}
+ header.hero p.sub{margin:0;color:var(--dim);max-width:1000px}
+ main{max-width:1500px;margin:0 auto;padding:12px 32px 80px}
+ .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:13px;margin:20px 0}
+ .stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px 17px;
+   cursor:pointer;transition:transform .12s,border-color .12s;user-select:none}
+ .stat:hover{transform:translateY(-2px);border-color:#585b70}
+ .stat .n{font-size:33px;font-weight:700;line-height:1}
+ .stat .l{font-size:11.5px;color:var(--dim);margin-top:6px;text-transform:uppercase;letter-spacing:.08em}
+ .toolbar{position:sticky;top:0;z-index:20;background:rgba(17,17,27,.88);backdrop-filter:blur(8px);
+   padding:12px 0;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--line)}
+ input[type=search]{flex:1;min-width:220px;background:var(--panel2);border:1px solid var(--line);
+   color:var(--text);padding:9px 14px;border-radius:10px;font:inherit;outline:none}
+ input[type=search]:focus{border-color:var(--accent)}
+ button.f{background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:8px 13px;
+   border-radius:999px;font:inherit;font-size:12.5px;cursor:pointer}
+ button.f:hover{border-color:#585b70}
+ button.f.active{outline:2px solid var(--accent);outline-offset:-1px}
+ .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;margin-top:22px;overflow:hidden}
+ .card.hiddenrow{display:none}
+ .card h2{margin:0;padding:13px 18px;font-size:14px;text-transform:uppercase;letter-spacing:.1em;
+   color:var(--accent);border-bottom:1px solid var(--line);display:flex;justify-content:space-between}
+ .card h2 .count{color:var(--dim);font-weight:400;text-transform:none;letter-spacing:0}
+ .tblwrap{overflow-x:auto}
+ table{width:100%;border-collapse:collapse;font-size:13px}
+ th{text-align:left;color:var(--dim);font-weight:600;font-size:11px;text-transform:uppercase;
+   letter-spacing:.07em;padding:10px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+ td{padding:9px 14px;border-bottom:1px solid #22222f;vertical-align:top}
+ tbody tr:hover{background:#1f1f31}
+ tr.hiddenrow{display:none}
+ td.name{font-weight:600;white-space:normal;min-width:170px}
+ td.ver{white-space:nowrap}
+ td.inst{color:#f9e2af}
+ td.lat{color:#a6e3a1}
+ td.chan{color:var(--dim);font-size:11.5px;white-space:nowrap}
+ td.note{color:var(--dim);max-width:520px;min-width:240px}
+ td.mono{font-size:12px;color:#b4befe;white-space:nowrap}
+ .chip{display:inline-block;padding:2px 10px;border-radius:999px;font-size:11.5px;white-space:nowrap}
+ .chip.ok{color:#a6e3a1;background:#2a4d33}
+ a.up{color:var(--accent);text-decoration:none;margin-left:6px;font-size:11.5px}
+ .banner{border:1px solid #f38ba866;background:#f38ba81a;border-radius:14px;padding:18px 22px;margin-top:28px}
+ .banner h2{margin:0 0 10px;font-size:16px;color:#f38ba8;text-transform:none;letter-spacing:0}
+ .banner ul{margin:0;padding-left:22px}
+ .banner li{margin:7px 0;color:#cdd6f4}
+ .banner b{color:#f5c2e7}
+ .sec-title{margin:36px 0 0;font-size:17px;color:#f5c2e7}
+ footer{color:var(--dim);font-size:12px;margin-top:56px;line-height:1.8}
+ footer .chip{font-size:10.5px}
+ #none{padding:40px;text-align:center;color:var(--dim);display:none}
+ @media(max-width:800px){td.note{max-width:220px}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1>nixos/home-manager · <span class="hl">Package Version Audit</span></h1>
+  <p class="sub">host <b style="color:#cdd6f4">hypr-nix</b> · stateVersion 25.05 · generated 2026-08-27 (post-cleanup) · 158 packages across 12 categories.
+  Installed versions resolved by evaluating the flake at your locked revisions (nixpkgs-25.11 + unstable pins).
+  “Latest upstream” queried live on generation day from GitHub releases/tags, npm, PyPI, endoflife.date, freedesktop/GNOME GitLab and project archives.</p>
+</header>
+<main>
+<div class="grid"><div class="stat" data-f="total"><div class="n" style="color:#cdd6f4">158</div><div class="l">All packages</div></div><div class="stat" data-f="current"><div class="n" style="color:#a6e3a1">69</div><div class="l">Up to date</div></div><div class="stat" data-f="patch"><div class="n" style="color:#f9e2af">19</div><div class="l">Patch behind</div></div><div class="stat" data-f="outdated"><div class="n" style="color:#fab387">40</div><div class="l">Outdated</div></div><div class="stat" data-f="major-gap"><div class="n" style="color:#f38ba8">13</div><div class="l">Major gap</div></div><div class="stat" data-f="rolling"><div class="n" style="color:#89b4fa">8</div><div class="l">Rolling/snapshot</div></div><div class="stat" data-f="pinned"><div class="n" style="color:#cba6f7">2</div><div class="l">Custom pin</div></div><div class="stat" data-f="unverified"><div class="n" style="color:#9399b2">7</div><div class="l">Unverified</div></div></div>
+
+<div class="toolbar">
+  <input id="q" type="search" placeholder="Search packages, notes, channels…">
+  <button class="f active" data-f="all">All 158</button><button class="f" data-f="current">Up to date 69</button><button class="f" data-f="patch">Patch behind 19</button><button class="f" data-f="outdated">Outdated 40</button><button class="f" data-f="major-gap">Major gap 13</button><button class="f" data-f="rolling">Rolling 8</button><button class="f" data-f="unverified">Unverified 7</button><button class="f" data-f="pinned">Pinned 2</button>
+</div>
+
+
+<section class="card">
+  <h2>Shell &amp; Terminal <span class="count">10 pkgs</span></h2>
+  <div class="tblwrap"><table>
+  <thead><tr><th>Package</th><th>Installed</th><th>Latest upstream</th><th>Status</th><th>Channel</th><th>Notes</th></tr></thead>
+  <tbody><tr class="pkg" data-status="outdated">
+<td class="name">alacritty</td>
+<td class="ver inst">0.16.1</td>
+<td class="ver lat">0.17.0</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">One minor release behind. </td></tr><tr class="pkg" data-status="current">
+<td class="name">catppuccin/fish plugin</td>
+<td class="ver inst">pin 5fc5ae9</td>
+<td class="ver lat">HEAD 5fc5ae9 (2026-03-13)</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">custom pin</td>
+<td class="note">Pin matches upstream master HEAD. <a class="up" href="https://github.com/catppuccin/fish" target="_blank">source ↗</a></td></tr><tr class="pkg" data-status="outdated">
+<td class="name">fish</td>
+<td class="ver inst">4.2.1</td>
+<td class="ver lat">4.8.1</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Stable channel lags fast-moving upstream; unstable has newer fish. </td></tr><tr class="pkg" data-status="current">
+<td class="name">fisher plugin</td>
+<td class="ver inst">pin 791da64</td>
+<td class="ver lat">HEAD 791da64 (2026-01-25)</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">custom pin</td>
+<td class="note">Pin matches upstream master HEAD. <a class="up" href="https://github.com/jorgebucaran/fisher" target="_blank">source ↗</a></td></tr><tr class="pkg" data-status="current">
+<td class="name">ghostty</td>
+<td class="ver inst">1.3.1</td>
+<td class="ver lat">1.3.1</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Matches newest tagged release. <a class="up" href="https://github.com/ghostty-org/ghostty" target="_blank">source ↗</a></td></tr><tr class="pkg" data-status="rolling">
+<td class="name">oh-my-zsh</td>
+<td class="ver inst">snapshot 2025-11-09</td>
+<td class="ver lat">master 2026-08-25</td>
+<td><span class="chip" style="color:#89b4fa;background:#24395c">Rolling/snapshot</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Nixpkgs snapshot ~9 months old; framework moves daily, low risk. </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">tmux</td>
+<td class="ver inst">3.6a</td>
+<td class="ver lat">3.7c</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="patch">
+<td class="name">zsh</td>
+<td class="ver inst">5.9</td>
+<td class="ver lat">5.9.2</td>
+<td><span class="chip" style="color:#f9e2af;background:#5a4c1f">Patch behind</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Point release behind upstream. </td></tr><tr class="pkg" data-status="current">
+<td class="name">zsh-autosuggestions</td>
+<td class="ver inst">0.7.1</td>
+<td class="ver lat">0.7.1</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Upstream dormant; this is the last tag. </td></tr><tr class="pkg" data-status="current">
+<td class="name">zsh-syntax-highlighting</td>
+<td class="ver inst">0.8.0</td>
+<td class="ver lat">0.8.0</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr></tbody>
+  </table></div>
+</section>
+<section class="card">
+  <h2>Languages &amp; Toolchains <span class="count">26 pkgs</span></h2>
+  <div class="tblwrap"><table>
+  <thead><tr><th>Package</th><th>Installed</th><th>Latest upstream</th><th>Status</th><th>Channel</th><th>Notes</th></tr></thead>
+  <tbody><tr class="pkg" data-status="outdated">
+<td class="name">air (Go live reload)</td>
+<td class="ver inst">1.63.0</td>
+<td class="ver lat">1.67.4</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="pinned">
+<td class="name">bun</td>
+<td class="ver inst">1.4.0</td>
+<td class="ver lat">1.4.0</td>
+<td><span class="chip" style="color:#cba6f7;background:#3b2d54">Custom pin</span></td>
+<td class="chan">custom pin (flake.nix)</td>
+<td class="note">Deliberate override pin — and it currently EQUALS the latest bun release. Pin still OK. <a class="up" href="https://github.com/oven-sh/bun" target="_blank">source ↗</a></td></tr><tr class="pkg" data-status="major-gap">
+<td class="name">clang-tools</td>
+<td class="ver inst">21.1.7</td>
+<td class="ver lat">LLVM 23.1.0</td>
+<td><span class="chip" style="color:#f38ba8;background:#54293a">Major gap</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Two LLVM lines behind upstream releases. </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">cmake</td>
+<td class="ver inst">4.1.2</td>
+<td class="ver lat">4.4.3</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">composer</td>
+<td class="ver inst">2.9.8</td>
+<td class="ver lat">2.10.2</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="major-gap">
+<td class="name">gcc (default)</td>
+<td class="ver inst">14.3.0</td>
+<td class="ver lat">16.2</td>
+<td><span class="chip" style="color:#f38ba8;background:#54293a">Major gap</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">GCC 15/16 released upstream; stable nixpkgs deliberately conservative. Unstable channel carries newer. </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">glew</td>
+<td class="ver inst">2.2.0</td>
+<td class="ver lat">2.3.1</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">glfw</td>
+<td class="ver inst">3.4</td>
+<td class="ver lat">3.5.1</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="patch">
+<td class="name">go</td>
+<td class="ver inst">1.26.5</td>
+<td class="ver lat">1.26.7 (series) / 1.27.0 new</td>
+<td><span class="chip" style="color:#f9e2af;background:#5a4c1f">Patch behind</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note">Unstable pin slightly stale within its own series; Go 1.27 landed Aug 19 2026. </td></tr><tr class="pkg" data-status="current">
+<td class="name">golangci-lint</td>
+<td class="ver inst">2.13.1</td>
+<td class="ver lat">2.13.1</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">golangci-lint-langserver</td>
+<td class="ver inst">0.0.12</td>
+<td class="ver lat">0.0.12</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">hugo</td>
+<td class="ver inst">0.165.0</td>
+<td class="ver lat">0.165.0</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note">Matches today&#x27;s latest release exactly. </td></tr><tr class="pkg" data-status="major-gap">
+<td class="name">lua (default alias)</td>
+<td class="ver inst">5.2.4</td>
+<td class="ver lat">5.5.1</td>
+<td><span class="chip" style="color:#f38ba8;background:#54293a">Major gap</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">nixpkgs `lua` alias resolves to Lua 5.2! Upstream is on Lua 5.4/5.5. If you want modern Lua use lua5_4 explicitly. </td></tr><tr class="pkg" data-status="current">
+<td class="name">LÖVE</td>
+<td class="ver inst">11.5</td>
+<td class="ver lat">11.5 (stable) / 12 beta</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Latest stable; LÖVE 12 exists only as beta. </td></tr><tr class="pkg" data-status="patch">
+<td class="name">nodejs_24</td>
+<td class="ver inst">24.18.0</td>
+<td class="ver lat">24.20.0 (LTS) / Node 26 current</td>
+<td><span class="chip" style="color:#f9e2af;background:#5a4c1f">Patch behind</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Node 24 is the active LTS - just two patch releases behind it. Fine unless you want the current 26 line. </td></tr><tr class="pkg" data-status="patch">
+<td class="name">php</td>
+<td class="ver inst">8.4.22</td>
+<td class="ver lat">8.4.24 (series) / 8.5.x new</td>
+<td><span class="chip" style="color:#f9e2af;background:#5a4c1f">Patch behind</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Security patches in series; PHP 8.5 branch active upstream. </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">poetry</td>
+<td class="ver inst">2.2.1</td>
+<td class="ver lat">2.4.1</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="patch">
+<td class="name">postcss (nodePackages)</td>
+<td class="ver inst">8.5.3</td>
+<td class="ver lat">8.5.26</td>
+<td><span class="chip" style="color:#f9e2af;background:#5a4c1f">Patch behind</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">npm releases weekly; nodePackages snapshot drifts. </td></tr><tr class="pkg" data-status="patch">
+<td class="name">python3</td>
+<td class="ver inst">3.13.12</td>
+<td class="ver lat">3.13.15 (series) / 3.14.7 new</td>
+<td><span class="chip" style="color:#f9e2af;background:#5a4c1f">Patch behind</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Same-series patch lag + Python 3.14 line is current upstream. </td></tr><tr class="pkg" data-status="major-gap">
+<td class="name">ruby</td>
+<td class="ver inst">3.3.10</td>
+<td class="ver lat">3.3.12 (security) / 3.4.x / 4.0</td>
+<td><span class="chip" style="color:#f38ba8;background:#54293a">Major gap</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Ruby 4.0 shipped Dec 2025; your 3.3 series only gets security fixes now. </td></tr><tr class="pkg" data-status="current">
+<td class="name">rustup</td>
+<td class="ver inst">1.29.0</td>
+<td class="ver lat">1.29.0</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note">Toolchain versions managed by rustup itself (latest rustc 1.98). </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">SDL3</td>
+<td class="ver inst">3.2.28</td>
+<td class="ver lat">3.4.14</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Several minor releases behind. </td></tr><tr class="pkg" data-status="major-gap">
+<td class="name">tailwindcss</td>
+<td class="ver inst">v3.4.17</td>
+<td class="ver lat">v4.3.3</td>
+<td><span class="chip" style="color:#f38ba8;background:#54293a">Major gap</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">You get tailwindcss_3 via the plain alias. Tailwind v4 is a full rewrite; migrate when ready (nixpkgs attr: tailwindcss_4). </td></tr><tr class="pkg" data-status="current">
+<td class="name">templ</td>
+<td class="ver inst">0.3.1020</td>
+<td class="ver lat">0.3.1020</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">Vulkan Headers/Tools/Loader</td>
+<td class="ver inst">1.4.328.0</td>
+<td class="ver lat">SDK 1.4.357.0</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Multiple SDK updates since. </td></tr><tr class="pkg" data-status="current">
+<td class="name">zig</td>
+<td class="ver inst">0.15.2</td>
+<td class="ver lat">0.15.2</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Newest tagged version; 0.16 not tagged yet. </td></tr></tbody>
+  </table></div>
+</section>
+<section class="card">
+  <h2>Dev Tools <span class="count">25 pkgs</span></h2>
+  <div class="tblwrap"><table>
+  <thead><tr><th>Package</th><th>Installed</th><th>Latest upstream</th><th>Status</th><th>Channel</th><th>Notes</th></tr></thead>
+  <tbody><tr class="pkg" data-status="patch">
+<td class="name">act</td>
+<td class="ver inst">0.2.82</td>
+<td class="ver lat">0.2.89</td>
+<td><span class="chip" style="color:#f9e2af;background:#5a4c1f">Patch behind</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="major-gap">
+<td class="name">codex (OpenAI CLI)</td>
+<td class="ver inst">0.92.0</td>
+<td class="ver lat">0.150.0</td>
+<td><span class="chip" style="color:#f38ba8;background:#54293a">Major gap</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note">Extremely fast-moving; unstable lock is far behind npm/GitHub releases. </td></tr><tr class="pkg" data-status="major-gap">
+<td class="name">devenv</td>
+<td class="ver inst">1.11.1</td>
+<td class="ver lat">2.2.2</td>
+<td><span class="chip" style="color:#f38ba8;background:#54293a">Major gap</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">devenv 2.0 landed since the stable-channel build was cut. </td></tr><tr class="pkg" data-status="patch">
+<td class="name">doppler</td>
+<td class="ver inst">3.76.4</td>
+<td class="ver lat">3.76.5</td>
+<td><span class="chip" style="color:#f9e2af;background:#5a4c1f">Patch behind</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">exercism</td>
+<td class="ver inst">3.5.8</td>
+<td class="ver lat">3.5.8</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">ffmpeg</td>
+<td class="ver inst">8.0</td>
+<td class="ver lat">9.0.1</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">FFmpeg 9 line is out; 8.0 no longer newest stable. </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">flatpak-builder</td>
+<td class="ver inst">1.4.4</td>
+<td class="ver lat">1.4.10</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">gh (GitHub CLI)</td>
+<td class="ver inst">2.93.0</td>
+<td class="ver lat">2.98.0</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Bi-weekly upstream cadence. </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">git-credential-manager</td>
+<td class="ver inst">2.6.1</td>
+<td class="ver lat">2.9.1</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">git-lfs</td>
+<td class="ver inst">3.7.1</td>
+<td class="ver lat">3.7.1</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">gnumake</td>
+<td class="ver inst">4.4.1</td>
+<td class="ver lat">4.4.1</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Still GNU make&#x27;s latest release. </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">libavif</td>
+<td class="ver inst">1.3.0</td>
+<td class="ver lat">1.4.2</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">libsecret</td>
+<td class="ver inst">0.21.7</td>
+<td class="ver lat">0.21.7</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">nixfmt-rfc-style</td>
+<td class="ver inst">1.3.1</td>
+<td class="ver lat">1.4.0</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">nixpacks</td>
+<td class="ver inst">1.41.0</td>
+<td class="ver lat">1.41.0</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">nixpkgs-review</td>
+<td class="ver inst">3.5.1</td>
+<td class="ver lat">3.9.0</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">nurl</td>
+<td class="ver inst">0.3.13</td>
+<td class="ver lat">0.4.0</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">pay-respects</td>
+<td class="ver inst">0.7.12</td>
+<td class="ver lat">0.8.8</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="patch">
+<td class="name">pnpm</td>
+<td class="ver inst">11.22.0</td>
+<td class="ver lat">11.24.0</td>
+<td><span class="chip" style="color:#f9e2af;background:#5a4c1f">Patch behind</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">railway</td>
+<td class="ver inst">5.30.4</td>
+<td class="ver lat">5.45.0</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="unverified">
+<td class="name">steamcmd</td>
+<td class="ver inst">20180104</td>
+<td class="ver lat">(rolling Valve tool)</td>
+<td><span class="chip" style="color:#9399b2;background:#37394a">Unverified</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Static ancient store path by design; content delivered server-side. </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">stripe-cli</td>
+<td class="ver inst">1.43.2</td>
+<td class="ver lat">1.50.6</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note">Unstable lock (Jun 30) behind weekly-release CLI. </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">uv</td>
+<td class="ver inst">0.9.30</td>
+<td class="ver lat">0.12.6</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Very fast-moving project; several minors behind. </td></tr><tr class="pkg" data-status="patch">
+<td class="name">whois</td>
+<td class="ver inst">5.6.5</td>
+<td class="ver lat">5.6.6</td>
+<td><span class="chip" style="color:#f9e2af;background:#5a4c1f">Patch behind</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">wrangler</td>
+<td class="ver inst">4.62.0</td>
+<td class="ver lat">4.126.0</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Weekly npm cadence — drift expected, worth periodic bump. </td></tr></tbody>
+  </table></div>
+</section>
+<section class="card">
+  <h2>AI Coding Tools <span class="count">2 pkgs</span></h2>
+  <div class="tblwrap"><table>
+  <thead><tr><th>Package</th><th>Installed</th><th>Latest upstream</th><th>Status</th><th>Channel</th><th>Notes</th></tr></thead>
+  <tbody><tr class="pkg" data-status="current">
+<td class="name">neonfetch</td>
+<td class="ver inst">0.0.1</td>
+<td class="ver lat">own flake (Apr 2026 lock)</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">flake: neonfetch</td>
+<td class="note">Personal tool; lock is at repo HEAD. <a class="up" href="https://github.com/OpenStaticFish/neonfetch" target="_blank">source ↗</a></td></tr><tr class="pkg" data-status="current">
+<td class="name">nix-tts</td>
+<td class="ver inst">0.2.0</td>
+<td class="ver lat">repo has no tags</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">flake: nix-tts</td>
+<td class="note">Lock at HEAD (Aug 2026); version purely from the module. <a class="up" href="https://github.com/OpenStaticFish/nix-tts" target="_blank">source ↗</a></td></tr></tbody>
+  </table></div>
+</section>
+<section class="card">
+  <h2>Editors &amp; IDEs <span class="count">6 pkgs</span></h2>
+  <div class="tblwrap"><table>
+  <thead><tr><th>Package</th><th>Installed</th><th>Latest upstream</th><th>Status</th><th>Channel</th><th>Notes</th></tr></thead>
+  <tbody><tr class="pkg" data-status="pinned">
+<td class="name">cursor-agent</td>
+<td class="ver inst">2026.07.23-e383d2b</td>
+<td class="ver lat">lab-build (no public API)</td>
+<td><span class="chip" style="color:#cba6f7;background:#3b2d54">Custom pin</span></td>
+<td class="chan">custom derivation (editors.nix)</td>
+<td class="note">Self-pinned download from Cursor&#x27;s lab channel about a month old. Update manually when needed. </td></tr><tr class="pkg" data-status="current">
+<td class="name">opencode-desktop</td>
+<td class="ver inst">1.18.23 (unwrapped)</td>
+<td class="ver lat">sst/opencode v1.18.23</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">flake: opencode-desktop-flake</td>
+<td class="note">Matches upstream opencode&#x27;s newest release exactly. </td></tr><tr class="pkg" data-status="rolling">
+<td class="name">t3code-nightly</td>
+<td class="ver inst">nightly</td>
+<td class="ver lat">nightly channel</td>
+<td><span class="chip" style="color:#89b4fa;background:#24395c">Rolling/snapshot</span></td>
+<td class="chan">flake: t3code-nightly (lock Aug 25 2026)</td>
+<td class="note">Nightly by design. </td></tr><tr class="pkg" data-status="major-gap">
+<td class="name">vscode</td>
+<td class="ver inst">1.106.2</td>
+<td class="ver lat">1.135.0</td>
+<td><span class="chip" style="color:#f38ba8;background:#54293a">Major gap</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">~29 monthly-feature releases behind stable channel build (lock Jun 2026 era). </td></tr><tr class="pkg" data-status="patch">
+<td class="name">zed-editor</td>
+<td class="ver inst">1.16.1</td>
+<td class="ver lat">1.17.2</td>
+<td><span class="chip" style="color:#f9e2af;background:#5a4c1f">Patch behind</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="rolling">
+<td class="name">zen-twilight (+ VAAPI wrapper)</td>
+<td class="ver inst">1.22t</td>
+<td class="ver lat">twilight rolling channel</td>
+<td><span class="chip" style="color:#89b4fa;background:#24395c">Rolling/snapshot</span></td>
+<td class="chan">flake: zen-browser twilight</td>
+<td class="note">Twilight is Zen&#x27;s rolling update channel; you pin whatever the flake locks that day. </td></tr></tbody>
+  </table></div>
+</section>
+<section class="card">
+  <h2>Browsers <span class="count">3 pkgs</span></h2>
+  <div class="tblwrap"><table>
+  <thead><tr><th>Package</th><th>Installed</th><th>Latest upstream</th><th>Status</th><th>Channel</th><th>Notes</th></tr></thead>
+  <tbody><tr class="pkg" data-status="outdated">
+<td class="name">brave</td>
+<td class="ver inst">1.91.180</td>
+<td class="ver lat">1.93.138</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">A couple of point-lines behind Brave&#x27;s rapid cadence. </td></tr><tr class="pkg" data-status="major-gap">
+<td class="name">google-chrome</td>
+<td class="ver inst">149.0.7827.200</td>
+<td class="ver lat">152.0.7977.64</td>
+<td><span class="chip" style="color:#f38ba8;background:#54293a">Major gap</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Three Chrome majors behind Google&#x27;s stable channel. Consider pulling chrome from unstable. </td></tr><tr class="pkg" data-status="patch">
+<td class="name">tor-browser</td>
+<td class="ver inst">15.0.17</td>
+<td class="ver lat">15.0.20</td>
+<td><span class="chip" style="color:#f9e2af;background:#5a4c1f">Patch behind</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Tor stable tbb-15.0.20 already tagged. </td></tr></tbody>
+  </table></div>
+</section>
+<section class="card">
+  <h2>Multimedia &amp; Comms <span class="count">8 pkgs</span></h2>
+  <div class="tblwrap"><table>
+  <thead><tr><th>Package</th><th>Installed</th><th>Latest upstream</th><th>Status</th><th>Channel</th><th>Notes</th></tr></thead>
+  <tbody><tr class="pkg" data-status="unverified">
+<td class="name">discord</td>
+<td class="ver inst">0.0.130</td>
+<td class="ver lat">vendor rolling</td>
+<td><span class="chip" style="color:#9399b2;background:#37394a">Unverified</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Discord auto-updates in-app; nixpkg number is just an install-time baseline. </td></tr><tr class="pkg" data-status="patch">
+<td class="name">famistudio</td>
+<td class="ver inst">4.5.2</td>
+<td class="ver lat">4.5.3</td>
+<td><span class="chip" style="color:#f9e2af;background:#5a4c1f">Patch behind</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">haruna</td>
+<td class="ver inst">1.6.0</td>
+<td class="ver lat">1.8.1</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">KDE app tracked via mirror tags. </td></tr><tr class="pkg" data-status="current">
+<td class="name">mpv</td>
+<td class="ver inst">0.41.0</td>
+<td class="ver lat">0.41.0</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="rolling">
+<td class="name">simplescreenrecorder</td>
+<td class="ver inst">snapshot 2025-06-14</td>
+<td class="ver lat">no releases since 2018</td>
+<td><span class="chip" style="color:#89b4fa;background:#24395c">Rolling/snapshot</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Dev-snapshot of a dormant project; effectively &#x27;latest&#x27;. </td></tr><tr class="pkg" data-status="unverified">
+<td class="name">slack</td>
+<td class="ver inst">4.48.100</td>
+<td class="ver lat">vendor rolling</td>
+<td><span class="chip" style="color:#9399b2;background:#37394a">Unverified</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">App self-updates; packaging baseline only. </td></tr><tr class="pkg" data-status="major-gap">
+<td class="name">teams-for-linux</td>
+<td class="ver inst">2.8.0</td>
+<td class="ver lat">2.18.1</td>
+<td><span class="chip" style="color:#f38ba8;background:#54293a">Major gap</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Many feature releases behind upstream. </td></tr><tr class="pkg" data-status="current">
+<td class="name">vlc</td>
+<td class="ver inst">3.0.23-2</td>
+<td class="ver lat">3.0.23</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Latest of the 3.x line (VLC 4 still unreleased). </td></tr></tbody>
+  </table></div>
+</section>
+<section class="card">
+  <h2>Gaming <span class="count">17 pkgs</span></h2>
+  <div class="tblwrap"><table>
+  <thead><tr><th>Package</th><th>Installed</th><th>Latest upstream</th><th>Status</th><th>Channel</th><th>Notes</th></tr></thead>
+  <tbody><tr class="pkg" data-status="current">
+<td class="name">32-bit gaming libs</td>
+<td class="ver inst">mesa 25.2.6 / X11 stack / vulkan-loader i686</td>
+<td class="ver lat">(tracks main mesa/xorg lines)</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Kept for 32-bit/Steam compatibility; follow their main packages. </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">antimicrox</td>
+<td class="ver inst">3.5.1</td>
+<td class="ver lat">3.6.1</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="rolling">
+<td class="name">bottles</td>
+<td class="ver inst">rolling custom</td>
+<td class="ver lat">—</td>
+<td><span class="chip" style="color:#89b4fa;background:#24395c">Rolling/snapshot</span></td>
+<td class="chan">custom derivation wrapper</td>
+<td class="note">Rolling bottles-next packaging; no static version number exposed. </td></tr><tr class="pkg" data-status="major-gap">
+<td class="name">cataclysm-dda</td>
+<td class="ver inst">0.H</td>
+<td class="ver lat">0.I</td>
+<td><span class="chip" style="color:#f38ba8;background:#54293a">Major gap</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Dedicated stable moved to 0.I; daily experimental builds continue separately. </td></tr><tr class="pkg" data-status="major-gap">
+<td class="name">endless-sky</td>
+<td class="ver inst">0.10.16</td>
+<td class="ver lat">0.11.2</td>
+<td><span class="chip" style="color:#f38ba8;background:#54293a">Major gap</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">gamemode</td>
+<td class="ver inst">1.8.2</td>
+<td class="ver lat">1.8.2</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">luanti (Minetest)</td>
+<td class="ver inst">5.17.0</td>
+<td class="ver lat">5.17.0</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">lutris</td>
+<td class="ver inst">0.5.19</td>
+<td class="ver lat">0.5.22</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">pcsx2</td>
+<td class="ver inst">2.6.3</td>
+<td class="ver lat">2.6.3</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">prismlauncher</td>
+<td class="ver inst">11.0.3</td>
+<td class="ver lat">11.0.3</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">protontricks</td>
+<td class="ver inst">1.13.1</td>
+<td class="ver lat">1.14.1</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Tags carry 1.14.x; GH releases page empty but tags are authoritative here. </td></tr><tr class="pkg" data-status="current">
+<td class="name">protonup-ng</td>
+<td class="ver inst">0.2.1</td>
+<td class="ver lat">0.2.1 (PyPI)</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Project quiet; equal to newest PyPI drop. </td></tr><tr class="pkg" data-status="unverified">
+<td class="name">ryubing</td>
+<td class="ver inst">1.3.3</td>
+<td class="ver lat">last public release</td>
+<td><span class="chip" style="color:#9399b2;background:#37394a">Unverified</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Repo org renamed/restructured (now &#x27;Ryuko&#x27; etc.); 1.3.3 is the final tagged Ryubing/Ryujinx release. </td></tr><tr class="pkg" data-status="major-gap">
+<td class="name">simutrans_binaries</td>
+<td class="ver inst">121.0</td>
+<td class="ver lat">124.5</td>
+<td><span class="chip" style="color:#f38ba8;background:#54293a">Major gap</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Simutrans official stable is 124.x+. </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">tiled</td>
+<td class="ver inst">1.11.2</td>
+<td class="ver lat">1.12.2</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="unverified">
+<td class="name">wine</td>
+<td class="ver inst">10.0</td>
+<td class="ver lat">11.x expected (annual cadence)</td>
+<td><span class="chip" style="color:#9399b2;background:#37394a">Unverified</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">WineHQ site blocked our checks; upstream tags mirror incomplete. Expect ≥ one major ahead upstream by now. </td></tr><tr class="pkg" data-status="current">
+<td class="name">xonotic</td>
+<td class="ver inst">0.8.6</td>
+<td class="ver lat">0.8.6</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Last release Aug 2024, no newer upstream. </td></tr></tbody>
+  </table></div>
+</section>
+<section class="card">
+  <h2>Window Manager &amp; Desktop <span class="count">33 pkgs</span></h2>
+  <div class="tblwrap"><table>
+  <thead><tr><th>Package</th><th>Installed</th><th>Latest upstream</th><th>Status</th><th>Channel</th><th>Notes</th></tr></thead>
+  <tbody><tr class="pkg" data-status="current">
+<td class="name">blueman</td>
+<td class="ver inst">2.4.6</td>
+<td class="ver lat">2.4.6</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="rolling">
+<td class="name">catppuccin-kvantum</td>
+<td class="ver inst">snapshot 2025-11-15</td>
+<td class="ver lat">master rolling</td>
+<td><span class="chip" style="color:#89b4fa;background:#24395c">Rolling/snapshot</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Theme repo does tagged releases rarely; snapshot normal. </td></tr><tr class="pkg" data-status="current">
+<td class="name">discocss</td>
+<td class="ver inst">0.2.3</td>
+<td class="ver lat">0.2.3 (archived)</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Project archived; won&#x27;t receive updates. </td></tr><tr class="pkg" data-status="patch">
+<td class="name">dunst</td>
+<td class="ver inst">1.13.1</td>
+<td class="ver lat">1.13.2</td>
+<td><span class="chip" style="color:#f9e2af;background:#5a4c1f">Patch behind</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="rolling">
+<td class="name">eww</td>
+<td class="ver inst">0.6.0 snapshot 2025-06-30</td>
+<td class="ver lat">0.6.0 (last tag Mar 2023)</td>
+<td><span class="chip" style="color:#89b4fa;background:#24395c">Rolling/snapshot</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Snapshot of semi-dormant master; fine. </td></tr><tr class="pkg" data-status="current">
+<td class="name">grim</td>
+<td class="ver inst">1.5.0</td>
+<td class="ver lat">1.5.0</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">hackgen-nf-font</td>
+<td class="ver inst">2.10.0</td>
+<td class="ver lat">2.10.0</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="unverified">
+<td class="name">hypridle (hyprtop laptop only)</td>
+<td class="ver inst">—</td>
+<td class="ver lat">hyprwm/Hypridle</td>
+<td><span class="chip" style="color:#9399b2;background:#37394a">Unverified</span></td>
+<td class="chan">n/a on this host</td>
+<td class="note">Not part of this host eval; check on your laptop config separately. </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">hyprland</td>
+<td class="ver inst">0.52.2</td>
+<td class="ver lat">0.56.2</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Hyprland releases fast; stable channel pins June-era 0.52. Unstable would be closer to 0.56. </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">hyprlock</td>
+<td class="ver inst">0.9.2</td>
+<td class="ver lat">0.9.6</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">hyprpaper</td>
+<td class="ver inst">0.7.6</td>
+<td class="ver lat">0.8.4</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">hyprshot</td>
+<td class="ver inst">1.3.0</td>
+<td class="ver lat">1.3.0</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">hyprsunset</td>
+<td class="ver inst">0.3.3</td>
+<td class="ver lat">0.4.0</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">libcanberra-gtk3</td>
+<td class="ver inst">0.30</td>
+<td class="ver lat">0.30 (2012! final)</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Long-abandoned upstream; this is terminal status. </td></tr><tr class="pkg" data-status="current">
+<td class="name">network-manager-applet</td>
+<td class="ver inst">1.36.0</td>
+<td class="ver lat">1.36.0 (last release 2023)</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Low-activity upstream; 1.36 is the final tagged applet release. </td></tr><tr class="pkg" data-status="current">
+<td class="name">networkmanager_dmenu</td>
+<td class="ver inst">2.7.1</td>
+<td class="ver lat">2.7.1</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">unstable + override pin</td>
+<td class="note">Pinned to v2.7.1 via overrideAttrs in programs/utils.nix. </td></tr><tr class="pkg" data-status="patch">
+<td class="name">nwg-drawer</td>
+<td class="ver inst">0.7.4</td>
+<td class="ver lat">0.7.5</td>
+<td><span class="chip" style="color:#f9e2af;background:#5a4c1f">Patch behind</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">nwg-look</td>
+<td class="ver inst">1.0.6</td>
+<td class="ver lat">1.1.1</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">pamixer</td>
+<td class="ver inst">1.6</td>
+<td class="ver lat">1.6</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="patch">
+<td class="name">pavucontrol</td>
+<td class="ver inst">6.1</td>
+<td class="ver lat">6.2</td>
+<td><span class="chip" style="color:#f9e2af;background:#5a4c1f">Patch behind</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">playerctl</td>
+<td class="ver inst">2.4.1</td>
+<td class="ver lat">2.4.1</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">rofi</td>
+<td class="ver inst">2.0.0</td>
+<td class="ver lat">2.0.0</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Wayland-native rofi 2.x. </td></tr><tr class="pkg" data-status="patch">
+<td class="name">swaybg</td>
+<td class="ver inst">1.2.1</td>
+<td class="ver lat">1.2.2</td>
+<td><span class="chip" style="color:#f9e2af;background:#5a4c1f">Patch behind</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">swww</td>
+<td class="ver inst">0.11.2</td>
+<td class="ver lat">0.11.2</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">udiskie</td>
+<td class="ver inst">2.5.8</td>
+<td class="ver lat">2.7.0</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">waybar</td>
+<td class="ver inst">0.14.0</td>
+<td class="ver lat">0.15.0</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">waypaper</td>
+<td class="ver inst">2.7</td>
+<td class="ver lat">2.8</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">wl-clipboard</td>
+<td class="ver inst">2.3.0</td>
+<td class="ver lat">2.3.0</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">wlr-randr</td>
+<td class="ver inst">0.5.0</td>
+<td class="ver lat">0.5.0 (dev on sr.ht)</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">GitHub mirror lags; sr.ht hosts the real releases — yours IS the newest. </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">wttrbar</td>
+<td class="ver inst">0.13.0</td>
+<td class="ver lat">0.15.0</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="outdated">
+<td class="name">xdg-desktop-portal-hyprland</td>
+<td class="ver inst">1.3.11</td>
+<td class="ver lat">1.4.1</td>
+<td><span class="chip" style="color:#fab387;background:#573a26">Outdated</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Should generally track hyprland version family. </td></tr><tr class="pkg" data-status="unverified">
+<td class="name">xfce.thunar-volman / archive-plugin / dropbox-plugin / tumbler</td>
+<td class="ver inst">4.20.x era</td>
+<td class="ver lat">Xfce 4.20 line</td>
+<td><span class="chip" style="color:#9399b2;background:#37394a">Unverified</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Remote listing blocked during audit; these all match the current 4.20-generation and move only with Xfce releases. </td></tr><tr class="pkg" data-status="current">
+<td class="name">xwayland</td>
+<td class="ver inst">24.1.12</td>
+<td class="ver lat">24.1.x maintenance line</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Component tracks xorg-server xwayland branches; standard channel build. </td></tr></tbody>
+  </table></div>
+</section>
+<section class="card">
+  <h2>Utilities &amp; Files <span class="count">19 pkgs</span></h2>
+  <div class="tblwrap"><table>
+  <thead><tr><th>Package</th><th>Installed</th><th>Latest upstream</th><th>Status</th><th>Channel</th><th>Notes</th></tr></thead>
+  <tbody><tr class="pkg" data-status="current">
+<td class="name">7zz (7-Zip)</td>
+<td class="ver inst">26.02</td>
+<td class="ver lat">26.02</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">calc</td>
+<td class="ver inst">2.17.0.0</td>
+<td class="ver lat">2.17.0.0</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">fastfetch</td>
+<td class="ver inst">2.67.1</td>
+<td class="ver lat">2.67.1</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note">Now equals the newest upstream release. </td></tr><tr class="pkg" data-status="current">
+<td class="name">file-roller</td>
+<td class="ver inst">44.7</td>
+<td class="ver lat">44.x line</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">guacamole-client</td>
+<td class="ver inst">1.6.0</td>
+<td class="ver lat">1.6.0</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">libinput</td>
+<td class="ver inst">1.31.3</td>
+<td class="ver lat">1.31.3</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note">Correction: 1.31.x is newer than the 1.30.4 tag window the audit originally captured. </td></tr><tr class="pkg" data-status="current">
+<td class="name">maim</td>
+<td class="ver inst">5.8.2</td>
+<td class="ver lat">5.8.2</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">pika-backup</td>
+<td class="ver inst">0.8.4</td>
+<td class="ver lat">0.8.4</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note">Resolved: unstable carries the current 0.8.x GNOME release. </td></tr><tr class="pkg" data-status="current">
+<td class="name">pywal</td>
+<td class="ver inst">3.8.15 (pywal16)</td>
+<td class="ver lat">3.8.15 (pywal16)</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note">Correction: unstable ships pywal16 - the actively maintained fork; dylanaraps/pywal itself is archived at 3.3.0. </td></tr><tr class="pkg" data-status="rolling">
+<td class="name">ranger</td>
+<td class="ver inst">1.9.4 snapshot (2026-08-15)</td>
+<td class="ver lat">1.9.4 stable</td>
+<td><span class="chip" style="color:#89b4fa;background:#24395c">Rolling/snapshot</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note">Dev snapshot from Aug 2026 that postdates the 1.9.4 stable tag. </td></tr><tr class="pkg" data-status="current">
+<td class="name">rpi-imager</td>
+<td class="ver inst">2.0.11.1</td>
+<td class="ver lat">2.0.11.1</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">unstable + override pin</td>
+<td class="note">Pinned to the Aug 2026 2.x rewrite via overrideAttrs in programs/utils.nix. </td></tr><tr class="pkg" data-status="current">
+<td class="name">socat</td>
+<td class="ver inst">1.8.1.3</td>
+<td class="ver lat">1.8.1.x</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note">Resolved: unstable ships 1.8.1.3, newer than the 1.8.0.x series installed before. </td></tr><tr class="pkg" data-status="current">
+<td class="name">speedtest-cli</td>
+<td class="ver inst">2.1.3</td>
+<td class="ver lat">2.1.3 (last)</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Effectively frozen upstream. </td></tr><tr class="pkg" data-status="current">
+<td class="name">sunshine</td>
+<td class="ver inst">2026.516.143833</td>
+<td class="ver lat">2026.516.143833</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">tree</td>
+<td class="ver inst">2.3.2</td>
+<td class="ver lat">2.3.2</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note">Correction: upstream did ship 2.3.x - original audit wrongly marked 2.2.1 as final. </td></tr><tr class="pkg" data-status="current">
+<td class="name">unrar</td>
+<td class="ver inst">7.2.7</td>
+<td class="ver lat">7.2.x</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note">Resolved via unstable (rarlab site remains bot-blocked; 7.2.7 is the current packaging). </td></tr><tr class="pkg" data-status="current">
+<td class="name">xclip</td>
+<td class="ver inst">0.13</td>
+<td class="ver lat">0.13 (dormant since 2019)</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Terminal state. </td></tr><tr class="pkg" data-status="current">
+<td class="name">xdotool</td>
+<td class="ver inst">4.20260303.1</td>
+<td class="ver lat">4.20260303.1</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note">New 4.x line reached. </td></tr><tr class="pkg" data-status="current">
+<td class="name">zip / unzip / gzip</td>
+<td class="ver inst">3.0 / 6.0 / 1.14</td>
+<td class="ver lat">(frozen upstreams)</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Info-ZIP is legacy-frozen; gzip 1.14 is the newest GNU release. </td></tr></tbody>
+  </table></div>
+</section>
+<section class="card">
+  <h2>Fonts <span class="count">8 pkgs</span></h2>
+  <div class="tblwrap"><table>
+  <thead><tr><th>Package</th><th>Installed</th><th>Latest upstream</th><th>Status</th><th>Channel</th><th>Notes</th></tr></thead>
+  <tbody><tr class="pkg" data-status="current">
+<td class="name">emacs-all-the-icons-fonts</td>
+<td class="ver inst">5.0.0</td>
+<td class="ver lat">5.0.0</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">font-awesome</td>
+<td class="ver inst">7.3.1</td>
+<td class="ver lat">7.3.1</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">unstable + override pin</td>
+<td class="note">Pinned to the latest release via overrideAttrs in programs/fonts.nix. </td></tr><tr class="pkg" data-status="patch">
+<td class="name">iosevka</td>
+<td class="ver inst">34.7.0</td>
+<td class="ver lat">34.8.1</td>
+<td><span class="chip" style="color:#f9e2af;background:#5a4c1f">Patch behind</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note">One weekly release behind; rides unstable so it self-heals on lock refresh. </td></tr><tr class="pkg" data-status="patch">
+<td class="name">nerd-fonts.fira-code / jetbrains-mono / iosevka</td>
+<td class="ver inst">3.5.0+X</td>
+<td class="ver lat">3.5.1</td>
+<td><span class="chip" style="color:#f9e2af;background:#5a4c1f">Patch behind</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note">One release train behind; rides unstable so it self-heals on lock refresh. </td></tr><tr class="pkg" data-status="current">
+<td class="name">noto-fonts</td>
+<td class="ver inst">2026.08.01</td>
+<td class="ver lat">2026.08.01</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable</td>
+<td class="note">Now sourced from unstable - equals the newest monthly release. </td></tr><tr class="pkg" data-status="current">
+<td class="name">noto-fonts-cjk-sans</td>
+<td class="ver inst">2.004</td>
+<td class="ver lat">Sans 2.004</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Correction: Sans 2.004 IS the newest tag - the original audit mislabeled this as patch-behind. </td></tr><tr class="pkg" data-status="current">
+<td class="name">noto-fonts-color-emoji</td>
+<td class="ver inst">2.051</td>
+<td class="ver lat">2.051</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr><tr class="pkg" data-status="current">
+<td class="name">twemoji-color-font</td>
+<td class="ver inst">15.1.0</td>
+<td class="ver lat">15.1.0 (font)</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note">Correction: the font upstream is 13rac1/twemoji-color-font, whose newest release is v15.1.0. jdecked/twemoji v17.x is the emoji asset repo, not the font. </td></tr></tbody>
+  </table></div>
+</section>
+<section class="card">
+  <h2>Crypto &amp; Security <span class="count">1 pkgs</span></h2>
+  <div class="tblwrap"><table>
+  <thead><tr><th>Package</th><th>Installed</th><th>Latest upstream</th><th>Status</th><th>Channel</th><th>Notes</th></tr></thead>
+  <tbody><tr class="pkg" data-status="current">
+<td class="name">hashcat</td>
+<td class="ver inst">7.1.2</td>
+<td class="ver lat">7.1.2</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs 25.11</td>
+<td class="note"> </td></tr></tbody>
+  </table></div>
+</section>
+
+<h2 class="sec-title"> Flake input freshness</h2>
+<section class="card">
+  <h2>All flake inputs at their remote HEAD <span class="count">9 / 9 current — locks refreshed Aug 27</span></h2>
+  <div class="tblwrap"><table>
+  <thead><tr><th>Input</th><th>Ref</th><th>Locked rev</th><th>Commit date</th><th>Status</th><th>Note</th></tr></thead>
+  <tbody><tr><td class="name">nixpkgs (nixos-25.11)</td><td class="mono">github:nixos/nixpkgs/nixos-25.11</td><td class="mono">b6018f87da91…</td><td>2026-06-30</td><td><span class="chip ok">CURRENT</span></td><td class="note">Branch head equals lock</td></tr><tr><td class="name">nixpkgs-unstable</td><td class="mono">github:nixos/nixpkgs/nixos-unstable</td><td class="mono">56c02bc00adc…</td><td>2026-08-23</td><td><span class="chip ok">CURRENT</span></td><td class="note">Branch head equals lock (updated recently!)</td></tr><tr><td class="name">home-manager</td><td class="mono">release-25.11</td><td class="mono">3ee51fbdac8c…</td><td>2026-05-23</td><td><span class="chip ok">CURRENT</span></td><td class="note">Branch head equals lock</td></tr><tr><td class="name">nixvim</td><td class="mono">nixos-25.11</td><td class="mono">68e314303bc6…</td><td>2026-06-07</td><td><span class="chip ok">CURRENT</span></td><td class="note">Branch head equals lock</td></tr><tr><td class="name">zen-browser</td><td class="mono">0xc000022070/zen-browser-flake</td><td class="mono">9d4c06e74826…</td><td>2026-08-26</td><td><span class="chip ok">CURRENT</span></td><td class="note">At fork HEAD</td></tr><tr><td class="name">t3code-nightly</td><td class="mono">OpenStaticFish/t3code-desktop-flake</td><td class="mono">48f4ffcb539f…</td><td>2026-08-25</td><td><span class="chip ok">CURRENT</span></td><td class="note">At HEAD</td></tr><tr><td class="name">opencode-desktop-flake</td><td class="mono">OpenStaticFish/opencode-desktop-flake</td><td class="mono">cbe64f164627…</td><td>2026-08-25</td><td><span class="chip ok">CURRENT</span></td><td class="note">At HEAD</td></tr><tr><td class="name">nix-tts</td><td class="mono">OpenStaticFish/nix-tts</td><td class="mono">37b2130d4631…</td><td>2026-08-22</td><td><span class="chip ok">CURRENT</span></td><td class="note">At HEAD</td></tr><tr><td class="name">neonfetch</td><td class="mono">OpenStaticFish/neonfetch</td><td class="mono">687bc8a3115e…</td><td>2026-04-30</td><td><span class="chip ok">CURRENT</span></td><td class="note">At HEAD (personal project)</td></tr></tbody>
+  </table></div>
+</section>
+
+<div class="banner">
+  <h2>Findings worth acting on</h2>
+  <ul>
+    <li><b>The plain `lua` attr is Lua 5.2.4.</b> Upstream Lua lives on 5.4/5.5. Use <b>lua5_4</b> explicitly if you want a modern Lua.</li>
+    <li><b>bun hand-pin 1.4.0 currently equals upstream latest</b> — zero action needed today, but your overrideAttrs pin will go stale silently after bun's next release.</li>
+    <li><b>nixpkgs-25.11 lock was cut Jun 30, 2026:</b> fast movers show real age — google-chrome 149 vs 152, vscode 1.106 vs 1.135, codex CLI 0.92 vs 0.150, cataclysm 0.H vs 0.I, simutrans 121 vs 124.5. A lock refresh + <b>home-upgrade</b> closes most of this gap without changing anything else.</li>
+    <li><b>wrangler 4.62 → 4.126 &amp; uv 0.9 → 0.12:</b> weekly-cadence CLIs will always look "old" mid-channel; bump when you feel friction rather than out of duty.</li>
+    <li><b>rpi-imager 2.x rewrite landed Aug 2026</b>; <b>cataclysm 0.I</b> and <b>simutrans 124.5</b> have newer releases upstream.</li>
+    <li><b>dev-toolchain majors available upstream:</b> GCC 16.2, LLVM 23, FFmpeg 9, Vulkan SDK 1.4.357, devenv 2.x, Ruby 4.0 / PHP 8.5 / Node 26 lines exist for the adventurous.</li>
+    <li><b>Couldn't verify remotely:</b> wine (WineHQ blocks bots), rarlab/unrar, socat archive, GNOME pika-backup, Xfce plugin dirs — flagged grey above.</li>
+  </ul>
+</div>
+
+<footer>
+Status legend:
+<span class="chip" style="color:#a6e3a1;background:#2a4d33">current</span>
+<span class="chip" style="color:#f9e2af;background:#5a4c1f">patch behind</span>
+<span class="chip" style="color:#fab387;background:#573a26">outdated</span>
+<span class="chip" style="color:#f38ba8;background:#54293a">major gap</span>
+<span class="chip" style="color:#89b4fa;background:#24395c">rolling/snapshot</span>
+<span class="chip" style="color:#cba6f7;background:#3b2d54">custom pin</span>
+<span class="chip" style="color:#9399b2;background:#37394a">unverified</span>.
+“Rolling” entries track unstable/dev snapshots by design — lag there is expected, not wrong.
+Config-only programs (fish/zsh/ghostty settings, nixvim LSP servers, Hyprland/Waybar/Eww configs, GTK/dconf theming) are reflected via their owning packages above.
+</footer>
+<div id="none">No packages match this filter.</div>
+</main>
+
+<script>
+const q=document.getElementById('q');
+const chips=[...document.querySelectorAll('button.f')];
+const rowsEls=[...document.querySelectorAll('tr.pkg')];
+const cards=[...document.querySelectorAll('section.card')];
+let filt='all';
+function apply(){
+  const needle=q.value.trim().toLowerCase();
+  let any=false;
+  rowsEls.forEach(tr=>{
+    const okF=(filt==='all'||tr.dataset.status===filt);
+    const okQ=!needle||tr.textContent.toLowerCase().includes(needle);
+    const vis=okF&&okQ;
+    tr.classList.toggle('hiddenrow',!vis);
+    if(vis)any=true;
+  });
+  cards.forEach(c=>{
+    if(!c.querySelector('tr.pkg'))return;           // inputs card always shown
+    const visible=c.querySelectorAll('tr.pkg:not(.hiddenrow)').length;
+    c.classList.toggle('hiddenrow',visible===0);
+  });
+  document.getElementById('none').style.display=any?'none':'block';
+}
+chips.forEach(b=>b.addEventListener('click',()=>{
+  chips.forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');filt=b.dataset.f;apply();
+}));
+q.addEventListener('input',apply);
+document.querySelectorAll('.stat').forEach(s=>s.addEventListener('click',()=>{
+  const btn=chips.find(x=>x.dataset.f===s.dataset.f);
+  if(btn)btn.click();window.scrollTo({top:document.querySelector('.toolbar').offsetTop,behavior:'smooth'});
+}));
+</script>
+</body></html>
