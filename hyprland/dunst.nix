@@ -1,8 +1,7 @@
-{ pkgs, ... }:
+{ pkgs, unstable, ... }:
 {
-  home.packages = [ pkgs.dunst ];
-
   services.dunst.enable = true;
+  services.dunst.package = unstable.dunst;
   services.dunst.settings = {
     global = {
       font = "HackGen Console NF 10";

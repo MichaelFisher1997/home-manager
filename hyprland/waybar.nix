@@ -1,10 +1,10 @@
-{ pkgs, lib, vars, nix-tts, ... }:
+{ pkgs, unstable, lib, vars, nix-tts, ... }:
 let
   isLaptop = vars.hostName == "hyprtop";
 in {
   imports = [ nix-tts.homeManagerModules."nix-tts" ];
 
-  home.packages = [ pkgs.waybar ];
+  home.packages = [ unstable.waybar ];
 
   programs.nix-tts = {
     enable = true;

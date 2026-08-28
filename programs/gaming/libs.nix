@@ -1,13 +1,17 @@
-{ pkgs, pkgs_32, ... }:
+{ pkgs, unstable, ... }:
 
 {
-  home.packages = with pkgs; [
-    pkgs_32.vulkan-loader
-    pkgs_32.libGL
-    pkgs_32.libx11
-    pkgs_32.libxext
-    pkgs_32.libxfixes
-    pkgs_32.mesa
-    wayland-protocols
-  ];
+  home.packages =
+    # 32-bit gaming libraries from unstable (newer mesa / vulkan / x11 stack)
+    (with unstable.pkgsi686Linux; [
+      vulkan-loader
+      libGL
+      libx11
+      libxext
+      libxfixes
+      mesa
+    ])
+    ++ (with unstable; [
+      wayland-protocols
+    ]);
 }

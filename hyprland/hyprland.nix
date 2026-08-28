@@ -1,4 +1,4 @@
-{ lib, vars, ... }:
+{ lib, vars, unstable, ... }:
 
 let
   isLaptop = vars.hostName == "hyprtop";
@@ -18,6 +18,8 @@ in {
 
   wayland.windowManager.hyprland = {
     enable = true;
+    package = unstable.hyprland;
+    portalPackage = unstable.xdg-desktop-portal-hyprland;
     xwayland.enable = true;
     systemd.enable = true;
     settings = mergedHostSettings;
