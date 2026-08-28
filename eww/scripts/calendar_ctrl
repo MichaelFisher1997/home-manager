@@ -2,9 +2,22 @@
 # Calendar control with multiple close triggers
 
 DIR="$(dirname "$(realpath "$0")")"
-EWW_CONFIG_DIR="${EWW_CONFIG_DIR:-$(realpath "$DIR/..")}"
+EWW_CONFIG_DIR="${EWW_CONFIG_DIR:-$(realpath "$DIR/..")}" 
 LOCK_FILE="/tmp/eww_calendar.lock"
 TIMER_TOKEN_FILE="/tmp/eww_calendar_timer.token"
+
+monitor_index() {
+    if command -v hyprctl >/dev/null 2>&1 && command -v jq >/dev/null 2>&1; then
+        local monitors
+        monitors="$(hyprctl -j monitors 2>/dev/null || true)"
+        if [[ "$monitors" == \[* ]]; then
+            printf '%s\n' "$monitors" | jq -r 'to_entries[] | select(.value.focused == true) | .key' | head -n1
+            return
+        fi
+    fi
+
+    printf '0\n'
+}
 
 eww_cmd() {
     eww --config "$EWW_CONFIG_DIR" "$@"
@@ -12,12 +25,15 @@ eww_cmd() {
 
 show_calendar() {
     if [ ! -f "$LOCK_FILE" ]; then
-        "$DIR/pop" close-all
         touch "$LOCK_FILE"
         rm -f "$TIMER_TOKEN_FILE"
-        eww_cmd open calendar_catcher 2>/dev/null
-        eww_cmd open calendar 2>/dev/null
-        start_hover_timer
+        (
+            screen="$(monitor_index)"
+            screen="${screen:-0}"
+            eww_cmd open calendar --screen "$screen" 2>/dev/null
+            sleep 0.12
+            eww_cmd open calendar_catcher --screen "$screen" 2>/dev/null
+        ) >/dev/null 2>&1 &
     fi
 }
 
@@ -25,8 +41,10 @@ hide_calendar() {
   [ ! -f "$LOCK_FILE" ] && return
   rm -f "$TIMER_TOKEN_FILE"
   rm -f "$LOCK_FILE"
-  eww_cmd close calendar 2>/dev/null
-  eww_cmd close calendar_catcher 2>/dev/null
+  (
+    eww_cmd close calendar_catcher 2>/dev/null
+    eww_cmd close calendar 2>/dev/null
+  ) >/dev/null 2>&1 &
 }
 
 toggle_calendar() {

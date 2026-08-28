@@ -7,6 +7,7 @@ LON="-2.08"
 LOCATION="Ashton-Under-Lyne"
 CACHE_FILE="/tmp/eww_weather_data.json"
 CACHE_AGE=900  # 15 minutes
+BASE_DIR="$(dirname "$(realpath "$0")")/.."
 
 # Refresh cache if stale or missing
 if [ ! -f "$CACHE_FILE" ] || [ $(( $(date +%s) - $(stat -c %Y "$CACHE_FILE" 2>/dev/null || echo 0) )) -gt $CACHE_AGE ]; then
@@ -66,7 +67,7 @@ CURR_DESC=$(code_to_desc "$CURR_CODE")
 
 # Build header
 header="(box :class \"wp-header\" :orientation \"h\" :space-evenly false :spacing 10"
-header="$header (image :class \"wp-curr-icon\" :path \"images/${CURR_SVG}\" :image-width 40 :image-height 40)"
+header="$header (image :class \"wp-curr-icon\" :path \"${BASE_DIR}/images/${CURR_SVG}\" :image-width 40 :image-height 40)"
 header="$header (box :orientation \"v\" :space-evenly false :spacing 2"
 header="$header   (label :class \"wp-location\" :text \"${LOCATION}\" :halign \"start\")"
 header="$header   (box :orientation \"h\" :space-evenly false :spacing 6"
@@ -96,7 +97,7 @@ for i in 0 1 2 3 4; do
 
   card="(box :class \"wp-card $cls\" :orientation \"v\" :space-evenly false :spacing 4"
   card="$card (label :class \"wp-day\" :text \"${day_label}\" :halign \"center\")"
-  card="$card (image :class \"wp-icon\" :path \"images/${svg}\" :image-width 28 :image-height 28)"
+  card="$card (image :class \"wp-icon\" :path \"${BASE_DIR}/images/${svg}\" :image-width 28 :image-height 28)"
   card="$card (label :class \"wp-hi\" :text \"${max}C\" :halign \"center\")"
   card="$card (label :class \"wp-lo\" :text \"${min}C\" :halign \"center\")"
   card="$card (label :class \"wp-rain\" :text \"${rain}mm\" :halign \"center\")"

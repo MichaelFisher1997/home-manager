@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 svg=$("$(dirname "$0")/weather-svg")
+BASE_DIR="$(dirname "$(realpath "$0")")/.."
 if [ -n "$svg" ]; then
-  printf 'images/%s\n' "$svg"
+  printf '%s/images/%s\n' "$BASE_DIR" "$svg"
 else
-  printf 'images/sun.svg\n'
+  printf '%s/images/sun.svg\n' "$BASE_DIR"
 fi

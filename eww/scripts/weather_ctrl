@@ -2,22 +2,33 @@
 # Weather popup controller - toggle/hide
 
 DIR="$(dirname "$(realpath "$0")")"
-EWW_CONFIG_DIR="${EWW_CONFIG_DIR:-$(realpath "$DIR/..")}"
+EWW_CONFIG_DIR="${EWW_CONFIG_DIR:-$(realpath "$DIR/..")}" 
 LOCK_FILE="/tmp/eww_weather.lock"
 TIMER_TOKEN_FILE="/tmp/eww_weather_timer.token"
+
+monitor_index() {
+    if command -v hyprctl >/dev/null 2>&1 && command -v jq >/dev/null 2>&1; then
+        hyprctl -j monitors 2>/dev/null | jq -r 'to_entries[] | select(.value.focused == true) | .key' | head -n1
+    fi
+}
 
 eww_cmd() {
     eww --config "$EWW_CONFIG_DIR" "$@"
 }
 
+popup_is_open() {
+    eww_cmd active-windows 2>/dev/null | grep -q '^weather_popup:'
+}
+
 show_weather() {
-    if [ ! -f "$LOCK_FILE" ]; then
-      "$DIR/pop" close-all
+    if ! popup_is_open; then
       touch "$LOCK_FILE"
       rm -f "$TIMER_TOKEN_FILE"
-      eww_cmd open weather_catcher 2>/dev/null
-      eww_cmd open weather_popup 2>/dev/null
-      start_timer
+      screen="$(monitor_index)"
+      screen="${screen:-0}"
+      (
+        eww_cmd open weather_popup --screen "$screen" 2>/dev/null
+      ) >/dev/null 2>&1 &
   fi
 }
 
@@ -25,14 +36,15 @@ hide_weather() {
   [ ! -f "$LOCK_FILE" ] && return
   rm -f "$TIMER_TOKEN_FILE"
   rm -f "$LOCK_FILE"
-  eww_cmd close weather_popup 2>/dev/null
   eww_cmd close weather_catcher 2>/dev/null
+  eww_cmd close weather_popup 2>/dev/null
 }
 
 toggle_weather() {
-  if [ -f "$LOCK_FILE" ]; then
+  if popup_is_open; then
     hide_weather
   else
+    rm -f "$LOCK_FILE"
     show_weather
   fi
 }

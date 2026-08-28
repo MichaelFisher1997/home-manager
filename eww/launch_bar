@@ -132,22 +132,27 @@ detect_monitor() {
 prepare_eww_config() {
     local monitor="$1"
     local source_yuck="$CONFIG_DIR/eww.yuck"
-    ACTIVE_CONFIG_DIR="$CONFIG_DIR"
-
-    if [ "$monitor" = "DP-1" ]; then
-        return 0
-    fi
+    ACTIVE_CONFIG_DIR="$CACHE_DIR/eww/runtime"
 
     if [ ! -f "$source_yuck" ]; then
         log_error "eww config file missing: $source_yuck"
         exit 1
     fi
 
-    ACTIVE_CONFIG_DIR="$CACHE_DIR/eww/config-${monitor}"
     rm -rf "$ACTIVE_CONFIG_DIR"
     mkdir -p "$ACTIVE_CONFIG_DIR"
     cp -a "$CONFIG_DIR/." "$ACTIVE_CONFIG_DIR/"
-    sed -i "s/\"DP-1\"/\"$monitor\"/g" "$ACTIVE_CONFIG_DIR/eww.yuck"
+
+    # Rewrite runtime paths so widgets and scripts do not depend on cwd.
+    sed -i \
+      -e "s|\./scripts/|$ACTIVE_CONFIG_DIR/scripts/|g" \
+      -e "s|images/|$ACTIVE_CONFIG_DIR/images/|g" \
+      -e "s|\"DP-1\"|\"$monitor\"|g" \
+      "$ACTIVE_CONFIG_DIR/eww.yuck"
+
+    sed -i \
+      -e "s|images/|$ACTIVE_CONFIG_DIR/images/|g" \
+      "$ACTIVE_CONFIG_DIR/eww.scss"
 }
 
 export_eww_config_env() {
@@ -165,6 +170,24 @@ export_eww_runtime_env() {
 
 eww_cmd() {
     eww --config "$ACTIVE_CONFIG_DIR" "$@"
+}
+
+open_bars() {
+    eww_cmd open bar
+}
+
+open_bars_when_ready() {
+    (
+        for i in {1..180}; do
+            if eww_cmd active-windows &>/dev/null; then
+                open_bars
+                exit 0
+            fi
+            sleep 0.5
+        done
+
+        log_error "Eww daemon never became ready"
+    ) >/dev/null 2>&1 &
 }
 
 kill_eww() {
@@ -189,12 +212,12 @@ kill_eww() {
 
 wait_for_daemon() {
     log_info "Waiting for eww daemon to be ready..."
-    for i in {1..20}; do
-        if eww_cmd ping &> /dev/null; then
+    for i in {1..180}; do
+        if eww_cmd active-windows &> /dev/null; then
             log_info "Daemon is ready!"
             return 0
         fi
-        sleep 0.2
+        sleep 0.5
     done
     log_error "Daemon failed to start"
     return 1
@@ -215,9 +238,6 @@ start_daemon() {
     export_eww_config_env
     cd "$ACTIVE_CONFIG_DIR"
     eww --config "$ACTIVE_CONFIG_DIR" daemon &
-    sleep 1
-
-    wait_for_daemon
 }
 
 if [[ ! -f "$FILE" ]]; then
@@ -225,22 +245,17 @@ if [[ ! -f "$FILE" ]]; then
     TARGET_MONITOR="${EWW_TARGET_MONITOR:-$(detect_monitor)}"
     prepare_eww_config "$TARGET_MONITOR"
 
-    log_info "Starting eww bar..."
+    log_info "Starting eww bars..."
 
     start_daemon
 
     touch "$FILE"
 
-    log_info "Opening bar widget..."
-    if eww_cmd open bar; then
-        log_info "Bar started successfully!"
-    else
-        log_error "Failed to open bar"
-        rm -f "$FILE"
-        exit 1
-    fi
+    log_info "Queueing bar widgets..."
+    open_bars_when_ready
+    log_info "Bar startup queued"
 else
-    log_info "Stopping eww bar..."
+    log_info "Stopping eww bars..."
     mkdir -p "$CACHE_DIR"
     TARGET_MONITOR="${EWW_TARGET_MONITOR:-$(detect_monitor)}"
     prepare_eww_config "$TARGET_MONITOR"

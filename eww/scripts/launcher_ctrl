@@ -1,33 +1,45 @@
 #!/usr/bin/env bash
 
+DIR="$(dirname "$(realpath "$0")")"
+LAUNCHER_DATA="$DIR/launcher-data"
+LAUNCHER_INDEX="$DIR/launcher-index"
+EWW_CONFIG_DIR="${EWW_CONFIG_DIR:-$(realpath "$DIR/..")}" 
 LOCK_FILE="/tmp/eww_launcher.lock"
 TIMER_TOKEN_FILE="/tmp/eww_launcher_timer.token"
 DEBOUNCE_FILE="/tmp/eww_launcher_debounce.pid"
 CMDS_FILE="/tmp/eww_launcher_cmds"
-DIR="$(dirname "$(realpath "$0")")"
-LAUNCHER_DATA="$DIR/launcher-data"
-LAUNCHER_INDEX="$DIR/launcher-index"
-EWW_CONFIG_DIR="${EWW_CONFIG_DIR:-$(realpath "$DIR/..")}"
+
+monitor_index() {
+    if command -v hyprctl >/dev/null 2>&1 && command -v jq >/dev/null 2>&1; then
+        hyprctl -j monitors 2>/dev/null | jq -r 'to_entries[] | select(.value.focused == true) | .key' | head -n1
+    fi
+}
 
 eww_cmd() {
     eww --config "$EWW_CONFIG_DIR" "$@"
 }
 
+popup_is_open() {
+    eww_cmd active-windows 2>/dev/null | grep -q '^launcher_popup:'
+}
+
 show_launcher() {
-  if [ -f "$LOCK_FILE" ]; then
+  if popup_is_open; then
     return
   fi
-  "$DIR/pop" close-all
         touch "$LOCK_FILE"
     rm -f "$TIMER_TOKEN_FILE"
     eww_cmd update launcher_query=""
-    eww_cmd open launcher_catcher 2>/dev/null
-    eww_cmd open launcher_popup 2>/dev/null
+    local screen
+    screen="$(monitor_index)"
+    screen="${screen:-0}"
+    (
+      eww_cmd open launcher_popup --screen "$screen" 2>/dev/null
+    ) >/dev/null 2>&1 &
   (
     list=$("$LAUNCHER_DATA" "")
     eww_cmd update launcher_list="$list"
   ) &
-  schedule_close
 }
 
 hide_launcher() {
@@ -35,14 +47,15 @@ hide_launcher() {
   rm -f "$TIMER_TOKEN_FILE"
   rm -f "$LOCK_FILE"
   eww_cmd update launcher_query=""
-  eww_cmd close launcher_popup 2>/dev/null
   eww_cmd close launcher_catcher 2>/dev/null
+  eww_cmd close launcher_popup 2>/dev/null
 }
 
 toggle_launcher() {
-  if [ -f "$LOCK_FILE" ]; then
+  if popup_is_open; then
     hide_launcher
   else
+    rm -f "$LOCK_FILE"
     show_launcher
   fi
 }
@@ -77,7 +90,6 @@ search_apps() {
     sleep 0.08
     list=$("$LAUNCHER_DATA" "$query")
     eww_cmd update launcher_list="$list"
-    schedule_close
   ) &
   echo $! > "$DEBOUNCE_FILE"
 }
