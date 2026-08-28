@@ -1,4 +1,4 @@
-{ lib, vars, unstable, ... }:
+{ lib, vars, unstable, hyprland, ... }:
 
 let
   isLaptop = vars.hostName == "hyprtop";
@@ -16,10 +16,14 @@ in {
     ./rofi.nix
   ];
 
+  # upstream master build: carries the layer-surface pointer fix (PR #15899)
+  # that restores slurp/hyprshot region-select dragging; switch back to
+  # unstable.hyprland once 0.56.3+ is packaged
   wayland.windowManager.hyprland = {
     enable = true;
-    package = unstable.hyprland;
+    package = hyprland.packages.${vars.system}.hyprland;
     portalPackage = unstable.xdg-desktop-portal-hyprland;
+    configType = "hyprlang";
     xwayland.enable = true;
     systemd.enable = true;
     settings = mergedHostSettings;

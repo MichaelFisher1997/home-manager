@@ -1,8 +1,10 @@
-{ config, pkgs, vars, ... }:
+{ config, pkgs, unstable, vars, ... }:
 {
 
   programs.fish = {
     enable = true;
+    # NOTE: kept on stable fish - fish 4.8 removed the completion-generation
+    # script that home-manager release-25.11 still depends on
     plugins = [
       { name = "grc"; src = pkgs.fishPlugins.grc.src; }
       { name = "fzf-fish"; src = pkgs.fishPlugins.fzf-fish.src; }

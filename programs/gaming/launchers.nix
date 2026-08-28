@@ -11,6 +11,15 @@ let
       hash = "sha256-frPXUTbD5Wk0Wo8E9L8Es5GCvWY55Qx0RGSkYDaVs6g=";
     };
   });
+
+  # nixpkgs fetches steamcmd from web.archive.org, unreachable on this network;
+  # same file lives on Valve's CDN
+  steamcmd-cdn = unstable.steamcmd.overrideAttrs (old: {
+    src = unstable.fetchurl {
+      url = "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz";
+      hash = "sha256-zr8ARr/QjPRdprwJSuR6o56/QVXl7eQTc7V5uPEHHnw=";
+    };
+  });
 in
 {
   home.packages =
@@ -25,9 +34,9 @@ in
       pcsx2
     ])
     ++ (with pkgs; [
-      steamcmd
       protonup-ng
       gamemode
+      steamcmd-cdn
     ])
     ++ [
       antimicrox-latest

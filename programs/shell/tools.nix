@@ -1,21 +1,24 @@
 { pkgs, unstable, ... }:
 
 {
-  home.packages = with pkgs; [
-    tmux
-    unstable.zellij
-    lsd
-    lolcat
-    tldr
-    grc
-    highlight
-    nurl
-    nixfmt-rfc-style
-    nixpkgs-review
-    pay-respects
-    jq
-    fd
-    fzf
-    bat
-  ];
+  home.packages =
+    (with unstable; [
+      nurl
+      nixfmt
+      nixpkgs-review
+      pay-respects
+      tmux
+      zellij
+    ])
+    ++ (with pkgs; [
+      lsd
+      lolcat
+      tldr
+      grc
+      highlight
+      jq
+      fd
+      fzf
+      bat
+    ]);
 }

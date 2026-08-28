@@ -1,4 +1,4 @@
-{ pkgs, bun_1_4_0, ... }:
+{ pkgs, unstable, bun_1_4_0, ... }:
 
 {
   home.sessionVariables = {

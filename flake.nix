@@ -2,14 +2,19 @@
   description = "Home Manager configuration of micqdf";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      # intentionally NOT following our nixpkgs: keep hyprwm's pinned dep set
+      # (master build carries the layer-surface pointer fix PR#15899)
+    };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixvim = {
-      url = "github:nix-community/nixvim/nixos-25.11";
+      url = "github:nix-community/nixvim/nixos-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     opencode-desktop-flake = {
@@ -34,7 +39,7 @@
     };
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, opencode-desktop-flake, t3code-nightly, zen-browser, neonfetch, nix-tts, ... }:
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, opencode-desktop-flake, t3code-nightly, zen-browser, neonfetch, nix-tts, hyprland, ... }:
     let
       mkHome = hostName: vars:
         let
@@ -77,7 +82,7 @@
               }
             ];
           extraSpecialArgs = {
-            inherit vars nixvim pkgs_32 opencode-desktop-flake zen-browser neonfetch nix-tts unstable bun_1_4_0;
+            inherit vars nixvim pkgs_32 opencode-desktop-flake zen-browser neonfetch nix-tts hyprland unstable bun_1_4_0;
           };
         };
     in

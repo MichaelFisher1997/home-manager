@@ -1,4 +1,4 @@
-{ pkgs, zen-browser, ... }:
+{ pkgs, unstable, zen-browser, ... }:
 
 let
   zen-twilight = zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.twilight;
@@ -23,10 +23,11 @@ let
   '';
 in
 {
-  home.packages = with pkgs; [
+  home.packages = with unstable; [
     brave
     google-chrome
     tor-browser
+  ] ++ [
     zen-wrapped
   ];
 }

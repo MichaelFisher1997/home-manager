@@ -3,6 +3,8 @@
 {
   programs.ghostty = {
     enable = true;
+    # stable-linked build: the unstable-linked 1.3.1 rendered tab titles
+    # with tofu squares (GTK/Pango stack mismatch) - revisit on next ghostty release
     package = pkgs.ghostty;
     enableFishIntegration = true;
     enableBashIntegration = true;

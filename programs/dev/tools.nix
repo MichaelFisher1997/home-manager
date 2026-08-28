@@ -1,27 +1,28 @@
 { pkgs, unstable, ... }:
 
 {
-  home.packages = with pkgs; [
-    flatpak-builder
-    gnumake
-    unstable.stripe-cli
-    unstable.doppler
-    libsecret
-    uv
-    git-credential-manager
-    wrangler
-    unstable.railway
-    nixpacks
-    exercism
-    ffmpeg
-    libavif
-    whois
-    git-lfs
-    act
-    nix-prefetch-git
-    gh
-    codex
-    unstable.pnpm
-    devenv
-  ];
+  home.packages =
+    (with unstable; [
+      act
+      codex
+      devenv
+      doppler
+      ffmpeg
+      gh
+      git-credential-manager
+      libavif
+      pnpm
+      railway
+      uv
+      whois
+      wrangler
+    ])
+    ++ (with pkgs; [
+      exercism
+      git-lfs
+      gnumake
+      libsecret
+      nix-prefetch-git
+      nixpacks
+    ]);
 }

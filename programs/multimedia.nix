@@ -1,14 +1,15 @@
 { pkgs, unstable, ... }:
 
 {
-  home.packages = with pkgs; [
-    unstable.famistudio
-    teams-for-linux
-    discord
-    slack
-    vlc
-    simplescreenrecorder
-    haruna
-    mpv
-  ];
+  home.packages =
+    (with unstable; [
+      famistudio
+      haruna
+      slack
+    ])
+    ++ (with pkgs; [
+      discord
+      vlc
+      mpv
+    ]);
 }

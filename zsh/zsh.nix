@@ -1,4 +1,4 @@
-{ pkgs, vars, ... }:
+{ pkgs, unstable, vars, ... }:
 
 let
   # Extra plugins not included in oh-my-zsh by default
@@ -12,6 +12,7 @@ in
 
   programs.zsh = {
     enable = true;
+    package = unstable.zsh;
 
     shellAliases = {
       ll = "lsd -l";
