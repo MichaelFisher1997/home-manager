@@ -1,8 +1,8 @@
 # Home Manager Configuration - Agent Guidelines
 
 ## Build/Test Commands
-- **Build configuration**: `home-manager switch --flake .#micqdf`
-- **Check configuration**: `home-manager build --flake .#micqdf`
+- **Build configuration**: `home-manager switch --flake .#hyprtop`
+- **Check configuration**: `home-manager build --flake .#hyprtop`
 - **Upgrade system**: `home-upgrade` (alias defined in fish.nix:37)
 
 ## Code Style Guidelines
@@ -33,6 +33,6 @@
 - Use aliases: `pu` (push), `co` (checkout), `cm` (commit)
 
 ## Testing
-- Test changes by running `home-manager switch --flake .#micqdf`
+- Test changes by running `home-manager switch --flake .#hyprtop`
 - Verify configurations are applied correctly in respective applications
 - Check for syntax errors before committing
