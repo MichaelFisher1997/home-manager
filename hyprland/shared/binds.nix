@@ -4,7 +4,7 @@
     "$mainMod, X, exec, $terminal"
     "$mainMod, Q, killactive,"
     "$mainMod, E, exec, $fileManager"
-    "$mainMod, V, togglesplit,"
+    "$mainMod, V, layoutmsg, togglesplit"
     "$mainMod, R, exec, $menu"
     "$mainMod, B, exec, zen-twilight"
     "$mainMod SHIFT, B, exec, sh -c 'pgrep -x hyprsunset >/dev/null && { hyprctl hyprsunset reset; pkill -x hyprsunset; } || hyprsunset >/tmp/hyprsunset.log 2>&1 &'"

@@ -1,4 +1,4 @@
-{ pkgs, unstable, ... }:
+{ lib, pkgs, unstable, ... }:
 
 let
   # nixpkgs lags Font Awesome releases; pin the newest upstream release
@@ -11,6 +11,12 @@ let
   });
 in
 {
+  fonts.fontconfig.enable = true;
+
+  home.activation.refreshFontCache = lib.hm.dag.entryAfter [ "installPackages" ] ''
+    run ${lib.getExe' pkgs.fontconfig "fc-cache"} -f
+  '';
+
   home.packages =
     # from unstable: rides the fast-moving font release trains
     (with unstable; [

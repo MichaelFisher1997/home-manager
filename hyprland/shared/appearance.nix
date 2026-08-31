@@ -46,7 +46,6 @@
   };
 
   dwindle = {
-    pseudotile = true;
     preserve_split = true;
   };
 
@@ -57,7 +56,7 @@
   misc = {
     force_default_wallpaper = 0;
     disable_hyprland_logo = true;
-    new_window_takes_over_fullscreen = 2;
+    on_focus_under_fullscreen = 2;
     mouse_move_focuses_monitor = true;
   };
 

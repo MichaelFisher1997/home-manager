@@ -10,7 +10,7 @@ let
     "env"
     "exec-once"
     "monitor"
-    "windowrulev2"
+    "windowrule"
     "workspace"
   ];
 

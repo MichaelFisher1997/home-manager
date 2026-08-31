@@ -74,11 +74,11 @@
   “Latest upstream” queried live on generation day from GitHub releases/tags, npm, PyPI, endoflife.date, freedesktop/GNOME GitLab and project archives.</p>
 </header>
 <main>
-<div class="grid"><div class="stat" data-f="total"><div class="n" style="color:#cdd6f4">156</div><div class="l">All packages</div></div><div class="stat" data-f="current"><div class="n" style="color:#a6e3a1">123</div><div class="l">Up to date</div></div><div class="stat" data-f="patch"><div class="n" style="color:#f9e2af">15</div><div class="l">Patch behind</div></div><div class="stat" data-f="outdated"><div class="n" style="color:#fab387">4</div><div class="l">Outdated</div></div><div class="stat" data-f="major-gap"><div class="n" style="color:#f38ba8">1</div><div class="l">Major gap</div></div><div class="stat" data-f="rolling"><div class="n" style="color:#89b4fa">8</div><div class="l">Rolling/snapshot</div></div><div class="stat" data-f="pinned"><div class="n" style="color:#cba6f7">2</div><div class="l">Custom pin</div></div><div class="stat" data-f="unverified"><div class="n" style="color:#9399b2">3</div><div class="l">Unverified</div></div></div>
+<div class="grid"><div class="stat" data-f="total"><div class="n" style="color:#cdd6f4">156</div><div class="l">All packages</div></div><div class="stat" data-f="current"><div class="n" style="color:#a6e3a1">124</div><div class="l">Up to date</div></div><div class="stat" data-f="patch"><div class="n" style="color:#f9e2af">15</div><div class="l">Patch behind</div></div><div class="stat" data-f="outdated"><div class="n" style="color:#fab387">4</div><div class="l">Outdated</div></div><div class="stat" data-f="major-gap"><div class="n" style="color:#f38ba8">1</div><div class="l">Major gap</div></div><div class="stat" data-f="rolling"><div class="n" style="color:#89b4fa">7</div><div class="l">Rolling/snapshot</div></div><div class="stat" data-f="pinned"><div class="n" style="color:#cba6f7">2</div><div class="l">Custom pin</div></div><div class="stat" data-f="unverified"><div class="n" style="color:#9399b2">3</div><div class="l">Unverified</div></div></div>
 
 <div class="toolbar">
   <input id="q" type="search" placeholder="Search packages, notes, channels…">
-  <button class="f active" data-f="all">All 156</button><button class="f" data-f="current">Up to date 123</button><button class="f" data-f="patch">Patch behind 15</button><button class="f" data-f="outdated">Outdated 4</button><button class="f" data-f="major-gap">Major gap 1</button><button class="f" data-f="rolling">Rolling 8</button><button class="f" data-f="unverified">Unverified 3</button><button class="f" data-f="pinned">Pinned 2</button>
+  <button class="f active" data-f="all">All 156</button><button class="f" data-f="current">Up to date 124</button><button class="f" data-f="patch">Patch behind 15</button><button class="f" data-f="outdated">Outdated 4</button><button class="f" data-f="major-gap">Major gap 1</button><button class="f" data-f="rolling">Rolling 7</button><button class="f" data-f="unverified">Unverified 3</button><button class="f" data-f="pinned">Pinned 2</button>
 </div>
 
 
@@ -760,13 +760,13 @@
 <td class="ver lat">0.1.8</td>
 <td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
 <td class="chan">nixpkgs unstable</td>
-<td class="note">Resolved: 0.1.8 IS the newest upstream tag; sourced from unstable on hyprtop. </td></tr><tr class="pkg" data-status="rolling">
+<td class="note">Resolved: 0.1.8 IS the newest upstream tag; sourced from unstable on hyprtop. </td></tr><tr class="pkg" data-status="current">
 <td class="name">hyprland</td>
-<td class="ver inst">0.56.0+master 62b40e1 (2026-08-28)</td>
-<td class="ver lat">master (fix included)</td>
-<td><span class="chip" style="color:#89b4fa;background:#24395c">Rolling/snapshot</span></td>
-<td class="chan">hyprwm/Hyprland flake</td>
-<td class="note">Pinned to upstream master: carries the layer-surface pointer fix (PR #15899) that restores slurp/hyprshot region-drag. Switch back to nixpkgs when 0.56.3+ lands. Version string is the master template (0.56.0+date), not a release. </td></tr><tr class="pkg" data-status="current">
+<td class="ver inst">0.56.2 + PR #15899 backport</td>
+<td class="ver lat">0.56.2 + backport</td>
+<td><span class="chip" style="color:#a6e3a1;background:#2a4d33">Up to date</span></td>
+<td class="chan">nixpkgs unstable (patched)</td>
+<td class="note">Uses nixpkgs Hyprland 0.56.2 with commit 6c5b5d09 backported to restore slurp/hyprshot region dragging without the incompatible master config parser. </td></tr><tr class="pkg" data-status="current">
 <td class="name">hyprlock</td>
 <td class="ver inst">0.9.6</td>
 <td class="ver lat">0.9.6</td>
