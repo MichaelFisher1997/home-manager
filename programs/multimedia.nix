@@ -7,6 +7,9 @@
       haruna
       slack
     ])
+    ++ [
+      (unstable.blender.override { rocmSupport = true; })
+    ]
     ++ (with pkgs; [
       discord
       vlc
