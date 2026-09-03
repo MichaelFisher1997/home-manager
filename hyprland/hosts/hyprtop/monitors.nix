@@ -1,6 +1,8 @@
 {
   monitor = [
-    "eDP-1,preferred,auto,1"
+    "HDMI-A-1,2560x1080@60,0x360,1"
+    "DP-1,2560x1440@144,2560x0,1"
+    "DP-2,2560x1440@144,2560x-1440,1"
     "WAYLAND-1,disable"
   ];
 }
