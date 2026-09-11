@@ -4,9 +4,11 @@ let
   # nixpkgs lags Font Awesome releases; pin the newest upstream release
   font-awesome-latest = unstable.font-awesome.overrideAttrs (old: rec {
     version = "7.3.1";
-    src = unstable.fetchurl {
-      url = "https://github.com/FortAwesome/Font-Awesome/archive/${version}.tar.gz";
-      hash = "sha256-1aIFVPqhrTAUiwXwkKVW4jSVxEZDXI38FiTTwOPCZAs=";
+    src = unstable.fetchFromGitHub {
+      owner = "FortAwesome";
+      repo = "Font-Awesome";
+      rev = version;
+      hash = "sha256-FQ2XvDi2JQ/XR8xgy3f8uJnsQW/lF0/IehCJvSHS1Y4=";
     };
   });
 in

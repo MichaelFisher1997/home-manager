@@ -32,9 +32,13 @@
       url = "github:OpenStaticFish/nix-tts";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    redot-flake = {
+      url = "github:MichaelFisher1997/redot-flake";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, opencode-desktop-flake, t3code-nightly, zen-browser, neonfetch, nix-tts, ... }:
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, opencode-desktop-flake, t3code-nightly, zen-browser, neonfetch, nix-tts, redot-flake, ... }:
     let
       mkHome = hostName: vars:
         let
@@ -77,7 +81,7 @@
               }
             ];
           extraSpecialArgs = {
-            inherit vars nixvim pkgs_32 opencode-desktop-flake zen-browser neonfetch nix-tts unstable bun_1_4_0;
+            inherit vars nixvim pkgs_32 opencode-desktop-flake zen-browser neonfetch nix-tts redot-flake unstable bun_1_4_0;
           };
         };
     in

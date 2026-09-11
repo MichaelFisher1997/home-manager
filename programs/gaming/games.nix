@@ -1,4 +1,4 @@
-{ pkgs, unstable, ... }:
+{ pkgs, unstable, redot-flake, ... }:
 
 {
   home.packages =
@@ -9,5 +9,8 @@
     ++ (with pkgs; [
       xonotic
       ryubing
-    ]);
+    ])
+    ++ [
+      redot-flake.packages.${pkgs.stdenv.hostPlatform.system}.redot
+    ];
 }
