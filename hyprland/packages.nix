@@ -12,11 +12,9 @@ in {
       awww
       swaybg
       waypaper
-      wttrbar
       nwg-look
       nwg-drawer
       udiskie
-      pavucontrol
       catppuccin-kvantum
       thunar-volman
       thunar-dropbox-plugin

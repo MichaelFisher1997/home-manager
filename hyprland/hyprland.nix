@@ -17,7 +17,7 @@ let
 in {
   imports = [
     ./dunst.nix
-    ./waybar.nix
+    ./quickshell.nix
     ./eww-snapshot.nix
     ./files.nix
     ./packages.nix

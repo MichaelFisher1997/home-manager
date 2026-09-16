@@ -26,7 +26,6 @@ in
       iosevka
       nerd-fonts.fira-code
       nerd-fonts.jetbrains-mono
-      nerd-fonts.iosevka
     ])
     ++ [
       font-awesome-latest

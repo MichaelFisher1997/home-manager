@@ -1,7 +1,6 @@
 {
   exec-once = [
     "awww-daemon"
-    "sh -c 'pkill -x waybar; waybar'"
     "awww img ~/.config/hypr/wallpaper.jpg --transition-type simple || swaybg -i ~/.config/hypr/wallpaper.jpg -m fill"
     "hyprsunset"
     "udiskie"
