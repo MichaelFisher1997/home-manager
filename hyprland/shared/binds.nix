@@ -17,6 +17,7 @@
     "$mainMod, XF86MonBrightnessUp, exec, hyprctl hyprsunset gamma +10"
     "ALT, C, exec, hyprshot -m region -o ${vars.user.homeDirectory}/Pictures/hyprshots"
     "ALT SHIFT, C, exec, hyprshot -m window -o ${vars.user.homeDirectory}/Pictures/hyprshots"
+    "CTRL ALT, C, exec, hyprshot -m output -m active -o ${vars.user.homeDirectory}/Pictures/hyprshots"
     "$mainMod, left, movefocus, l"
     "$mainMod, right, movefocus, r"
     "$mainMod, up, movefocus, u"

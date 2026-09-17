@@ -14,6 +14,7 @@
     ../../obs/obs.nix
     ../../modules/portal-config.nix
     ../../modules/gtk.nix
+    ../../modules/qt.nix
     ../../modules/git.nix
     ../../modules/session.nix
 

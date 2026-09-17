@@ -7,6 +7,16 @@ in {
     force = true;
   };
 
+  xdg.configFile."hypr/wallpaper-main.jpg" = {
+    source = ./wallpaper-main.jpg;
+    force = true;
+  };
+
+  xdg.configFile."hypr/wallpaper-uw.jpg" = {
+    source = ./wallpaper-uw.jpg;
+    force = true;
+  };
+
   xdg.configFile."hypr/hyprlock.conf" = {
     source = ./hyprlock.conf;
     force = true;

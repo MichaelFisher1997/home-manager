@@ -46,13 +46,20 @@
     let
       mkHome = hostName: vars:
         let
-          pkgs = import nixpkgs {
-            inherit (vars) system;
-            config.allowUnfree = true;
-          };
           unstable = import nixpkgs-unstable {
             inherit (vars) system;
             config.allowUnfree = true;
+          };
+          pkgs = import nixpkgs {
+            inherit (vars) system;
+            config.allowUnfree = true;
+            overlays = [
+              (final: prev: {
+                nerd-fonts = prev.nerd-fonts // {
+                  jetbrains-mono = unstable.nerd-fonts.jetbrains-mono;
+                };
+              })
+            ];
           };
           bun_1_4_0 =
             let
@@ -82,6 +89,7 @@
               t3code-nightly.homeManagerModules.default
               {
                 programs.t3code-nightly.enable = true;
+                programs.t3code-nightly.autoUpdate = false;
               }
             ];
           extraSpecialArgs = {
