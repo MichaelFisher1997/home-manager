@@ -1,12 +1,22 @@
+{ lib }:
 {
-  exec-once = [
-    "hypridle"
+  on = [
+    {
+      _args = [
+        "hyprland.start"
+        (lib.generators.mkLuaInline ''
+          function()
+            hl.exec_cmd("hypridle")
+          end
+        '')
+      ];
+    }
   ];
 
   env = [
-    "SDL_VIDEODRIVER,wayland"
-    "SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS,0"
-    "WINE_FULLSCREEN_FSR,1"
-    "WINE_FULLSCREEN_INTEGER_SCALING,1"
+    { _args = [ "SDL_VIDEODRIVER" "wayland" ]; }
+    { _args = [ "SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS" "0" ]; }
+    { _args = [ "WINE_FULLSCREEN_FSR" "1" ]; }
+    { _args = [ "WINE_FULLSCREEN_INTEGER_SCALING" "1" ]; }
   ];
 }

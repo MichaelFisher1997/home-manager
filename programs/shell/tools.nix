@@ -3,6 +3,9 @@
 {
   home.packages =
     (with unstable; [
+      fd
+      fzf
+      highlight
       nurl
       nixfmt
       nixpkgs-review
@@ -15,10 +18,7 @@
       lolcat
       tldr
       grc
-      highlight
       jq
-      fd
-      fzf
       bat
     ]);
 }

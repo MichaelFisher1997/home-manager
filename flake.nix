@@ -61,21 +61,21 @@
               })
             ];
           };
-          bun_1_4_0 =
+          bun_1_4_2 =
             let
               sources = {
                 "aarch64-linux" = {
-                  url = "https://github.com/oven-sh/bun/releases/download/bun-v1.4.0/bun-linux-aarch64.zip";
-                  hash = "sha256-SxozLuhhmD65O8/m93D/+U4+MbLDiL2uo8jtNeWO7Q4=";
+                  url = "https://github.com/oven-sh/bun/releases/download/bun-v1.4.2/bun-linux-aarch64.zip";
+                  hash = "sha256-VDKLvC2cjgyfiSxUTWbFeoO4QTnjSQnl7oF1jxrI/ac=";
                 };
                 "x86_64-linux" = {
-                  url = "https://github.com/oven-sh/bun/releases/download/bun-v1.4.0/bun-linux-x64.zip";
-                  hash = "sha256-LQP7X7g6yLVnrKCigbLOGhoZ1Ij1bClo2Iw/Jekv5FI=";
+                  url = "https://github.com/oven-sh/bun/releases/download/bun-v1.4.2/bun-linux-x64.zip";
+                  hash = "sha256-NjaPrvdSeHXV/6UuU81IAhdB8qg+tiCKjdZAaNQiqRM=";
                 };
               };
             in
             unstable.bun.overrideAttrs (_: {
-              version = "1.4.0";
+              version = "1.4.2";
               src = unstable.fetchurl (
                 sources.${vars.system} or (throw "Unsupported Bun system: ${vars.system}")
               );
@@ -93,7 +93,7 @@
               }
             ];
           extraSpecialArgs = {
-            inherit vars nixvim pkgs_32 opencode-desktop-flake zen-browser neonfetch nix-tts redot-flake quickshell-config unstable bun_1_4_0;
+            inherit vars nixvim pkgs_32 opencode-desktop-flake zen-browser neonfetch nix-tts redot-flake quickshell-config unstable bun_1_4_2;
           };
         };
     in

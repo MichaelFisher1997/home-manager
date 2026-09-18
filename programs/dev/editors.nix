@@ -32,7 +32,7 @@ let
 in
 {
   home.packages = with pkgs; [
-    vscode
+    unstable.vscode
     unstable.zed-editor
     opencode-desktop-flake.packages.x86_64-linux.default
     cursor-agent

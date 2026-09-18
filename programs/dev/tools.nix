@@ -11,6 +11,7 @@
       gh
       git-credential-manager
       libavif
+      nix-prefetch-git
       pnpm
       railway
       uv
@@ -22,7 +23,6 @@
       git-lfs
       gnumake
       libsecret
-      nix-prefetch-git
       nixpacks
     ]);
 }

@@ -1,4 +1,4 @@
-{ pkgs, unstable, bun_1_4_0, ... }:
+{ pkgs, unstable, bun_1_4_2, ... }:
 
 {
   home.sessionVariables = {
@@ -11,7 +11,7 @@
   };
 
   home.sessionPath = [
-    "${bun_1_4_0}/bin"
+    "${bun_1_4_2}/bin"
     "$HOME/.npm-global/bin"
     "$BUN_INSTALL/bin"
     "$HOME/.cargo/bin"

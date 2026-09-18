@@ -1,4 +1,4 @@
-{ pkgs, unstable, bun_1_4_0, neonfetch, vars, ... }:
+{ pkgs, unstable, bun_1_4_2, neonfetch, vars, ... }:
 {
   home.username = vars.user.name;
   home.homeDirectory = vars.user.homeDirectory;
@@ -35,7 +35,7 @@
     curl
     wget
     nodejs
-    bun_1_4_0
+    bun_1_4_2
     opencode
     kubectl
     tmux

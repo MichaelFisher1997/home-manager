@@ -1,8 +1,8 @@
 {
   monitor = [
-    "HDMI-A-1,2560x1080@60,0x360,1"
-    "DP-1,2560x1440@144,2560x0,1"
-    "DP-2,2560x1440@144,2560x-1440,1"
-    "WAYLAND-1,disable"
+    { output = "HDMI-A-1"; mode = "2560x1080@60"; position = "0x360"; scale = 1; }
+    { output = "DP-1"; mode = "2560x1440@144"; position = "2560x0"; scale = 1; }
+    { output = "DP-2"; mode = "2560x1440@144"; position = "2560x-1440"; scale = 1; }
+    { output = "WAYLAND-1"; disabled = true; }
   ];
 }

@@ -1,7 +1,7 @@
 { lib }:
 let
   monitors = import ./monitors.nix;
-  session = import ./session.nix;
+  session = import ./session.nix { inherit lib; };
   workspaces = import ./workspaces.nix;
   rules = import ./rules.nix;
 in

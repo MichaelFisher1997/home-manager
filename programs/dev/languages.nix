@@ -1,4 +1,4 @@
-{ pkgs, unstable, bun_1_4_0, ... }:
+{ pkgs, unstable, bun_1_4_2, ... }:
 
 {
   home.packages =
@@ -23,6 +23,6 @@
       zig
     ])
     ++ [
-      bun_1_4_0
+      bun_1_4_2
     ];
 }

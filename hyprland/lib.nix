@@ -2,16 +2,12 @@
 let
   listKeys = [
     "animation"
-    "bezier"
     "bind"
-    "bindel"
-    "bindl"
-    "bindm"
     "env"
-    "exec-once"
     "monitor"
-    "windowrule"
-    "workspace"
+    "on"
+    "window_rule"
+    "workspace_rule"
   ];
 
   mergeListKey = key: left: right:

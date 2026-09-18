@@ -1,9 +1,9 @@
-{ vars }:
+{ lib, vars }:
 let
   programs = import ./programs.nix;
-  session = import ./session.nix;
+  session = import ./session.nix { inherit lib; };
   appearance = import ./appearance.nix;
   input = import ./input.nix;
-  binds = import ./binds.nix { inherit vars; };
+  binds = import ./binds.nix { inherit lib vars; };
 in
-  programs // session // appearance // input // binds
+  lib.foldl' lib.recursiveUpdate { } [ programs session appearance input binds ]

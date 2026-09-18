@@ -2,7 +2,7 @@
 
 let
   isLaptop = vars.hostName == "hyprtop";
-  sharedSettings = import ./shared { inherit vars; };
+  sharedSettings = import ./shared { inherit lib vars; };
   hostSettings = if isLaptop then import ./hosts/hyprtop { inherit lib; } else import ./hosts/hypr-nix { inherit lib; };
   hyprLib = import ./lib.nix { inherit lib; };
   mergedHostSettings = hyprLib.mergeHyprSettings sharedSettings hostSettings;
@@ -30,7 +30,7 @@ in {
     enable = true;
     package = patchedHyprland;
     portalPackage = unstable.xdg-desktop-portal-hyprland;
-    configType = "hyprlang";
+    configType = "lua";
     xwayland.enable = true;
     systemd.enable = true;
     settings = mergedHostSettings;
