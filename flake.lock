@@ -225,11 +225,11 @@
         "quickshell": "quickshell"
       },
       "locked": {
-        "lastModified": 1789702230,
-        "narHash": "sha256-w3toNgrJGQvoWXeZCSfK0vCUZmfx++OgA4+lKqw+vTE=",
+        "lastModified": 1789763233,
+        "narHash": "sha256-/RIf4Qklaqhc79E/9OBBRkAZOvvVighUUvURHVmNoI8=",
         "owner": "MichaelFisher1997",
         "repo": "quickshell-config",
-        "rev": "35ec8add8c26e725ba2623ad8a01a4f0d5d6fc99",
+        "rev": "74c71c1f58852e06b5f5007549783fb62784784a",
         "type": "github"
       },
       "original": {
