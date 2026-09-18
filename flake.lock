@@ -225,11 +225,11 @@
         "quickshell": "quickshell"
       },
       "locked": {
-        "lastModified": 1789656806,
-        "narHash": "sha256-79UbD3K9fRpgp7iNK5hjcoJG1peZFqZcMP2mZwJ8hYM=",
+        "lastModified": 1789702230,
+        "narHash": "sha256-w3toNgrJGQvoWXeZCSfK0vCUZmfx++OgA4+lKqw+vTE=",
         "owner": "MichaelFisher1997",
         "repo": "quickshell-config",
-        "rev": "227fd98906f2d87abeee33e51fa2cab17725451a",
+        "rev": "35ec8add8c26e725ba2623ad8a01a4f0d5d6fc99",
         "type": "github"
       },
       "original": {
@@ -332,11 +332,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789584125,
-        "narHash": "sha256-C9BpLH4dNggam12nz/Fx/M0Vlbw8WcT/cpOc37DPQAA=",
+        "lastModified": 1789702344,
+        "narHash": "sha256-DfevaOxGu6NKUF+q5hUAg7kFscWQvuC9Yd/CgR4qpgc=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "a12d482485d877cc066516ea256b435b209a1a8c",
+        "rev": "ef5fe624be04120db77c08c5df6f75a6a4201517",
         "type": "github"
       },
       "original": {
