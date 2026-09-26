@@ -10,7 +10,7 @@ let
     patches = (old.patches or []) ++ [
       (pkgs.fetchpatch {
         url = "https://github.com/hyprwm/Hyprland/commit/6c5b5d09ee9c1b02ac154c70f1fc4cfa8a787e3d.patch";
-        hash = "sha256-JftO7kefREbbn356778cMBaGHr/g8YgQ/YzdWuKS+c8=";
+        hash = "sha256-6SiaCi0DP6QH3xoWDU4sPdJH2O1TtxnIRx0PMx4Y2TM=";
       })
     ];
   });

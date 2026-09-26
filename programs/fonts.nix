@@ -23,7 +23,6 @@ in
     # from unstable: rides the fast-moving font release trains
     (with unstable; [
       noto-fonts
-      iosevka
       nerd-fonts.fira-code
       nerd-fonts.jetbrains-mono
     ])
@@ -32,6 +31,9 @@ in
     ]
     # from stable: already at the newest upstream release
     ++ (with pkgs; [
+      # pinned to stable: unstable's 34.7.0 is not yet on cache.nixos.org and
+      # builds nodejs from source (hours); move back to unstable once cached
+      iosevka
       noto-fonts-cjk-sans
       noto-fonts-color-emoji
       twemoji-color-font

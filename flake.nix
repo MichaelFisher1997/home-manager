@@ -28,8 +28,8 @@
       url = "github:OpenStaticFish/neonfetch";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-tts = {
-      url = "github:OpenStaticFish/nix-tts";
+    nix-stt = {
+      url = "github:OpenStaticFish/nix-stt";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     redot-flake = {
@@ -42,7 +42,7 @@
     };
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, opencode-desktop-flake, t3code-nightly, zen-browser, neonfetch, nix-tts, redot-flake, quickshell-config, ... }:
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, opencode-desktop-flake, t3code-nightly, zen-browser, neonfetch, nix-stt, redot-flake, quickshell-config, ... }:
     let
       mkHome = hostName: vars:
         let
@@ -90,10 +90,14 @@
               {
                 programs.t3code-nightly.enable = true;
                 programs.t3code-nightly.autoUpdate = false;
+                xdg.mimeApps.defaultApplications = {
+                  "x-scheme-handler/t3code" = [ "t3code.desktop" ];
+                  "x-scheme-handler/t3code-dev" = [ "t3code.desktop" ];
+                };
               }
             ];
           extraSpecialArgs = {
-            inherit vars nixvim pkgs_32 opencode-desktop-flake zen-browser neonfetch nix-tts redot-flake quickshell-config unstable bun_1_4_2;
+            inherit vars nixvim pkgs_32 opencode-desktop-flake zen-browser neonfetch nix-stt redot-flake quickshell-config unstable bun_1_4_2;
           };
         };
     in

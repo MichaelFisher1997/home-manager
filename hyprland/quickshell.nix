@@ -1,11 +1,11 @@
-{ pkgs, unstable, lib, vars, nix-tts, quickshell-config, ... }:
+{ config, pkgs, unstable, lib, vars, nix-stt, quickshell-config, ... }:
 {
   imports = [
-    nix-tts.homeManagerModules."nix-tts"
+    nix-stt.homeManagerModules."nix-stt"
     quickshell-config.homeModules.default
   ];
 
-  programs.nix-tts = {
+  programs.nix-stt = {
     enable = true;
     settings = {
       model = "mistralai/voxtral-small-24b-2507-stt";
@@ -14,4 +14,10 @@
   };
 
   programs.quickshell-config.enable = true;
+  # The pinned Quickshell dictation widget still invokes the old command name.
+  programs.quickshell-config.extraPackages = [
+    (pkgs.writeShellScriptBin "nix-tts" ''
+      exec ${lib.getExe config.programs.nix-stt.package} "$@"
+    '')
+  ];
 }
