@@ -89,7 +89,23 @@
               t3code-nightly.homeManagerModules.default
               {
                 programs.t3code-nightly.enable = true;
-                programs.t3code-nightly.autoUpdate = false;
+                programs.t3code-nightly.package = pkgs.writeShellApplication {
+                  name = "t3code";
+                  runtimeInputs = [ pkgs.appimage-run ];
+                  text = ''
+                    if [ "''${1:-}" = "--update-only" ]; then
+                      exec ${t3code-nightly.packages.${vars.system}.default}/bin/t3code "$@"
+                    fi
+
+                    appimage="''${XDG_DATA_HOME:-$HOME/.local/share}/t3code-nightly/T3-Code.AppImage"
+                    if [ ! -x "$appimage" ]; then
+                      exec ${t3code-nightly.packages.${vars.system}.default}/bin/t3code "$@"
+                    fi
+
+                    export T3CODE_DISABLE_AUTO_UPDATE=1
+                    exec appimage-run "$appimage" "$@"
+                  '';
+                };
                 xdg.mimeApps.defaultApplications = {
                   "x-scheme-handler/t3code" = [ "t3code.desktop" ];
                   "x-scheme-handler/t3code-dev" = [ "t3code.desktop" ];
