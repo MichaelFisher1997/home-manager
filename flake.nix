@@ -85,10 +85,12 @@
         home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [ ./hosts/${hostName}/default.nix ]
-            ++ nixpkgs.lib.optionals (hostName == "hypr-nix") [
+            ++ nixpkgs.lib.optionals (builtins.elem hostName [ "hypr-nix" "hyprtop" ]) [
               t3code-nightly.homeManagerModules.default
               {
                 programs.t3code-nightly.enable = true;
+                xdg.dataFile."applications/t3code.desktop".source =
+                  "${t3code-nightly.packages.${vars.system}.default}/share/applications/t3code.desktop";
                 programs.t3code-nightly.package = pkgs.writeShellApplication {
                   name = "t3code";
                   runtimeInputs = [ pkgs.appimage-run ];
