@@ -1,7 +1,22 @@
-{ pkgs, unstable, lib, vars, ... }:
+{
+  pkgs,
+  unstable,
+  lib,
+  vars,
+  ...
+}:
 let
   isLaptop = vars.hostName == "hyprtop";
-in {
+
+  # Keyring payloads are binary, so preserve embedded NUL bytes when reading them.
+  udiskie-fixed = unstable.udiskie.overrideAttrs (old: {
+    postPatch = (old.postPatch or "") + ''
+      substituteInPlace udiskie/keyutils.py \
+        --replace-fail 'return buffer.value' 'return buffer.raw[:ret]'
+    '';
+  });
+in
+{
   home.packages =
     # from unstable: hyprwm family coherence + newer releases
     (with unstable; [
@@ -14,13 +29,13 @@ in {
       waypaper
       nwg-look
       nwg-drawer
-      udiskie
       catppuccin-kvantum
       thunar-volman
       thunar-dropbox-plugin
       thunar-archive-plugin
       tumbler
     ])
+    ++ [ udiskie-fixed ]
     # from stable: already at the newest upstream release
     ++ (with pkgs; [
       wl-clipboard

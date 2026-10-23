@@ -1,6 +1,21 @@
-{ pkgs, unstable, neonfetch, ... }:
+{
+  pkgs,
+  unstable,
+  neonfetch,
+  ...
+}:
 
 let
+  # pywal16's wrapper flags must be separate arguments, not one combined string.
+  pywal-fixed = unstable.pywal16.overrideAttrs (_: {
+    makeWrapperArgs = [
+      "--prefix"
+      "PATH"
+      ":"
+      (unstable.lib.makeBinPath [ unstable.imagemagick ])
+    ];
+  });
+
   # nixpkgs (even unstable) lags these two upstream releases; pin newest
   rpi-imager-latest = unstable.rpi-imager.overrideAttrs (old: rec {
     version = "2.0.11.1";
@@ -30,13 +45,13 @@ in
       calc
       maim
       xdotool
-      pywal
       pika-backup
       sunshine
       socat
       libinput
     ])
     ++ [
+      pywal-fixed
       rpi-imager-latest
       networkmanager-dmenu-latest
       neonfetch.packages.${pkgs.stdenv.hostPlatform.system}.default

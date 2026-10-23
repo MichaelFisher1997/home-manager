@@ -91,6 +91,7 @@
                 programs.t3code-nightly.enable = true;
                 xdg.dataFile."applications/t3code.desktop".source =
                   "${t3code-nightly.packages.${vars.system}.default}/share/applications/t3code.desktop";
+                xdg.dataFile."applications/t3code.desktop".force = true;
                 programs.t3code-nightly.package = pkgs.writeShellApplication {
                   name = "t3code";
                   runtimeInputs = [ pkgs.appimage-run ];
