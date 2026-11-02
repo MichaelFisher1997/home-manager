@@ -19,7 +19,8 @@ in {
   wayland.windowManager.hyprland = {
     enable = true;
     package = unstable.hyprland;
-    portalPackage = unstable.xdg-desktop-portal-hyprland;
+    # The portal is added directly in modules/portal-config.nix to avoid an incompatible override.
+    portalPackage = null;
     configType = "lua";
     xwayland.enable = true;
     systemd.enable = true;

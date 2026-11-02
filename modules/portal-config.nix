@@ -1,11 +1,13 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, unstable, ... }:
 
 {
   # XDG portal configuration
-  # (hyprland portal comes from wayland.windowManager.hyprland.portalPackage)
+  # The Hyprland portal is added directly because it no longer accepts a Hyprland override.
   xdg.portal = {
-    enable = true;
+    # The Hyprland module disables portals when its portalPackage is null.
+    enable = lib.mkForce true;
     extraPortals = with pkgs; [
+      unstable.xdg-desktop-portal-hyprland
       xdg-desktop-portal-gtk
     ];
     config.common.default = [ "hyprland" ];
