@@ -41,8 +41,8 @@ in {
   ] ++ workspaceBinds ++ [
     (modBind "S" ''hl.dsp.workspace.toggle_special("magic")'' null)
     (modBind "SHIFT + S" ''hl.dsp.window.move({ workspace = "special:magic" })'' null)
-    (modBind "mouse_down" ''hl.dsp.focus({ workspace = "e-1" })'' null)
-    (modBind "mouse_up" ''hl.dsp.focus({ workspace = "e+1" })'' null)
+    (modBind "mouse_down" ''hl.dsp.focus({ workspace = "e+1" })'' null)
+    (modBind "mouse_up" ''hl.dsp.focus({ workspace = "e-1" })'' null)
     (modBind "mouse:272" "hl.dsp.window.drag()" { mouse = true; })
     (modBind "mouse:273" "hl.dsp.window.resize()" { mouse = true; })
   ];
