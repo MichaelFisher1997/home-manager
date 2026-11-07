@@ -1,6 +1,26 @@
 { pkgs, unstable, opencode-desktop-flake, ... }:
 
 let
+  opencode-desktop =
+    let
+      upstream = opencode-desktop-flake.packages.x86_64-linux.default;
+    in
+    pkgs.buildFHSEnv (upstream.args // {
+      # The pinned flake still uses deprecated xorg names in targetPkgs.
+      # Keep its dependency list, but resolve those names to canonical packages.
+      targetPkgs = fhsPkgs: upstream.args.targetPkgs (fhsPkgs // {
+        xorg = fhsPkgs.xorg // {
+          libX11 = fhsPkgs.libx11;
+          libXcomposite = fhsPkgs.libxcomposite;
+          libXdamage = fhsPkgs.libxdamage;
+          libXext = fhsPkgs.libxext;
+          libXfixes = fhsPkgs.libxfixes;
+          libXrandr = fhsPkgs.libxrandr;
+          libxcb = fhsPkgs.libxcb;
+        };
+      });
+    });
+
   cursor-agent = pkgs.stdenvNoCC.mkDerivation rec {
     pname = "cursor-agent";
     version = "2026.07.23-e383d2b";
@@ -34,7 +54,7 @@ in
   home.packages = with pkgs; [
     unstable.vscode
     unstable.zed-editor
-    opencode-desktop-flake.packages.x86_64-linux.default
+    opencode-desktop
     cursor-agent
   ];
 }
