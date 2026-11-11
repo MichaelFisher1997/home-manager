@@ -108,11 +108,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1790385640,
-        "narHash": "sha256-vQFCUvjvgcJr4lz3JwAutKk4scaDiMGNMerNAY+/X1w=",
+        "lastModified": 1794185089,
+        "narHash": "sha256-iFgAnaiWnaKpV6GmdU29qmpY0TMomYPhi7ORChI4u9g=",
         "owner": "OpenStaticFish",
         "repo": "nix-stt",
-        "rev": "dd8e5432eed84c9aef60e8bcd886bf6507182ca1",
+        "rev": "a3b6c1d2f5a5f449e0b207d852d3ce05f7998de6",
         "type": "github"
       },
       "original": {

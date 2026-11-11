@@ -10,8 +10,10 @@
       file-roller
       tree
     ])
-    # from stable: frozen upstreams, no newer release exists
+    # from stable: office applications and file utilities
     ++ (with pkgs; [
+      libreoffice-fresh
+      onlyoffice-desktopeditors
       zip
       unzip
       gzip

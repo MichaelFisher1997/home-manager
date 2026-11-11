@@ -1,4 +1,4 @@
-{ pkgs, unstable, opencode-desktop-flake, ... }:
+{ config, lib, pkgs, unstable, opencode-desktop-flake, ... }:
 
 let
   opencode-desktop =
@@ -52,9 +52,26 @@ let
 in
 {
   home.packages = with pkgs; [
+    kdePackages.kate
     unstable.vscode
     unstable.zed-editor
     opencode-desktop
     cursor-agent
   ];
+
+  xdg.dataFile."color-schemes/BreezeDark.colors".source =
+    "${pkgs.kdePackages.breeze}/share/color-schemes/BreezeDark.colors";
+
+  # Keep Kate dark without replacing its other saved preferences.
+  home.activation.kateDarkTheme = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    run ${lib.getExe' pkgs.kdePackages.kconfig "kwriteconfig6"} \
+      --file "${config.xdg.configHome}/katerc" \
+      --group UiSettings --key ColorScheme BreezeDark
+    run ${lib.getExe' pkgs.kdePackages.kconfig "kwriteconfig6"} \
+      --file "${config.xdg.configHome}/katerc" \
+      --group "KTextEditor Renderer" --key "Auto Color Theme Selection" --type bool false
+    run ${lib.getExe' pkgs.kdePackages.kconfig "kwriteconfig6"} \
+      --file "${config.xdg.configHome}/katerc" \
+      --group "KTextEditor Renderer" --key "Color Theme" "Breeze Dark"
+  '';
 }
