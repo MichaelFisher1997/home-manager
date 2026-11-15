@@ -20,12 +20,12 @@ because this skill exists.
    the user before updating or switching; do not assume `hypr-nix`.
 3. From the repository root, run `nix flake update`. If it fails, report the
    error and stop; do not switch with an incompletely updated flake.
-4. Run `home-upgrade` if the configured alias is available. Shell aliases are
-   often unavailable in non-interactive execution; in that case run the
-   equivalent command with the verified host:
+4. Run `home-upgrade --max-jobs 4 --cores 6` if the configured alias is
+   available. Shell aliases are often unavailable in non-interactive
+   execution; in that case run the equivalent command with the verified host:
 
    ```sh
-   home-manager switch --flake "path:$HOME/nixos/home-manager#<verified-host>"
+   home-manager switch --flake "path:$HOME/nixos/home-manager#<verified-host>" --max-jobs 4 --cores 6
    ```
 
    Replace `<verified-host>` with the actual configuration name. Do not use

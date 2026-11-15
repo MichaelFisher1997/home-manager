@@ -24,10 +24,10 @@ let
 in
 {
   home.packages = with unstable; [
-    brave
     google-chrome
     tor-browser
   ] ++ [
+    pkgs.brave
     zen-wrapped
   ];
 }

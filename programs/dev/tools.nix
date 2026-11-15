@@ -4,7 +4,6 @@
   home.packages =
     (with unstable; [
       act
-      codex
       devenv
       doppler
       ffmpeg
@@ -18,6 +17,12 @@
       whois
       wrangler
     ])
+    ++ [
+      # The current unstable Codex build requires these system libraries.
+      (unstable.codex.overrideAttrs (old: {
+        buildInputs = old.buildInputs ++ [ unstable.aws-lc unstable.oniguruma unstable.sqlite unstable.zstd ];
+      }))
+    ]
     ++ (with pkgs; [
       exercism
       git-lfs
